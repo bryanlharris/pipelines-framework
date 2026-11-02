@@ -1,0 +1,28 @@
+# sdp-framework: one bundle for every dataset. Each dataset is built with
+# sdp-meta (Databricks Labs) and has its own resource file in resources/
+# and its own folder (conf, views, upload script). Shared code is in shared/.
+# Deploy with:
+#   databricks bundle deploy -t <target>
+#
+# No default target: every command names one with -t.
+# Machine-only targets (free, at home) go in a git-ignored
+# resources/<name>.local.yml.
+
+bundle:
+  name: sdp_framework
+
+include:
+  - resources/*.yml
+
+sync:
+  exclude:
+    - tools/
+    - "*/upload_*.ps1"
+
+variables:
+  sdp_meta_dependency:
+    description: The sdp-meta package. Installed by the onboarding job and by the pipeline's runner notebook.
+    default: databricks-labs-sdp-meta==0.1.0
+  sdp_meta_version:
+    description: Tag on every pipeline, so the sdp-meta app and tag search find them.
+    default: "0.1.0"

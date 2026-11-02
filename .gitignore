@@ -1,0 +1,6 @@
+.databricks/
+__pycache__/
+*.pyc
+
+# Machine-only bundle files (the home free target).
+resources/*.local.yml

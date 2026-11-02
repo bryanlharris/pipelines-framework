@@ -1,0 +1,7 @@
+# Bronze rules for all edsm files.
+# The edsm dumps are one big JSON array: the "[" and "]" lines parse as empty records.
+# Drop any record whose id is missing or not a number
+# (silver casts id to int; "abc" would become NULL there).
+
+expect_or_drop:
+  id_is_number: "try_cast(id AS INT) IS NOT NULL"
