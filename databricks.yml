@@ -1,18 +1,21 @@
 # sdp-framework: one bundle for every dataset. Each dataset is built with
-# sdp-meta (Databricks Labs) and has its own resource file in resources/
-# and its own folder (conf, views, upload script). Shared code is in shared/.
+# sdp-meta (Databricks Labs) and has its own folder: <dataset>/resources.yml,
+# conf/, views/, upload script. Shared code is in shared/. Each target has
+# its own file in targets/.
 # Deploy with:
 #   databricks bundle deploy -t <target>
 #
 # No default target: every command names one with -t.
 # Machine-only targets (free, at home) go in a git-ignored
-# resources/<name>.local.yml.
+# targets/<name>.local.yml.
 
 bundle:
   name: sdp_framework
 
 include:
-  - resources/*.yml
+  - targets/*.yml
+  # One level only; ** does not recurse.
+  - "*/resources.yml"
 
 sync:
   exclude:

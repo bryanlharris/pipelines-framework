@@ -14,16 +14,12 @@ resources:
       # The workspace sets this itself; listing it keeps the plan clean.
       properties:
         collation: UTF8_BINARY
-      lifecycle:
-        prevent_destroy: true
 
   schemas:
     edsm_raw:
       catalog_name: ${resources.catalogs.edsm.name}
       name: raw
       comment: Files as they arrive. inbox is the drop zone; files is the permanent record.
-      lifecycle:
-        prevent_destroy: true
     edsm_bronze:
       catalog_name: ${resources.catalogs.edsm.name}
       name: bronze
@@ -50,8 +46,6 @@ resources:
       name: files
       volume_type: MANAGED
       comment: Permanent record. Only the router writes here; nothing is ever deleted. Full rebuilds read from here.
-      lifecycle:
-        prevent_destroy: true
     edsm_sdp_meta_conf:
       catalog_name: ${resources.catalogs.edsm.name}
       schema_name: ${resources.schemas.edsm_sdp_meta.name}
