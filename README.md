@@ -7,6 +7,7 @@ targets/.
 
 - edsm/: Elite Dangerous Star Map dumps.
 - treasury/: US Treasury daily yield curve rates.
+- documents/: PDFs scanned for PII with AI functions.
 - shared/: file router, pipeline runner notebook, view runner.
 - tools/bundle_plan.py: shows what a deploy would do, by real name.
 

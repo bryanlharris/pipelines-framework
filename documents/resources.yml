@@ -1,0 +1,166 @@
+# documents: PDFs scanned for PII, from raw files to silver.
+#
+# Flow: upload to raw.inbox -> job "documents" (router -> pipeline -> views).
+# Config changes (documents/conf/) need job "documents - onboarding" run once after deploy.
+
+resources:
+  catalogs:
+    # Free can't create catalogs through the API (Default Storage), so on free
+    # it is made once by SQL CREATE CATALOG, then bound:
+    #   databricks bundle deployment bind documents documents -t free
+    documents:
+      name: documents
+      comment: PDFs checked for PII. raw holds the files, bronze and silver the tables. Silver holds PII values.
+      # The workspace sets this itself; listing it keeps the plan clean.
+      properties:
+        collation: UTF8_BINARY
+
+  schemas:
+    documents_raw:
+      catalog_name: ${resources.catalogs.documents.name}
+      name: raw
+      comment: Files as they arrive. inbox is the drop zone; files is the permanent record.
+    documents_bronze:
+      catalog_name: ${resources.catalogs.documents.name}
+      name: bronze
+      comment: One table per file type. One record per file, with the file's bytes.
+    documents_silver:
+      catalog_name: ${resources.catalogs.documents.name}
+      name: silver
+      comment: AI results per file (parsed text, PII labels), plus a PII inventory view.
+    documents_sdp_meta:
+      catalog_name: ${resources.catalogs.documents.name}
+      name: sdp_meta
+      comment: sdp-meta's settings tables (dataflowspecs) and the staged conf files.
+
+  volumes:
+    documents_raw_inbox:
+      catalog_name: ${resources.catalogs.documents.name}
+      schema_name: ${resources.schemas.documents_raw.name}
+      name: inbox
+      volume_type: MANAGED
+      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+    documents_raw_files:
+      catalog_name: ${resources.catalogs.documents.name}
+      schema_name: ${resources.schemas.documents_raw.name}
+      name: files
+      volume_type: MANAGED
+      comment: Permanent record. Only the router writes here; nothing is ever deleted. Full rebuilds read from here.
+    documents_sdp_meta_conf:
+      catalog_name: ${resources.catalogs.documents.name}
+      schema_name: ${resources.schemas.documents_sdp_meta.name}
+      name: conf
+      volume_type: MANAGED
+      comment: Copy of documents/conf, made by the onboarding job. Serverless can't read workspace files.
+
+  pipelines:
+    documents_pipeline:
+      name: documents
+      catalog: ${resources.catalogs.documents.name}
+      # Default schema only; each table's full name comes from documents/conf/onboarding.yml.
+      schema: ${resources.schemas.documents_bronze.name}
+      serverless: true
+      tags:
+        sdp_meta: ${var.sdp_meta_version}
+      libraries:
+        - notebook:
+            path: ../shared/init_sdp_meta_pipeline.py
+      configuration:
+        layer: bronze_silver
+        bronze.dataflowspecTable: documents.sdp_meta.bronze_dataflowspec
+        bronze.group: documents
+        silver.dataflowspecTable: documents.sdp_meta.silver_dataflowspec
+        silver.group: documents
+        sdp_meta_dependency: ${var.sdp_meta_dependency}
+
+  jobs:
+    documents_job:
+      name: documents
+      description: Moves new files from inbox to files, then loads bronze and silver.
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      trigger:
+        pause_status: UNPAUSED
+        file_arrival:
+          url: /Volumes/documents/raw/inbox/
+          wait_after_last_change_seconds: 60
+      tasks:
+        - task_key: router
+          environment_key: default
+          spark_python_task:
+            python_file: ../shared/file_router.py
+            parameters:
+              - --catalog
+              - ${resources.catalogs.documents.name}
+              - --names
+              - pdf
+        # Skip the pipeline when the router moved nothing (e.g. the run
+        # started by a file landing in inbox/bad_files).
+        - task_key: any_moved
+          depends_on:
+            - task_key: router
+          condition_task:
+            op: GREATER_THAN
+            left: "{{tasks.router.values.moved}}"
+            right: "0"
+        - task_key: pipeline
+          depends_on:
+            - task_key: any_moved
+              outcome: "true"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.documents_pipeline.id}
+        - task_key: views
+          depends_on:
+            - task_key: pipeline
+          environment_key: default
+          spark_python_task:
+            python_file: ../shared/create_views.py
+            parameters:
+              - --folder
+              - ${workspace.file_path}/documents/views
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "3"
+
+    documents_onboarding:
+      name: documents - onboarding
+      description: Copies documents/conf to a volume, then writes sdp-meta's settings tables. Run after a deploy that changes documents/conf.
+      tasks:
+        - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: stage_conf
+            named_parameters:
+              source_conf_dir: ${workspace.file_path}/documents/conf
+              uc_catalog: ${resources.catalogs.documents.name}
+              uc_schema: ${resources.schemas.documents_sdp_meta.name}
+              conf_volume: ${resources.volumes.documents_sdp_meta_conf.name}
+        - task_key: onboard
+          depends_on:
+            - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: run
+            named_parameters:
+              onboard_layer: bronze_silver
+              database: documents.sdp_meta
+              onboarding_file_path: /Volumes/documents/sdp_meta/conf/conf/onboarding.yml
+              bronze_dataflowspec_table: bronze_dataflowspec
+              silver_dataflowspec_table: silver_dataflowspec
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              overwrite: "True"
+              # Picks the _free (or _dev) keys in onboarding.yml.
+              env: ${bundle.target}
+      environments:
+        - environment_key: sdp_meta
+          spec:
+            # Free rejects environment 1. Version 3 is Python 3.12; sdp-meta needs below 3.13.
+            environment_version: "3"
+            dependencies:
+              - ${var.sdp_meta_dependency}

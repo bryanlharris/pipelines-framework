@@ -1,0 +1,5 @@
+# Bronze rules for all documents files.
+# Drop empty files: there is nothing to parse, and the AI call would fail.
+
+expect_or_drop:
+  file_not_empty: "length > 0"

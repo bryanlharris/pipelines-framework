@@ -1,0 +1,20 @@
+# Silver selects, one entry per silver table.
+# Silver reads bronze as a stream, so each PDF goes through the AI once.
+#
+# parsed: ai_parse_document's result (VARIANT). The text is in
+#   parsed:document:elements.
+# classification: ai_classify's result (VARIANT):
+#   {response: [{value, confidence_score, rationale}, ...], ...}
+#   With enableRationales the rationales quote the values found.
+# classification refers to parsed by name (a lateral column alias), so the
+# PDF is parsed once.
+# ingest_time comes from the time stamp the router adds to the file name
+# (pdf_report_20261104_120000.pdf).
+
+- target_table: pii
+  select_exp:
+    - "source_file"
+    - "length"
+    - "ai_parse_document(content) as parsed"
+    - "ai_classify(cast(parsed:document:elements as string), '[\"person_name\", \"ssn\", \"date_of_birth\", \"driver_license\", \"phone_number\", \"email_address\", \"bank_account\", \"credit_card\", \"ip_address\", \"none\"]', map('version', '2.1', 'multilabel', 'true', 'enableConfidenceScores', 'true', 'enableRationales', 'true')) as classification"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
