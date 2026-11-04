@@ -1,0 +1,6 @@
+# Bronze rules for all treasury files.
+# Drop any record whose date is missing or not a date
+# (silver keys on NEW_DATE; a NULL key would break SCD2).
+
+expect_or_drop:
+  new_date_is_date: "try_cast(NEW_DATE AS TIMESTAMP) IS NOT NULL"

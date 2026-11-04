@@ -1,0 +1,166 @@
+# treasury: US Treasury daily par yield curve rates, from raw files to silver.
+#
+# Flow: upload to raw.inbox -> job "treasury" (router -> pipeline -> views).
+# Config changes (treasury/conf/) need job "treasury - onboarding" run once after deploy.
+
+resources:
+  catalogs:
+    # Free can't create catalogs through the API (Default Storage), so on free
+    # it is made once by SQL CREATE CATALOG, then bound:
+    #   databricks bundle deployment bind treasury treasury -t free
+    treasury:
+      name: treasury
+      comment: US Treasury interest rate data. raw holds the files, bronze and silver the tables.
+      # The workspace sets this itself; listing it keeps the plan clean.
+      properties:
+        collation: UTF8_BINARY
+
+  schemas:
+    treasury_raw:
+      catalog_name: ${resources.catalogs.treasury.name}
+      name: raw
+      comment: Files as they arrive. inbox is the drop zone; files is the permanent record.
+    treasury_bronze:
+      catalog_name: ${resources.catalogs.treasury.name}
+      name: bronze
+      comment: One table per file type. Every record from every file, as strings.
+    treasury_silver:
+      catalog_name: ${resources.catalogs.treasury.name}
+      name: silver
+      comment: Typed tables with full history (SCD2), plus views of the current records.
+    treasury_sdp_meta:
+      catalog_name: ${resources.catalogs.treasury.name}
+      name: sdp_meta
+      comment: sdp-meta's settings tables (dataflowspecs) and the staged conf files.
+
+  volumes:
+    treasury_raw_inbox:
+      catalog_name: ${resources.catalogs.treasury.name}
+      schema_name: ${resources.schemas.treasury_raw.name}
+      name: inbox
+      volume_type: MANAGED
+      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+    treasury_raw_files:
+      catalog_name: ${resources.catalogs.treasury.name}
+      schema_name: ${resources.schemas.treasury_raw.name}
+      name: files
+      volume_type: MANAGED
+      comment: Permanent record. Only the router writes here; nothing is ever deleted. Full rebuilds read from here.
+    treasury_sdp_meta_conf:
+      catalog_name: ${resources.catalogs.treasury.name}
+      schema_name: ${resources.schemas.treasury_sdp_meta.name}
+      name: conf
+      volume_type: MANAGED
+      comment: Copy of treasury/conf, made by the onboarding job. Serverless can't read workspace files.
+
+  pipelines:
+    treasury_pipeline:
+      name: treasury
+      catalog: ${resources.catalogs.treasury.name}
+      # Default schema only; each table's full name comes from treasury/conf/onboarding.yml.
+      schema: ${resources.schemas.treasury_bronze.name}
+      serverless: true
+      tags:
+        sdp_meta: ${var.sdp_meta_version}
+      libraries:
+        - notebook:
+            path: ../shared/init_sdp_meta_pipeline.py
+      configuration:
+        layer: bronze_silver
+        bronze.dataflowspecTable: treasury.sdp_meta.bronze_dataflowspec
+        bronze.group: treasury
+        silver.dataflowspecTable: treasury.sdp_meta.silver_dataflowspec
+        silver.group: treasury
+        sdp_meta_dependency: ${var.sdp_meta_dependency}
+
+  jobs:
+    treasury_job:
+      name: treasury
+      description: Moves new files from inbox to files, then loads bronze and silver.
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      trigger:
+        pause_status: UNPAUSED
+        file_arrival:
+          url: /Volumes/treasury/raw/inbox/
+          wait_after_last_change_seconds: 60
+      tasks:
+        - task_key: router
+          environment_key: default
+          spark_python_task:
+            python_file: ../shared/file_router.py
+            parameters:
+              - --catalog
+              - ${resources.catalogs.treasury.name}
+              - --names
+              - yieldCurve
+        # Skip the pipeline when the router moved nothing (e.g. the run
+        # started by a file landing in inbox/bad_files).
+        - task_key: any_moved
+          depends_on:
+            - task_key: router
+          condition_task:
+            op: GREATER_THAN
+            left: "{{tasks.router.values.moved}}"
+            right: "0"
+        - task_key: pipeline
+          depends_on:
+            - task_key: any_moved
+              outcome: "true"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.treasury_pipeline.id}
+        - task_key: views
+          depends_on:
+            - task_key: pipeline
+          environment_key: default
+          spark_python_task:
+            python_file: ../shared/create_views.py
+            parameters:
+              - --folder
+              - ${workspace.file_path}/treasury/views
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "3"
+
+    treasury_onboarding:
+      name: treasury - onboarding
+      description: Copies treasury/conf to a volume, then writes sdp-meta's settings tables. Run after a deploy that changes treasury/conf.
+      tasks:
+        - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: stage_conf
+            named_parameters:
+              source_conf_dir: ${workspace.file_path}/treasury/conf
+              uc_catalog: ${resources.catalogs.treasury.name}
+              uc_schema: ${resources.schemas.treasury_sdp_meta.name}
+              conf_volume: ${resources.volumes.treasury_sdp_meta_conf.name}
+        - task_key: onboard
+          depends_on:
+            - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: run
+            named_parameters:
+              onboard_layer: bronze_silver
+              database: treasury.sdp_meta
+              onboarding_file_path: /Volumes/treasury/sdp_meta/conf/conf/onboarding.yml
+              bronze_dataflowspec_table: bronze_dataflowspec
+              silver_dataflowspec_table: silver_dataflowspec
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              overwrite: "True"
+              # Picks the _free (or _dev) keys in onboarding.yml.
+              env: ${bundle.target}
+      environments:
+        - environment_key: sdp_meta
+          spec:
+            # Free rejects environment 1. Version 3 is Python 3.12; sdp-meta needs below 3.13.
+            environment_version: "3"
+            dependencies:
+              - ${var.sdp_meta_dependency}

@@ -1,0 +1,29 @@
+# Silver selects, one entry per silver table.
+# Bronze columns are all strings; silver casts them.
+# ingest_time comes from the time stamp the router adds to the file name
+# (yieldCurve_20261104_120000.xml), so rebuilds keep the same order.
+# SCD2 orders versions by it (sequence_by in onboarding.yml).
+# Rates are percent (4.19 = 4.19%). Empty columns (e.g. BC_1_5MONTH
+# before it existed) become NULL.
+
+- target_table: yieldCurve_history
+  select_exp:
+    - "cast(Id as int) as Id"
+    - "cast(cast(NEW_DATE as timestamp) as date) as NEW_DATE"
+    - "cast(BC_1MONTH as double) as BC_1MONTH"
+    - "cast(BC_1_5MONTH as double) as BC_1_5MONTH"
+    - "cast(BC_2MONTH as double) as BC_2MONTH"
+    - "cast(BC_3MONTH as double) as BC_3MONTH"
+    - "cast(BC_4MONTH as double) as BC_4MONTH"
+    - "cast(BC_6MONTH as double) as BC_6MONTH"
+    - "cast(BC_1YEAR as double) as BC_1YEAR"
+    - "cast(BC_2YEAR as double) as BC_2YEAR"
+    - "cast(BC_3YEAR as double) as BC_3YEAR"
+    - "cast(BC_5YEAR as double) as BC_5YEAR"
+    - "cast(BC_7YEAR as double) as BC_7YEAR"
+    - "cast(BC_10YEAR as double) as BC_10YEAR"
+    - "cast(BC_20YEAR as double) as BC_20YEAR"
+    - "cast(BC_30YEAR as double) as BC_30YEAR"
+    - "cast(BC_30YEARDISPLAY as double) as BC_30YEARDISPLAY"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"

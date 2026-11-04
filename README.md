@@ -6,6 +6,7 @@ folder (resources.yml, conf/, views/, upload script). Targets are in
 targets/.
 
 - edsm/: Elite Dangerous Star Map dumps.
+- treasury/: US Treasury daily yield curve rates.
 - shared/: file router, pipeline runner notebook, view runner.
 - tools/bundle_plan.py: shows what a deploy would do, by real name.
 
