@@ -28,6 +28,10 @@ resources:
       catalog_name: ${resources.catalogs.edsm.name}
       name: silver
       comment: Typed tables with full history (SCD2), plus views of the current records.
+    edsm_gold:
+      catalog_name: ${resources.catalogs.edsm.name}
+      name: gold
+      comment: Tables built from silver by our own SQL (datasets/edsm/tables/gold.*.sql), inside the pipeline.
     edsm_sdp_meta:
       catalog_name: ${resources.catalogs.edsm.name}
       name: sdp_meta
@@ -65,6 +69,13 @@ resources:
       libraries:
         - notebook:
             path: ../../shared/init_sdp_meta_pipeline.py
+        # Our own SQL, next to sdp-meta's tables. SDP orders them by what they read.
+        - file:
+            path: tables/gold.power_rank.sql
+        - file:
+            path: tables/gold.power_summary.sql
+        - file:
+            path: tables/gold.systems_with_power.sql
       configuration:
         layer: bronze_silver
         bronze.dataflowspecTable: edsm.sdp_meta.bronze_dataflowspec
