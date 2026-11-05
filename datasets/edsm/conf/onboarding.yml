@@ -82,3 +82,40 @@
     sequence_by: "ingest_time"
     scd_type: "2"
     track_history_column_list: ["name", "coords"]
+
+- data_flow_id: "3"
+  data_flow_group: edsm
+  source_system: edsm
+  source_format: cloudFiles
+  source_details:
+    source_path_free: "/Volumes/edsm/raw/files/systemsWithoutCoordinates/"
+    source_metadata:
+      include_autoloader_metadata_column: "True"
+      autoloader_metadata_col_name: source_metadata
+      select_metadata_cols:
+        source_file: "_metadata.file_path"
+  bronze_database_free: "edsm.bronze"
+  bronze_table: systemsWithoutCoordinates
+  bronze_table_comment: "Every record from every systemsWithoutCoordinates dump file, as strings. Star systems with only estimated coordinates."
+  bronze_reader_options:
+    cloudFiles.format: "json"
+    cloudFiles.inferColumnTypes: "false"
+    cloudFiles.rescuedDataColumn: "_rescued_data"
+    multiLine: "false"
+  bronze_table_path_free: ""
+  bronze_partition_columns: ""
+  bronze_data_quality_expectations_json_free: "${workspace.file_path}/conf/bronze_expectations.yml"
+  bronze_quarantine_table: ""  # none; sdp-meta needs the key when a rules file is set
+  silver_database_free: "edsm.silver"
+  silver_table: systemsWithoutCoordinates_history
+  silver_table_comment: "Full history of star systems with estimated coordinates (SCD2), one version per change. View silver.systemsWithoutCoordinates shows only current records."
+  silver_reader_options:
+    skipChangeCommits: "true"
+  silver_table_path_free: ""
+  silver_partition_columns: ""
+  silver_transformation_json_free: "${workspace.file_path}/conf/silver_transformations.yml"
+  silver_cdc_apply_changes:
+    keys: ["id"]
+    sequence_by: "ingest_time"
+    scd_type: "2"
+    track_history_column_list: ["name", "estimatedCoordinates"]

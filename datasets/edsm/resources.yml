@@ -94,7 +94,7 @@ resources:
               - --catalog
               - ${resources.catalogs.edsm.name}
               - --names
-              - powerPlay,systemsWithCoordinates7days
+              - powerPlay,systemsWithCoordinates7days,systemsWithoutCoordinates
         # Skip the pipeline when the router moved nothing (e.g. the run
         # started by a file landing in inbox/bad_files).
         - task_key: any_moved

@@ -96,32 +96,32 @@ copies of those keys.
 - The pipeline fails as a whole if any onboarded table's files folder
   is empty. Upload the first file before you onboard (see below).
 
-## ADD A TABLE
+## Add a Table
 
-1. ADD THE NAME TO THE ROUTER
+1. Add the name to the router
    In **datasets/<dataset>/resources.yml**, add the name to the router's --names.
 
-2. ADD THE ENTRY
+2. Add the entry
    Copy **doc/examples/onboarding_entry.yml** into
    **datasets/<dataset>/conf/onboarding.yml**. Fill in the CHANGE lines.
 
-3. ADD THE SILVER SELECT
+3. Add the silver select
    Add a target_table entry to **datasets/<dataset>/conf/silver_transformations.yml**.
 
-4. ADD THE VIEW (SCD2 ONLY)
+4. Add the view (SCD2 only)
    Copy **datasets/<dataset>/views/** of another table. Point it at the new
    history table.
 
-5. DEPLOY
+5. Deploy
    `databricks bundle deploy -t free`
 
-6. UPLOAD ONE FILE FIRST
+6. Upload one file first
    Upload one file of the new type. The job moves it to
    files/<name>/. Its pipeline run skips the new table: not onboarded yet.
 
-7. ONBOARD
+7. Onboard
    `databricks bundle run <dataset>_onboarding -t free`
 
-8. RUN THE PIPELINE
+8. Run the pipeline
    `databricks bundle run <dataset>_pipeline -t free`
    The view appears on the job's next run.

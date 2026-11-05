@@ -2,11 +2,11 @@
 # Free Edition has no internet access to edsm, so this runs on the PC.
 # The router (job "edsm") adds the time stamp and moves them to raw.files.
 #
-#   .\datasets\edsm\upload_edsm.ps1                 # both dumps
+#   .\datasets\edsm\upload_edsm.ps1                 # all three dumps
 #   .\datasets\edsm\upload_edsm.ps1 -Names powerPlay
 
 param(
-    [string[]]$Names = @("powerPlay", "systemsWithCoordinates7days"),
+    [string[]]$Names = @("powerPlay", "systemsWithCoordinates7days", "systemsWithoutCoordinates"),
     [string]$DatabricksProfile = "DEFAULT"
 )
 
