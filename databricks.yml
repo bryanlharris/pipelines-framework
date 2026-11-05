@@ -16,6 +16,7 @@ include:
   - targets/*.yml
   # One level only; ** does not recurse.
   - "datasets/*/resources.yml"
+  - shared/onboarding.yml
 
 sync:
   exclude:

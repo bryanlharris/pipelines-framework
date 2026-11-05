@@ -13,20 +13,22 @@ datasets/<dataset>/conf/onboarding.yml              one entry per file type
 datasets/<dataset>/conf/silver_transformations.yml  silver selects
 datasets/<dataset>/conf/bronze_expectations.yml     bronze rules
         |
-        |  job "<dataset> - onboarding"
+        |  job "<dataset> - onboarding", or "all - onboarding" for every dataset
         |    stage_conf: copy conf/ to the volume sdp_meta.conf
         |    onboard:    write the settings tables
         v
 <dataset>.sdp_meta.bronze_dataflowspec      one record per bronze table
 <dataset>.sdp_meta.silver_dataflowspec      one record per silver table
         |
-        |  pipeline "<dataset>" reads them on every run
+        |  pipeline "<dataset> - pipeline" reads them on every run
         v
 bronze and silver tables
 ```
 
 Run the onboarding job after any deploy that changes **conf/**. Not
-after each data load.
+after each data load. It onboards every dataset in its inputs lists.
+A new dataset needs its name added to both lists in
+**shared/onboarding.yml**.
 
 ## The Three Files
 
@@ -120,7 +122,8 @@ copies of those keys.
    files/<name>/. Its pipeline run skips the new table: not onboarded yet.
 
 7. Onboard
-   `databricks bundle run <dataset>_onboarding -t free`
+   `databricks bundle run <dataset>_onboarding -t free` (one dataset), or
+   `databricks bundle run onboarding -t free` (all)
 
 8. Run the pipeline
    `databricks bundle run <dataset>_pipeline -t free`

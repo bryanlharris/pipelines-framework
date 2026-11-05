@@ -1,7 +1,7 @@
 # edsm: Elite Dangerous Star Map dumps, from raw files to silver.
 #
 # Flow: upload to raw.inbox -> job "edsm - ingest" (router -> pipeline -> views).
-# Config changes (datasets/edsm/conf/) need job "edsm - onboarding" run once after deploy.
+# Config changes (datasets/edsm/conf/) need job "edsm - onboarding" or "all - onboarding" run once after deploy.
 
 resources:
   catalogs:

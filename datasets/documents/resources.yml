@@ -1,7 +1,7 @@
 # documents: PDFs scanned for PII, from raw files to silver.
 #
 # Flow: upload to raw.inbox -> job "documents - ingest" (router -> pipeline -> views).
-# Config changes (datasets/documents/conf/) need job "documents - onboarding" run once after deploy.
+# Config changes (datasets/documents/conf/) need job "documents - onboarding" or "all - onboarding" run once after deploy.
 
 resources:
   catalogs:
