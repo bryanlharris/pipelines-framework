@@ -1,6 +1,6 @@
 # edsm: Elite Dangerous Star Map dumps, from raw files to silver.
 #
-# Flow: upload to raw.inbox -> job "edsm - ingest" (router -> pipeline -> views).
+# Flow: upload (or job "edsm - fetch") to raw.inbox -> job "edsm - ingest" (router -> pipeline -> views).
 # Config changes (datasets/edsm/conf/) need job "edsm - onboarding" or "all - onboarding" run once after deploy.
 
 resources:
@@ -123,6 +123,48 @@ resources:
         - environment_key: default
           spec:
             environment_version: "6"
+
+    # Does what upload_edsm.ps1 does, inside Databricks. Downloads what
+    # datasets/edsm/fetch.yml lists. Free can't reach www.edsm.net, so the
+    # schedule is paused; use upload_edsm.ps1 there.
+    edsm_fetch:
+      name: edsm - fetch
+      description: Downloads what datasets/edsm/fetch.yml lists into raw.inbox, where job "edsm - ingest" takes over.
+      max_concurrent_runs: 1
+      schedule:
+        quartz_cron_expression: "0 17 4 * * ?"
+        timezone_id: America/Chicago
+        pause_status: PAUSED
+      tasks:
+        - task_key: list_fetches
+          environment_key: default
+          spark_python_task:
+            python_file: ../../shared/list_fetches.py
+            parameters:
+              - --fetch_file
+              - ${workspace.file_path}/datasets/edsm/fetch.yml
+        # All of this dataset's files at once (free runs one at a time).
+        - task_key: fetch_all
+          depends_on:
+            - task_key: list_fetches
+          for_each_task:
+            inputs: "{{tasks.list_fetches.values.fetches}}"
+            concurrency: 4
+            task:
+              task_key: fetch
+              environment_key: default
+              spark_python_task:
+                python_file: ../../shared/fetch_url.py
+                parameters:
+                  - --fetch
+                  - "{{input}}"
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "6"
+            # For list_fetches.py, which reads fetch.yml.
+            dependencies:
+              - pyyaml
 
     edsm_onboarding:
       name: edsm - onboarding

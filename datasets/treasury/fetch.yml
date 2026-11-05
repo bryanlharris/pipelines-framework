@@ -1,0 +1,9 @@
+# What job "treasury - fetch" downloads for treasury; the same file
+# upload_treasury.ps1 sends. Comment an entry out to stop fetching it.
+#
+#   url         where to download from; {year} becomes this year
+#   inbox_file  where it lands; job "treasury - ingest" takes it from there
+#   gunzip      optional, true unzips a .gz on the way in (default false)
+
+- url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value={year}
+  inbox_file: /Volumes/treasury/raw/inbox/yieldCurve.xml
