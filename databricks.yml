@@ -24,6 +24,9 @@ sync:
     - "datasets/*/upload_*.ps1"
 
 variables:
+  datasets:
+    description: Every dataset under datasets/, as a JSON list. Jobs that loop over all datasets use it.
+    default: '["edsm", "treasury", "documents"]'
   sdp_meta_dependency:
     description: The sdp-meta package. Installed by the onboarding job and by the pipeline's runner notebook.
     default: databricks-labs-sdp-meta==0.1.0

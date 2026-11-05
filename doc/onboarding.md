@@ -26,9 +26,9 @@ bronze and silver tables
 ```
 
 Run the onboarding job after any deploy that changes **conf/**. Not
-after each data load. It onboards every dataset in its inputs lists.
-A new dataset needs its name added to both lists in
-**shared/onboarding.yml**.
+after each data load. It onboards every dataset in var.datasets.
+A new dataset needs its name added to var.datasets in
+**databricks.yml**.
 
 ## The Three Files
 
