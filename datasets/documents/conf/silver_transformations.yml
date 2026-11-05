@@ -11,7 +11,7 @@
 # ingest_time comes from the time stamp the router adds to the file name
 # (pdf_report_20261104_120000.pdf).
 
-- target_table: pii
+- target_table: pii_scans
   select_exp:
     - "source_file"
     - "length"

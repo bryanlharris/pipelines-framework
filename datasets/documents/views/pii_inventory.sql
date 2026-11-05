@@ -1,9 +1,9 @@
 CREATE OR REPLACE VIEW documents.silver.pii_inventory
-COMMENT 'One record per PDF, no PII values: has_pii, the PII types found (confidence 0.8 or more), and the highest confidence. From silver.pii.'
+COMMENT 'One record per PDF, no PII values: has_pii, the PII types found (confidence 0.8 or more), and the highest confidence. From silver.pii_scans.'
 AS
 WITH findings AS (
   SELECT source_file, ingest_time, f.value AS label, f.confidence_score AS confidence
-  FROM documents.silver.pii
+  FROM documents.silver.pii_scans
   LATERAL VIEW OUTER explode(
     from_json(
       CAST(classification AS STRING),

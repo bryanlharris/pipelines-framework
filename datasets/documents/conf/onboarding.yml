@@ -31,7 +31,7 @@
   bronze_data_quality_expectations_json_free: "${workspace.file_path}/conf/bronze_expectations.yml"
   bronze_quarantine_table: ""  # none; sdp-meta needs the key when a rules file is set
   silver_database_free: "documents.silver"
-  silver_table: pii
+  silver_table: pii_scans
   silver_table_comment: "One record per PDF: parsed text (parsed) and PII labels with confidence and rationale (classification). Holds PII values."
   silver_reader_options:
     skipChangeCommits: "true"
