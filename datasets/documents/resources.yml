@@ -122,7 +122,7 @@ resources:
       environments:
         - environment_key: default
           spec:
-            environment_version: "3"
+            environment_version: "6"
 
     documents_onboarding:
       name: documents - onboarding
@@ -160,7 +160,7 @@ resources:
       environments:
         - environment_key: sdp_meta
           spec:
-            # Free rejects environment 1. Version 3 is Python 3.12; sdp-meta needs below 3.13.
-            environment_version: "3"
+            # Free rejects environment 1. Version 6 (latest, Sep 2026) is Python 3.12; sdp-meta needs below 3.13.
+            environment_version: "6"
             dependencies:
               - ${var.sdp_meta_dependency}
