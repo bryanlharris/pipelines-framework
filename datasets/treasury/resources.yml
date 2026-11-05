@@ -1,6 +1,6 @@
 # treasury: US Treasury daily par yield curve rates, from raw files to silver.
 #
-# Flow: upload to raw.inbox -> job "treasury" (router -> pipeline -> views).
+# Flow: upload to raw.inbox -> job "treasury - ingest" (router -> pipeline -> views).
 # Config changes (datasets/treasury/conf/) need job "treasury - onboarding" run once after deploy.
 
 resources:
@@ -55,7 +55,7 @@ resources:
 
   pipelines:
     treasury_pipeline:
-      name: treasury
+      name: treasury - pipeline
       catalog: ${resources.catalogs.treasury.name}
       # Default schema only; each table's full name comes from datasets/treasury/conf/onboarding.yml.
       schema: ${resources.schemas.treasury_bronze.name}
@@ -74,8 +74,8 @@ resources:
         sdp_meta_dependency: ${var.sdp_meta_dependency}
 
   jobs:
-    treasury_job:
-      name: treasury
+    treasury_ingest:
+      name: treasury - ingest
       description: Moves new files from inbox to files, then loads bronze and silver.
       max_concurrent_runs: 1
       queue:

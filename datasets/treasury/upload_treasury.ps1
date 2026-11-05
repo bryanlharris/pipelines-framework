@@ -1,5 +1,5 @@
 # Downloads this year's daily yield curve XML and uploads it to the treasury inbox.
-# Runs on the PC, like upload_edsm.ps1. The router (job "treasury") adds the
+# Runs on the PC, like upload_edsm.ps1. The router (job "treasury - ingest") adds the
 # time stamp and moves it to raw.files. Each file holds the whole year so far.
 #
 #   .\datasets\treasury\upload_treasury.ps1               # this year
@@ -24,4 +24,4 @@ databricks fs cp $xml "$inbox/yieldCurve.xml" --overwrite --profile $DatabricksP
 if ($LASTEXITCODE -ne 0) { throw "Upload failed: yieldCurve" }
 
 Remove-Item $xml
-Write-Host "Done. Job treasury starts about a minute after the last upload."
+Write-Host "Done. Job "treasury - ingest" starts a minute or two after the last upload."

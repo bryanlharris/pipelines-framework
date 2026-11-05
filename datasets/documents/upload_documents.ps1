@@ -1,6 +1,6 @@
 # Uploads every PDF in a folder to the documents inbox.
 # Each file is named pdf_<its name>.pdf in the inbox, so the router knows
-# it belongs to table pdf. The router (job "documents") adds the time stamp
+# it belongs to table pdf. The router (job "documents - ingest") adds the time stamp
 # and moves it to raw.files.
 #
 #   .\datasets\documents\upload_documents.ps1 C:\temp\pdfs
@@ -23,4 +23,4 @@ foreach ($pdf in $pdfs) {
     if ($LASTEXITCODE -ne 0) { throw "Upload failed: $($pdf.Name)" }
 }
 
-Write-Host "Done. $($pdfs.Count) PDFs. Job documents starts about a minute after the last upload."
+Write-Host "Done. $($pdfs.Count) PDFs. Job "documents - ingest" starts a minute or two after the last upload."

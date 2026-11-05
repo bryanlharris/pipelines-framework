@@ -1,6 +1,6 @@
 # documents: PDFs scanned for PII, from raw files to silver.
 #
-# Flow: upload to raw.inbox -> job "documents" (router -> pipeline -> views).
+# Flow: upload to raw.inbox -> job "documents - ingest" (router -> pipeline -> views).
 # Config changes (datasets/documents/conf/) need job "documents - onboarding" run once after deploy.
 
 resources:
@@ -55,7 +55,7 @@ resources:
 
   pipelines:
     documents_pipeline:
-      name: documents
+      name: documents - pipeline
       catalog: ${resources.catalogs.documents.name}
       # Default schema only; each table's full name comes from datasets/documents/conf/onboarding.yml.
       schema: ${resources.schemas.documents_bronze.name}
@@ -74,8 +74,8 @@ resources:
         sdp_meta_dependency: ${var.sdp_meta_dependency}
 
   jobs:
-    documents_job:
-      name: documents
+    documents_ingest:
+      name: documents - ingest
       description: Moves new files from inbox to files, then loads bronze and silver.
       max_concurrent_runs: 1
       queue:

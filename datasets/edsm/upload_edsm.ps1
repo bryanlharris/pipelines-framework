@@ -1,6 +1,6 @@
 # Downloads the edsm dumps and uploads them to the edsm inbox.
 # Free Edition has no internet access to edsm, so this runs on the PC.
-# The router (job "edsm") adds the time stamp and moves them to raw.files.
+# The router (job "edsm - ingest") adds the time stamp and moves them to raw.files.
 #
 #   .\datasets\edsm\upload_edsm.ps1                 # all three dumps
 #   .\datasets\edsm\upload_edsm.ps1 -Names powerPlay
@@ -34,4 +34,4 @@ foreach ($name in $Names) {
     Remove-Item $gz, $json
 }
 
-Write-Host "Done. Job edsm starts about a minute after the last upload."
+Write-Host "Done. Job "edsm - ingest" starts a minute or two after the last upload."
