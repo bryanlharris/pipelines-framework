@@ -1,5 +1,5 @@
 # sdp-framework: one bundle for every dataset. Each dataset is built with
-# sdp-meta (Databricks Labs) and has its own folder: <dataset>/resources.yml,
+# sdp-meta (Databricks Labs) and has its own folder: datasets/<dataset>/resources.yml,
 # conf/, views/, upload script. Shared code is in shared/. Each target has
 # its own file in targets/.
 # Deploy with:
@@ -15,12 +15,12 @@ bundle:
 include:
   - targets/*.yml
   # One level only; ** does not recurse.
-  - "*/resources.yml"
+  - "datasets/*/resources.yml"
 
 sync:
   exclude:
     - tools/
-    - "*/upload_*.ps1"
+    - "datasets/*/upload_*.ps1"
 
 variables:
   sdp_meta_dependency:

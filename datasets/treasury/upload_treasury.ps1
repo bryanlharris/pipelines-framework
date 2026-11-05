@@ -2,8 +2,8 @@
 # Runs on the PC, like upload_edsm.ps1. The router (job "treasury") adds the
 # time stamp and moves it to raw.files. Each file holds the whole year so far.
 #
-#   .\treasury\upload_treasury.ps1               # this year
-#   .\treasury\upload_treasury.ps1 -Year 2025    # another year
+#   .\datasets\treasury\upload_treasury.ps1               # this year
+#   .\datasets\treasury\upload_treasury.ps1 -Year 2025    # another year
 
 param(
     [int]$Year = (Get-Date).Year,

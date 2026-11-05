@@ -5,13 +5,13 @@ does not load data.
 
 ## What It Does
 
-The pipeline does not read the YAML files in **<dataset>/conf/**. It reads
+The pipeline does not read the YAML files in **datasets/<dataset>/conf/**. It reads
 two settings tables. The onboarding job copies the YAML into them.
 
 ```
-<dataset>/conf/onboarding.yml               one entry per file type
-<dataset>/conf/silver_transformations.yml   silver selects
-<dataset>/conf/bronze_expectations.yml      bronze rules
+datasets/<dataset>/conf/onboarding.yml              one entry per file type
+datasets/<dataset>/conf/silver_transformations.yml  silver selects
+datasets/<dataset>/conf/bronze_expectations.yml     bronze rules
         |
         |  job "<dataset> - onboarding"
         |    stage_conf: copy conf/ to the volume sdp_meta.conf
@@ -99,17 +99,17 @@ copies of those keys.
 ## ADD A TABLE
 
 1. ADD THE NAME TO THE ROUTER
-   In **<dataset>/resources.yml**, add the name to the router's --names.
+   In **datasets/<dataset>/resources.yml**, add the name to the router's --names.
 
 2. ADD THE ENTRY
    Copy **doc/examples/onboarding_entry.yml** into
-   **<dataset>/conf/onboarding.yml**. Fill in the CHANGE lines.
+   **datasets/<dataset>/conf/onboarding.yml**. Fill in the CHANGE lines.
 
 3. ADD THE SILVER SELECT
-   Add a target_table entry to **<dataset>/conf/silver_transformations.yml**.
+   Add a target_table entry to **datasets/<dataset>/conf/silver_transformations.yml**.
 
 4. ADD THE VIEW (SCD2 ONLY)
-   Copy **<dataset>/views/** of another table. Point it at the new
+   Copy **datasets/<dataset>/views/** of another table. Point it at the new
    history table.
 
 5. DEPLOY

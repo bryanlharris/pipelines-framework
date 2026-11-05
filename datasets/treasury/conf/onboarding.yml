@@ -3,7 +3,7 @@
 #
 # Paths: the onboarding job copies this folder to /Volumes/treasury/sdp_meta/conf/conf/
 # and swaps the text ${workspace.file_path}/conf for that path. So
-# "${workspace.file_path}/conf/x.yml" below means treasury/conf/x.yml.
+# "${workspace.file_path}/conf/x.yml" below means datasets/treasury/conf/x.yml.
 #
 # Keys ending in _free are for the free target; dev will need _dev keys.
 

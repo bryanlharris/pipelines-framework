@@ -3,9 +3,9 @@
 # it belongs to table pdf. The router (job "documents") adds the time stamp
 # and moves it to raw.files.
 #
-#   .\documents\upload_documents.ps1 C:\temp\pdfs
+#   .\datasets\documents\upload_documents.ps1 C:\temp\pdfs
 #
-# Test PDFs with fake PII: py documents/make_fake_pdf.py -n 9 C:\temp\pdfs
+# Test PDFs with fake PII: py datasets/documents/make_fake_pdf.py -n 9 C:\temp\pdfs
 
 param(
     [Parameter(Mandatory = $true)][string]$Folder,

@@ -12,11 +12,11 @@ to publish:
 
 No libraries needed: the PDF is written by hand (one page, Helvetica).
 
-Usage: py documents/make_fake_pdf.py [-n N] <out_dir>
-       e.g. py documents/make_fake_pdf.py -n 9 C:\\temp\\pdfs
+Usage: py datasets/documents/make_fake_pdf.py [-n N] <out_dir>
+       e.g. py datasets/documents/make_fake_pdf.py -n 9 C:\\temp\\pdfs
 Writes pdf_fake_001.pdf ... into out_dir (N defaults to 1). Then
 upload them all to the inbox:
-       .\\documents\\upload_documents.ps1 <out_dir>
+       .\\datasets\\documents\\upload_documents.ps1 <out_dir>
 """
 import argparse
 import random
