@@ -48,3 +48,30 @@
     - "cast(date as timestamp) as date"
     - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
     - "source_file"
+- target_table: bodies7days_history
+  select_exp:
+    - "cast(id as bigint) as id"
+    - "cast(id64 as bigint) as id64"
+    - "cast(bodyId as int) as bodyId"
+    - "name"
+    - "type"
+    - "subType"
+    - "cast(systemId as int) as systemId"
+    - "cast(systemId64 as bigint) as systemId64"
+    - "systemName"
+    # Light seconds from the system's main star.
+    - "cast(distanceToArrival as double) as distanceToArrival"
+    - "cast(isLandable as boolean) as isLandable"
+    - "cast(gravity as double) as gravity"
+    - "cast(earthMasses as double) as earthMasses"
+    # Kilometers.
+    - "cast(radius as double) as radius"
+    # Kelvin.
+    - "cast(surfaceTemperature as double) as surfaceTemperature"
+    - "atmosphereType"
+    - "volcanismType"
+    - "terraformingState"
+    - "reserveLevel"
+    - "cast(updateTime as timestamp) as updateTime"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"

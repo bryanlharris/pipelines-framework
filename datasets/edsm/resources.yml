@@ -56,6 +56,10 @@ resources:
       catalog_name: ${resources.catalogs.edsm.name}
       name: silver
       comment: Typed tables, plus views of the current records.
+    edsm_gold:
+      catalog_name: ${resources.catalogs.edsm.name}
+      name: gold
+      comment: Our own SQL tables, built from silver and from each other, inside the pipeline (tables/*.sql).
     edsm_sdp_meta:
       catalog_name: ${resources.catalogs.edsm.name}
       name: sdp_meta
@@ -113,6 +117,7 @@ resources:
               - powerPlay
               - systemsWithCoordinates7days
               - systemsWithoutCoordinates
+              - bodies7days
         # Skip the pipeline when the router moved nothing (e.g. only a bad file).
         - task_key: any_moved
           depends_on:
@@ -261,6 +266,32 @@ resources:
       libraries:
         - notebook:
             path: ../../shared/init_sdp_meta_pipeline.py
+        # Gold: our own SQL tables. The pipeline orders them by what each reads.
+        - file:
+            path: tables/gold.systems_with_power.sql
+        - file:
+            path: tables/gold.bodies_with_system.sql
+        - file:
+            path: tables/gold.power_summary.sql
+        - file:
+            path: tables/gold.power_rank.sql
+        - file:
+            path: tables/gold.power_bodies.sql
+        - file:
+            path: tables/gold.power_scoreboard.sql
+        # The same tables in silver, to show SQL tables work in any schema.
+        - file:
+            path: tables/silver.systems_with_power.sql
+        - file:
+            path: tables/silver.bodies_with_system.sql
+        - file:
+            path: tables/silver.power_summary.sql
+        - file:
+            path: tables/silver.power_rank.sql
+        - file:
+            path: tables/silver.power_bodies.sql
+        - file:
+            path: tables/silver.power_scoreboard.sql
       configuration:
         layer: bronze_silver
         bronze.dataflowspecTable: ${resources.catalogs.edsm.name}.sdp_meta.bronze_dataflowspec

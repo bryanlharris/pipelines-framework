@@ -51,7 +51,7 @@ tools/bundle_plan.py        shows what a deploy would do
 - Check every change: `py tools/bundle_plan.py <target>`, deploy, plan again. The second plan shows all unchanged.
 - Never commit bucket names or tokens. They live in targets/*.local.yml.
 - Every compute task sets `disable_auto_optimization: true`, so it fails once with no retries. Pipeline tasks don't: they ignore it.
-- Dev and staging set `presets: pipelines_development: true`. Don't use `mode: development` or `presets.name_prefix`: they rename the schemas and break the /Volumes paths.
+- Free, dev and staging set `presets: pipelines_development: true`. Don't use `mode: development` or `presets.name_prefix`: they rename the schemas and break the /Volumes paths.
 - Comment every catalog, schema, volume and table. Catalog comments are markdown: blank lines between sentences, bullets for lists.
 - Free Edition: no bucket; the catalog is made with SQL, then bound; files come from the upload script.
 - Enterprise: the bundle makes the catalog in the target's bucket; files come from the fetch job. After deploy, bind the catalog to the workspace and turn on data classification in the GUI (the bundle can't yet).

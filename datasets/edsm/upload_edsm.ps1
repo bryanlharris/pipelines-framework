@@ -19,6 +19,7 @@ $files = @(
     @{ name = "powerPlay.json"; url = "https://www.edsm.net/dump/powerPlay.json.gz"; gunzip = $true }
     @{ name = "systemsWithCoordinates7days.json"; url = "https://www.edsm.net/dump/systemsWithCoordinates7days.json.gz"; gunzip = $true }
     @{ name = "systemsWithoutCoordinates.json"; url = "https://www.edsm.net/dump/systemsWithoutCoordinates.json.gz"; gunzip = $true }
+    @{ name = "bodies7days.json"; url = "https://www.edsm.net/dump/bodies7days.json.gz"; gunzip = $true }
 )
 
 $inbox = "dbfs:/Volumes/$Catalog/raw/inbox"

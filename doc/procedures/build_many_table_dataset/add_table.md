@@ -35,12 +35,14 @@ To copy a block, and uncomment the copy:
    else changes.
 10. Deploy.
 11. Check the plan again. All show unchanged.
-12. Run the apply settings job. In Jobs & Pipelines, open
-    **YOUR_DATASET - apply settings**, and click Run now.
-13. Run the fetch job, **YOUR_DATASET - fetch**. It fetches every file in
+12. Run the fetch job, **YOUR_DATASET - fetch**. It fetches every file in
     **fetch.yml**, not just the new table's; repeats add no new versions.
-    The ingest job starts when the files land.
-14. Open **YOUR_DATASET - ingest**. The run is green.
+    The ingest job runs, and skips the new table: its settings come next.
+13. Run the apply settings job. In Jobs & Pipelines, open
+    **YOUR_DATASET - apply settings**, and click Run now. Apply settings
+    after the file lands: the pipeline fails on a new table with no files.
+14. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
+    run is green.
 15. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
 16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
 17. End.
@@ -81,12 +83,14 @@ py tools/bundle_plan.py dev
    else changes.
 10. Deploy.
 11. Check the plan again. All show unchanged.
-12. Run the apply settings job. In Jobs & Pipelines, open
-    **YOUR_DATASET - apply settings**, and click Run now.
-13. Run the upload script. It sends every file it lists, not just the new
-    table's; repeats add no new versions. The ingest job starts when the
-    files land.
-14. Open **YOUR_DATASET - ingest**. The run is green.
+12. Run the upload script. It sends every file it lists, not just the new
+    table's; repeats add no new versions. The ingest job runs, and skips
+    the new table: its settings come next.
+13. Run the apply settings job. In Jobs & Pipelines, open
+    **YOUR_DATASET - apply settings**, and click Run now. Apply settings
+    after the file lands: the pipeline fails on a new table with no files.
+14. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
+    run is green.
 15. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
 16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
 17. End.

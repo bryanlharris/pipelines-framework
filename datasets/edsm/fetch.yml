@@ -23,3 +23,6 @@
 - url: https://www.edsm.net/dump/systemsWithoutCoordinates.json.gz
   inbox_file: systemsWithoutCoordinates.json
   gunzip: true
+- url: https://www.edsm.net/dump/bodies7days.json.gz
+  inbox_file: bodies7days.json
+  gunzip: true

@@ -14,6 +14,9 @@
 targets:
 #  # Free Edition, at home. No bucket, no prefix.
 #  free:
+#    # A failed pipeline update stops, no retries.
+#    presets:
+#      pipelines_development: true
 #    workspace:
 #      profile: free
 #
