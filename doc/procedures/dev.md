@@ -1,6 +1,6 @@
 # Dev
 
-Sets up the dev target, then tests it with a dataset.
+Sets up the dev target, tests it with a dataset, then releases master to it.
 
 ## Prerequisites
 
@@ -10,4 +10,7 @@ Sets up the dev target, then tests it with a dataset.
 
 1. [setup_dev.md](dev/setup_dev.md): add the dev target, and deploy
 2. [test_dev.md](dev/test_dev.md): run a dataset end to end
-3. End.
+3. [release_dev.md](dev/release_dev.md): tag master, and deploy the tag
+4. End.
+
+Later releases need only [release_dev.md](dev/release_dev.md).

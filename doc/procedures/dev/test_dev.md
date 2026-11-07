@@ -1,4 +1,4 @@
-← [setup_dev.md](setup_dev.md) | none →
+← [setup_dev.md](setup_dev.md) | [release_dev.md](release_dev.md) →
 
 # Test Dev
 
@@ -28,4 +28,4 @@ py tools/bundle_plan.py dev
 
 ---
 
-← [setup_dev.md](setup_dev.md) | none →
+← [setup_dev.md](setup_dev.md) | [release_dev.md](release_dev.md) →
