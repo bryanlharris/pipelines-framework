@@ -1,0 +1,263 @@
+# YOUR_DATASET: CHANGE_ME (one line) → what the data is and where it comes from.
+#
+# The whole dataset: catalog, schemas, volumes, jobs and pipeline.
+# Per table, only the router's --names list below changes.
+
+# Enterprise catalogs live in each target's bucket, under catalogs/.
+# Free has no bucket; its catalogs use default storage.
+targets:
+  dev:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  staging:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  prod:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+
+resources:
+  catalogs:
+    # On free, the catalog is made by SQL first, then bound. On enterprise,
+    # the bundle creates it. See doc/procedures/build_many_table_dataset/add_dataset.md.
+    YOUR_DATASET:
+      name: ${var.catalog_prefix}YOUR_DATASET
+      comment: |-
+        CHANGE_ME → two or three sentences: what the data is, and what it is good for. Markdown: put a blank line between sentences you want apart.
+
+        - **Owner:** YOUR_OWNER
+        - **About:** CHANGE_ME → a link to a page that explains the data
+        - **Format:** CHANGE_ME → e.g. XML
+        - **Arrives:** CHANGE_ME → e.g. daily, by the fetch job
+      # The workspace sets this itself; listing it keeps the plan clean.
+      properties:
+        collation: UTF8_BINARY
+
+  schemas:
+    YOUR_DATASET_raw:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: raw
+      comment: Files as they arrive. inbox is the drop zone. files is the permanent record.
+    YOUR_DATASET_bronze:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: bronze
+      comment: One table per file type. Every record from every file, as strings.
+    YOUR_DATASET_silver:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: silver
+      comment: Typed tables, plus views of the current records.
+    YOUR_DATASET_sdp_meta:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: sdp_meta
+      comment: The settings tables, and the copy of conf/ they are made from.
+
+  volumes:
+    YOUR_DATASET_raw_inbox:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_raw.name}
+      name: inbox
+      volume_type: MANAGED
+      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+    YOUR_DATASET_raw_files:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_raw.name}
+      name: files
+      volume_type: MANAGED
+      comment: Permanent record. Only the router writes here. Nothing is ever deleted. Full rebuilds read from here.
+    YOUR_DATASET_sdp_meta_conf:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_sdp_meta.name}
+      name: conf
+      volume_type: MANAGED
+      comment: Copy of YOUR_DATASET/conf, made when you apply settings. Serverless can't read workspace files.
+
+  jobs:
+    YOUR_DATASET_ingest:
+      name: YOUR_DATASET - ingest
+      tags:
+        dataset: YOUR_DATASET
+        role: ingest
+        owner: YOUR_OWNER
+      description: Moves new files from inbox to files.
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      trigger:
+        pause_status: UNPAUSED
+        file_arrival:
+          url: /Volumes/${resources.catalogs.YOUR_DATASET.name}/raw/inbox/
+      tasks:
+        - task_key: router
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: default
+          spark_python_task:
+            python_file: ../../shared/file_router.py
+            parameters:
+              - --catalog
+              - ${resources.catalogs.YOUR_DATASET.name}
+              - --names
+              # One line per table. The router sends each file to the
+              # table its name starts with. Copy for each table.
+              # - YOUR_TABLE
+        # Skip the pipeline when the router moved nothing (e.g. only a bad file).
+        - task_key: any_moved
+          depends_on:
+            - task_key: router
+          condition_task:
+            op: GREATER_THAN
+            left: "{{tasks.router.values.moved}}"
+            right: "0"
+        - task_key: pipeline
+          # No disable_auto_optimization: pipeline tasks drop it, so the plan never settles.
+          depends_on:
+            - task_key: any_moved
+              outcome: "true"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.YOUR_DATASET_pipeline.id}
+        - task_key: views
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: pipeline
+          environment_key: default
+          spark_python_task:
+            python_file: ../../shared/create_views.py
+            parameters:
+              - --catalog
+              - ${resources.catalogs.YOUR_DATASET.name}
+              - --folder
+              - ${workspace.file_path}/datasets/YOUR_DATASET/views
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "6"
+
+    YOUR_DATASET_apply_settings:
+      name: YOUR_DATASET - apply settings
+      tags:
+        dataset: YOUR_DATASET
+        role: apply_settings
+        owner: YOUR_OWNER
+      description: Copies YOUR_DATASET/conf to a volume, then writes sdp-meta's settings tables. Run after each change to conf/.
+      tasks:
+        - task_key: stage_conf
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: stage_conf
+            named_parameters:
+              source_conf_dir: ${workspace.file_path}/datasets/YOUR_DATASET/conf
+              uc_catalog: ${resources.catalogs.YOUR_DATASET.name}
+              uc_schema: ${resources.schemas.YOUR_DATASET_sdp_meta.name}
+              conf_volume: ${resources.volumes.YOUR_DATASET_sdp_meta_conf.name}
+        - task_key: apply
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: run
+            named_parameters:
+              onboard_layer: bronze_silver
+              database: ${resources.catalogs.YOUR_DATASET.name}.${resources.schemas.YOUR_DATASET_sdp_meta.name}
+              onboarding_file_path: /Volumes/${resources.catalogs.YOUR_DATASET.name}/sdp_meta/conf/conf/onboarding.yml
+              bronze_dataflowspec_table: bronze_dataflowspec
+              silver_dataflowspec_table: silver_dataflowspec
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              overwrite: "True"
+              # Every target reads the same _all keys in onboarding.yml.
+              env: all
+      environments:
+        - environment_key: sdp_meta
+          spec:
+            # sdp-meta needs Python below 3.13; version 6 is 3.12.
+            environment_version: "6"
+            dependencies:
+              - ${var.sdp_meta_dependency}
+
+    # Does what the upload script does, inside Databricks. Downloads what
+    # fetch.yml lists into the inbox. The schedule starts paused.
+    YOUR_DATASET_fetch:
+      name: YOUR_DATASET - fetch
+      tags:
+        dataset: YOUR_DATASET
+        role: fetch
+        owner: YOUR_OWNER
+      description: Downloads what fetch.yml lists into the inbox, where the ingest job takes over.
+      max_concurrent_runs: 1
+      schedule:
+        quartz_cron_expression: "0 17 4 * * ?"
+        timezone_id: America/Chicago
+        pause_status: PAUSED
+      tasks:
+        - task_key: list_fetches
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: default
+          spark_python_task:
+            python_file: ../../shared/list_fetches.py
+            parameters:
+              - --fetch_file
+              - ${workspace.file_path}/datasets/YOUR_DATASET/fetch.yml
+              - --inbox
+              - /Volumes/${resources.catalogs.YOUR_DATASET.name}/raw/inbox
+        # All of this dataset's files at once.
+        - task_key: fetch_all
+          depends_on:
+            - task_key: list_fetches
+          for_each_task:
+            inputs: "{{tasks.list_fetches.values.fetches}}"
+            concurrency: 4
+            task:
+              task_key: fetch
+              # Fail once, no retries.
+              disable_auto_optimization: true
+              environment_key: default
+              spark_python_task:
+                python_file: ../../shared/fetch_url.py
+                parameters:
+                  - --fetch
+                  - "{{input}}"
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "6"
+            # For list_fetches.py, which reads fetch.yml.
+            dependencies:
+              - pyyaml
+
+  pipelines:
+    YOUR_DATASET_pipeline:
+      name: YOUR_DATASET - pipeline
+      catalog: ${resources.catalogs.YOUR_DATASET.name}
+      # Default schema only; each table's schema comes from conf/onboarding.yml.
+      schema: ${resources.schemas.YOUR_DATASET_bronze.name}
+      serverless: true
+      tags:
+        sdp_meta: ${var.sdp_meta_version}
+        dataset: YOUR_DATASET
+        role: pipeline
+        owner: YOUR_OWNER
+      libraries:
+        - notebook:
+            path: ../../shared/init_sdp_meta_pipeline.py
+      configuration:
+        layer: bronze_silver
+        bronze.dataflowspecTable: ${resources.catalogs.YOUR_DATASET.name}.sdp_meta.bronze_dataflowspec
+        bronze.group: YOUR_DATASET
+        silver.dataflowspecTable: ${resources.catalogs.YOUR_DATASET.name}.sdp_meta.silver_dataflowspec
+        silver.group: YOUR_DATASET
+        sdp_meta_dependency: ${var.sdp_meta_dependency}

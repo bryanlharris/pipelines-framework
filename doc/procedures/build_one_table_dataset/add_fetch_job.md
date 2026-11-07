@@ -13,7 +13,7 @@ job takes over. The schedule starts paused.
    settings job. Go to that job's last line,
    **${var.sdp_meta_dependency}**, and add the template's lines below it.
    In vim, type
-   :r doc/templates/fetch/resources.yml
+   :r doc/templates/build_one_table_dataset/fetch/resources.yml
 5. Replace **YOUR_DATASET**.
 6. Check the plan. One job shows create.
 7. Deploy.
@@ -24,7 +24,7 @@ job takes over. The schedule starts paused.
 11. Open the ingest job. A new run started, from the fetched file.
 
 ```
-cp doc/templates/fetch/fetch.yml datasets/YOUR_DATASET/
+cp doc/templates/build_one_table_dataset/fetch/fetch.yml datasets/YOUR_DATASET/
 edit datasets/YOUR_DATASET/fetch.yml
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET

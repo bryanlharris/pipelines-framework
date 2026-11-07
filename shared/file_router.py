@@ -13,14 +13,15 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--catalog", required=True)
-parser.add_argument("--names", required=True, help="Comma-separated, e.g. powerPlay,systems")
+# One value per table (a YAML list in resources.yml), or comma-separated.
+parser.add_argument("--names", required=True, nargs="+", help="e.g. powerPlay systems, or powerPlay,systems")
 args = parser.parse_args()
 
 inbox = Path(f"/Volumes/{args.catalog}/raw/inbox")
 files = Path(f"/Volumes/{args.catalog}/raw/files")
 bad_files = inbox / "bad_files"
 stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-names = sorted(args.names.split(","), key=len, reverse=True)
+names = sorted({n for arg in args.names for n in arg.split(",") if n}, key=len, reverse=True)
 
 # Every name gets its folder, so the pipeline finds all its source paths.
 bad_files.mkdir(exist_ok=True)

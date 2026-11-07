@@ -1,0 +1,50 @@
+# Silver selects, one entry per silver table.
+# Bronze columns are all strings; silver casts them.
+# ingest_time comes from the time stamp the ingest job adds to the file
+# name (YOUR_TABLE_20261104_120000.xml), so rebuilds keep the same order.
+# SCD2 orders versions by it (sequence_by in onboarding.yml).
+
+# ---- One table. Copy from here, once per table, then uncomment. ----
+# - target_table: YOUR_TABLE_history
+#   select_exp:
+#     # CHANGE_ME → one line per column, cast from string.
+#     - "cast(CHANGE_ME as double) as CHANGE_ME"
+#     - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+#     - "source_file"
+#
+# ---- To here. ----
+
+- target_table: powerPlay_history
+  select_exp:
+    - "cast(id as int) as id"
+    - "cast(id64 as bigint) as id64"
+    - "name"
+    - "power"
+    - "powerState"
+    - "allegiance"
+    - "government"
+    - "state"
+    - "from_json(coords, 'STRUCT<x: DOUBLE, y: DOUBLE, z: DOUBLE>') as coords"
+    - "cast(date as timestamp) as date"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"
+
+- target_table: systemsWithCoordinates7days_history
+  select_exp:
+    - "cast(id as int) as id"
+    - "cast(id64 as bigint) as id64"
+    - "name"
+    - "from_json(coords, 'STRUCT<x: DOUBLE, y: DOUBLE, z: DOUBLE>') as coords"
+    - "cast(date as timestamp) as date"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"
+
+- target_table: systemsWithoutCoordinates_history
+  select_exp:
+    - "cast(id as int) as id"
+    - "cast(id64 as bigint) as id64"
+    - "name"
+    - "from_json(estimatedCoordinates, 'STRUCT<x: DOUBLE, y: DOUBLE, z: DOUBLE, precision: INT>') as estimatedCoordinates"
+    - "cast(date as timestamp) as date"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"

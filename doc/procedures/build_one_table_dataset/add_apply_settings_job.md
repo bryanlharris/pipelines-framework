@@ -19,7 +19,7 @@ ingest job must be last in **resources.yml**.
 Don't run it yet. **conf/** doesn't exist until the bronze part.
 
 ```
-cat doc/templates/settings/resources.yml >> datasets/YOUR_DATASET/resources.yml
+cat doc/templates/build_one_table_dataset/settings/resources.yml >> datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET

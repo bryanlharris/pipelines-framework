@@ -24,7 +24,7 @@ targets:
 resources:
   catalogs:
     # On free, the catalog is made by SQL first, then bound. On enterprise,
-    # the bundle creates it. See doc/procedures/build_one_scd2_table/add_catalog.md.
+    # the bundle creates it. See doc/procedures/build_one_table_dataset/add_catalog.md.
     YOUR_DATASET:
       name: ${var.catalog_prefix}YOUR_DATASET
       comment: |-

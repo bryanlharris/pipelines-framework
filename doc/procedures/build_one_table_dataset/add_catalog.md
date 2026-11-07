@@ -27,7 +27,7 @@ staging and prod only.
 
 ```
 mkdir datasets/YOUR_DATASET/
-cp doc/templates/catalog/resources.yml datasets/YOUR_DATASET/
+cp doc/templates/build_one_table_dataset/catalog/resources.yml datasets/YOUR_DATASET/
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET
@@ -58,7 +58,7 @@ SQL, then bind it: the bundle takes over the catalog that already exists.
 
 ```
 mkdir datasets/YOUR_DATASET/
-cp doc/templates/catalog/resources.yml datasets/YOUR_DATASET/
+cp doc/templates/build_one_table_dataset/catalog/resources.yml datasets/YOUR_DATASET/
 edit datasets/YOUR_DATASET/resources.yml
 CREATE CATALOG YOUR_DATASET
 databricks bundle deployment bind YOUR_DATASET YOUR_DATASET -t free --auto-approve

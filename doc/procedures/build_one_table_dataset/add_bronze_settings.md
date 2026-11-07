@@ -17,7 +17,7 @@ it.
 
 ```
 mkdir datasets/YOUR_DATASET/conf/
-cp doc/templates/bronze/onboarding.yml datasets/YOUR_DATASET/conf/
+cp doc/templates/build_one_table_dataset/bronze/onboarding.yml datasets/YOUR_DATASET/conf/
 edit datasets/YOUR_DATASET/conf/onboarding.yml
 databricks bundle deploy -t YOUR_TARGET
 databricks bundle run YOUR_DATASET_apply_settings -t YOUR_TARGET

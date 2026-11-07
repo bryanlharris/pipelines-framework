@@ -9,7 +9,7 @@
 5. Check the plan again. All show unchanged.
 
 ```
-cat doc/templates/schemas_and_volumes/resources.yml >> datasets/YOUR_DATASET/resources.yml
+cat doc/templates/build_one_table_dataset/schemas_and_volumes/resources.yml >> datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET

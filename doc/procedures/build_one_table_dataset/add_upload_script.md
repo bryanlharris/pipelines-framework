@@ -12,7 +12,7 @@ Puts a file in **inbox/** from your computer.
 6. Delete it, so the ingest job sees the next upload as new.
 
 ```
-cp doc/templates/upload/upload.ps1 datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
+cp doc/templates/build_one_table_dataset/upload/upload.ps1 datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
 edit datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
 ./datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
 databricks fs ls dbfs:/Volumes/YOUR_CATALOG/raw/inbox

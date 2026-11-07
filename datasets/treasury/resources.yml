@@ -24,7 +24,7 @@ targets:
 resources:
   catalogs:
     # On free, the catalog is made by SQL first, then bound. On enterprise,
-    # the bundle creates it. See doc/procedures/build_one_scd2_table/add_catalog.md.
+    # the bundle creates it. See doc/procedures/build_one_table_dataset/add_catalog.md.
     treasury:
       name: ${var.catalog_prefix}treasury
       comment: |-
@@ -83,6 +83,10 @@ resources:
   jobs:
     treasury_ingest:
       name: treasury - ingest
+      tags:
+        dataset: treasury
+        role: ingest
+        owner: Bryan Harris
       description: Moves new files from inbox to files.
       max_concurrent_runs: 1
       queue:
@@ -138,6 +142,10 @@ resources:
 
     treasury_apply_settings:
       name: treasury - apply settings
+      tags:
+        dataset: treasury
+        role: apply_settings
+        owner: Bryan Harris
       description: Copies treasury/conf to a volume, then writes sdp-meta's settings tables. Run after each change to conf/.
       tasks:
         - task_key: stage_conf
@@ -185,6 +193,10 @@ resources:
     # fetch.yml lists into the inbox. The schedule starts paused.
     treasury_fetch:
       name: treasury - fetch
+      tags:
+        dataset: treasury
+        role: fetch
+        owner: Bryan Harris
       description: Downloads what fetch.yml lists into the inbox, where the ingest job takes over.
       max_concurrent_runs: 1
       schedule:
@@ -237,6 +249,9 @@ resources:
       serverless: true
       tags:
         sdp_meta: ${var.sdp_meta_version}
+        dataset: treasury
+        role: pipeline
+        owner: Bryan Harris
       libraries:
         - notebook:
             path: ../../shared/init_sdp_meta_pipeline.py

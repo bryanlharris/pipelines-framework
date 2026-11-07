@@ -12,7 +12,7 @@ after each pipeline run.
 3. Read the views task template into the ingest job, after the pipeline
    task. Go to the pipeline task's last line, **pipeline_id**, and add the
    template's lines below it. In vim, type
-   :r doc/templates/view/ingest_task.yml
+   :r doc/templates/build_one_table_dataset/view/ingest_task.yml
 4. Replace **YOUR_DATASET** in **resources.yml**.
 5. Open the view, **views/YOUR_TABLE**.sql.
 6. Replace **YOUR_TABLE**.
@@ -29,7 +29,7 @@ after each pipeline run.
 
 ```
 mkdir datasets/YOUR_DATASET/views/
-cp doc/templates/view/current.sql datasets/YOUR_DATASET/views/YOUR_TABLE.sql
+cp doc/templates/build_one_table_dataset/view/current.sql datasets/YOUR_DATASET/views/YOUR_TABLE.sql
 edit datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/views/YOUR_TABLE.sql
 py tools/bundle_plan.py YOUR_TARGET
