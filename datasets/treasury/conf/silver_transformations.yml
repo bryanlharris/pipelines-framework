@@ -1,10 +1,9 @@
 # Silver selects, one entry per silver table.
 # Bronze columns are all strings; silver casts them.
-# ingest_time comes from the time stamp the router adds to the file name
-# (yieldCurve_20261104_120000.xml), so rebuilds keep the same order.
+# ingest_time comes from the time stamp the ingest job adds to the file
+# name (yieldCurve_20261104_120000.xml), so rebuilds keep the same order.
 # SCD2 orders versions by it (sequence_by in onboarding.yml).
-# Rates are percent (4.19 = 4.19%). Empty columns (e.g. BC_1_5MONTH
-# before it existed) become NULL.
+# Rates are percent (4.19 = 4.19%). Empty columns become NULL.
 
 - target_table: yieldCurve_history
   select_exp:

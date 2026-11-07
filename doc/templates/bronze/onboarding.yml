@@ -1,0 +1,28 @@
+# YOUR_DATASET settings for sdp-meta. One entry per table.
+# The apply settings job turns this file into the settings tables.
+# Keys end in _all: every target reads the same ones.
+
+- data_flow_id: "1"
+  data_flow_group: YOUR_DATASET
+  source_system: YOUR_DATASET
+  source_format: cloudFiles
+  source_details:
+    # Odd, but it keeps the catalog name out of this file. Apply settings
+    # turns ${workspace.file_path}/conf into /Volumes/<catalog>/sdp_meta/conf/conf,
+    # and the three ../ climb back to /Volumes/<catalog>/.
+    source_path_all: "${workspace.file_path}/conf/../../../raw/files/YOUR_TABLE/"
+    source_metadata:
+      include_autoloader_metadata_column: "True"
+      autoloader_metadata_col_name: source_metadata
+      select_metadata_cols:
+        source_file: "_metadata.file_path"
+  # Schema only. The pipeline adds its catalog.
+  bronze_database_all: bronze
+  bronze_table: YOUR_TABLE
+  bronze_table_comment: "CHANGE_ME → what one record is, e.g. Every record from every yieldCurve file, as strings."
+  bronze_reader_options:
+    cloudFiles.format: "CHANGE_ME → csv, json or xml"
+    cloudFiles.inferColumnTypes: "false"
+    cloudFiles.rescuedDataColumn: "_rescued_data"
+    # CHANGE_ME → any options your format needs, e.g. for xml: rowTag.
+    # All options: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/options

@@ -1,16 +1,43 @@
-# treasury: US Treasury daily par yield curve rates, from raw files to silver.
+# treasury: US Treasury interest rate data. raw holds the files, bronze and silver the tables.
 #
-# Flow: upload (or job "treasury - fetch") to raw.inbox -> job "treasury - ingest" (router -> pipeline -> views).
-# Config changes (datasets/treasury/conf/) need job "treasury - onboarding" or "all - onboarding" run once after deploy.
+# Each later template adds its section below (schemas, volumes, pipeline, jobs).
+
+# Enterprise catalogs live in each target's bucket, under catalogs/.
+# Free has no bucket; its catalogs use default storage.
+targets:
+  dev:
+    resources:
+      catalogs:
+        treasury:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}treasury/
+  staging:
+    resources:
+      catalogs:
+        treasury:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}treasury/
+  prod:
+    resources:
+      catalogs:
+        treasury:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}treasury/
 
 resources:
   catalogs:
-    # Free can't create catalogs through the API (Default Storage), so on free
-    # it is made once by SQL CREATE CATALOG, then bound:
-    #   databricks bundle deployment bind treasury treasury -t free
+    # On free, the catalog is made by SQL first, then bound. On enterprise,
+    # the bundle creates it. See doc/procedures/build_one_scd2_table/add_catalog.md.
     treasury:
-      name: treasury
-      comment: US Treasury interest rate data. raw holds the files, bronze and silver the tables.
+      name: ${var.catalog_prefix}treasury
+      comment: |-
+        US Treasury daily par yield curve rates, one record per trading day, for maturities from 1 month to 30 years.
+
+        Treasury derives them from bid-side quotes on the newest bills, notes and bonds, taken near 3:30 PM.
+
+        Good for tracking interest rates over time and comparing short and long rates.
+
+        - **Owner:** Bryan Harris
+        - **About:** https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology
+        - **Format:** XML, the whole year so far in each file
+        - **Arrives:** daily by 6 PM Eastern on trading days, by the fetch job or the upload script
       # The workspace sets this itself; listing it keeps the plan clean.
       properties:
         collation: UTF8_BINARY
@@ -19,7 +46,7 @@ resources:
     treasury_raw:
       catalog_name: ${resources.catalogs.treasury.name}
       name: raw
-      comment: Files as they arrive. inbox is the drop zone; files is the permanent record.
+      comment: Files as they arrive. inbox is the drop zone. files is the permanent record.
     treasury_bronze:
       catalog_name: ${resources.catalogs.treasury.name}
       name: bronze
@@ -27,11 +54,11 @@ resources:
     treasury_silver:
       catalog_name: ${resources.catalogs.treasury.name}
       name: silver
-      comment: Typed tables with full history (SCD2), plus views of the current records.
+      comment: Typed tables, plus views of the current records.
     treasury_sdp_meta:
       catalog_name: ${resources.catalogs.treasury.name}
       name: sdp_meta
-      comment: sdp-meta's settings tables (dataflowspecs) and the staged conf files.
+      comment: The settings tables, and the copy of conf/ they are made from.
 
   volumes:
     treasury_raw_inbox:
@@ -45,48 +72,29 @@ resources:
       schema_name: ${resources.schemas.treasury_raw.name}
       name: files
       volume_type: MANAGED
-      comment: Permanent record. Only the router writes here; nothing is ever deleted. Full rebuilds read from here.
+      comment: Permanent record. Only the router writes here. Nothing is ever deleted. Full rebuilds read from here.
     treasury_sdp_meta_conf:
       catalog_name: ${resources.catalogs.treasury.name}
       schema_name: ${resources.schemas.treasury_sdp_meta.name}
       name: conf
       volume_type: MANAGED
-      comment: Copy of treasury/conf, made by the onboarding job. Serverless can't read workspace files.
-
-  pipelines:
-    treasury_pipeline:
-      name: treasury - pipeline
-      catalog: ${resources.catalogs.treasury.name}
-      # Default schema only; each table's full name comes from datasets/treasury/conf/onboarding.yml.
-      schema: ${resources.schemas.treasury_bronze.name}
-      serverless: true
-      tags:
-        sdp_meta: ${var.sdp_meta_version}
-      libraries:
-        - notebook:
-            path: ../../shared/init_sdp_meta_pipeline.py
-      configuration:
-        layer: bronze_silver
-        bronze.dataflowspecTable: treasury.sdp_meta.bronze_dataflowspec
-        bronze.group: treasury
-        silver.dataflowspecTable: treasury.sdp_meta.silver_dataflowspec
-        silver.group: treasury
-        sdp_meta_dependency: ${var.sdp_meta_dependency}
+      comment: Copy of treasury/conf, made when you apply settings. Serverless can't read workspace files.
 
   jobs:
     treasury_ingest:
       name: treasury - ingest
-      description: Moves new files from inbox to files, then loads bronze and silver.
+      description: Moves new files from inbox to files.
       max_concurrent_runs: 1
       queue:
         enabled: true
       trigger:
         pause_status: UNPAUSED
         file_arrival:
-          url: /Volumes/treasury/raw/inbox/
-          wait_after_last_change_seconds: 60
+          url: /Volumes/${resources.catalogs.treasury.name}/raw/inbox/
       tasks:
         - task_key: router
+          # Fail once, no retries.
+          disable_auto_optimization: true
           environment_key: default
           spark_python_task:
             python_file: ../../shared/file_router.py
@@ -95,8 +103,7 @@ resources:
               - ${resources.catalogs.treasury.name}
               - --names
               - yieldCurve
-        # Skip the pipeline when the router moved nothing (e.g. the run
-        # started by a file landing in inbox/bad_files).
+        # Skip the pipeline when the router moved nothing (e.g. only a bad file).
         - task_key: any_moved
           depends_on:
             - task_key: router
@@ -105,18 +112,24 @@ resources:
             left: "{{tasks.router.values.moved}}"
             right: "0"
         - task_key: pipeline
+          # Fail once, no retries.
+          disable_auto_optimization: true
           depends_on:
             - task_key: any_moved
               outcome: "true"
           pipeline_task:
             pipeline_id: ${resources.pipelines.treasury_pipeline.id}
         - task_key: views
+          # Fail once, no retries.
+          disable_auto_optimization: true
           depends_on:
             - task_key: pipeline
           environment_key: default
           spark_python_task:
             python_file: ../../shared/create_views.py
             parameters:
+              - --catalog
+              - ${resources.catalogs.treasury.name}
               - --folder
               - ${workspace.file_path}/datasets/treasury/views
       environments:
@@ -124,11 +137,56 @@ resources:
           spec:
             environment_version: "6"
 
-    # Does what upload_treasury.ps1 does, inside Databricks. Downloads what
-    # datasets/treasury/fetch.yml lists. Paused; unpause where it can reach the host.
+    treasury_apply_settings:
+      name: treasury - apply settings
+      description: Copies treasury/conf to a volume, then writes sdp-meta's settings tables. Run after each change to conf/.
+      tasks:
+        - task_key: stage_conf
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: stage_conf
+            named_parameters:
+              source_conf_dir: ${workspace.file_path}/datasets/treasury/conf
+              uc_catalog: ${resources.catalogs.treasury.name}
+              uc_schema: ${resources.schemas.treasury_sdp_meta.name}
+              conf_volume: ${resources.volumes.treasury_sdp_meta_conf.name}
+        - task_key: apply
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: run
+            named_parameters:
+              onboard_layer: bronze_silver
+              database: ${resources.catalogs.treasury.name}.${resources.schemas.treasury_sdp_meta.name}
+              onboarding_file_path: /Volumes/${resources.catalogs.treasury.name}/sdp_meta/conf/conf/onboarding.yml
+              bronze_dataflowspec_table: bronze_dataflowspec
+              silver_dataflowspec_table: silver_dataflowspec
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              overwrite: "True"
+              # Every target reads the same _all keys in onboarding.yml.
+              env: all
+      environments:
+        - environment_key: sdp_meta
+          spec:
+            # sdp-meta needs Python below 3.13; version 6 is 3.12.
+            environment_version: "6"
+            dependencies:
+              - ${var.sdp_meta_dependency}
+
+    # Does what the upload script does, inside Databricks. Downloads what
+    # fetch.yml lists into the inbox. The schedule starts paused.
     treasury_fetch:
       name: treasury - fetch
-      description: Downloads what datasets/treasury/fetch.yml lists into raw.inbox, where job "treasury - ingest" takes over.
+      description: Downloads what fetch.yml lists into the inbox, where the ingest job takes over.
       max_concurrent_runs: 1
       schedule:
         quartz_cron_expression: "0 17 4 * * ?"
@@ -136,13 +194,17 @@ resources:
         pause_status: PAUSED
       tasks:
         - task_key: list_fetches
+          # Fail once, no retries.
+          disable_auto_optimization: true
           environment_key: default
           spark_python_task:
             python_file: ../../shared/list_fetches.py
             parameters:
               - --fetch_file
               - ${workspace.file_path}/datasets/treasury/fetch.yml
-        # All of this dataset's files at once (free runs one at a time).
+              - --inbox
+              - /Volumes/${resources.catalogs.treasury.name}/raw/inbox
+        # All of this dataset's files at once.
         - task_key: fetch_all
           depends_on:
             - task_key: list_fetches
@@ -151,6 +213,8 @@ resources:
             concurrency: 4
             task:
               task_key: fetch
+              # Fail once, no retries.
+              disable_auto_optimization: true
               environment_key: default
               spark_python_task:
                 python_file: ../../shared/fetch_url.py
@@ -165,43 +229,22 @@ resources:
             dependencies:
               - pyyaml
 
-    treasury_onboarding:
-      name: treasury - onboarding
-      description: Copies treasury/conf to a volume, then writes sdp-meta's settings tables. Run after a deploy that changes treasury/conf.
-      tasks:
-        - task_key: stage_conf
-          environment_key: sdp_meta
-          python_wheel_task:
-            package_name: databricks_labs_sdp_meta
-            entry_point: stage_conf
-            named_parameters:
-              source_conf_dir: ${workspace.file_path}/datasets/treasury/conf
-              uc_catalog: ${resources.catalogs.treasury.name}
-              uc_schema: ${resources.schemas.treasury_sdp_meta.name}
-              conf_volume: ${resources.volumes.treasury_sdp_meta_conf.name}
-        - task_key: onboard
-          depends_on:
-            - task_key: stage_conf
-          environment_key: sdp_meta
-          python_wheel_task:
-            package_name: databricks_labs_sdp_meta
-            entry_point: run
-            named_parameters:
-              onboard_layer: bronze_silver
-              database: treasury.sdp_meta
-              onboarding_file_path: /Volumes/treasury/sdp_meta/conf/conf/onboarding.yml
-              bronze_dataflowspec_table: bronze_dataflowspec
-              silver_dataflowspec_table: silver_dataflowspec
-              uc_enabled: "True"
-              import_author: ${workspace.current_user.userName}
-              version: v1
-              overwrite: "True"
-              # Picks the _free (or _dev) keys in onboarding.yml.
-              env: ${bundle.target}
-      environments:
-        - environment_key: sdp_meta
-          spec:
-            # Free rejects environment 1. Version 6 (latest, Sep 2026) is Python 3.12; sdp-meta needs below 3.13.
-            environment_version: "6"
-            dependencies:
-              - ${var.sdp_meta_dependency}
+  pipelines:
+    treasury_pipeline:
+      name: treasury - pipeline
+      catalog: ${resources.catalogs.treasury.name}
+      # Default schema only; each table's schema comes from conf/onboarding.yml.
+      schema: ${resources.schemas.treasury_bronze.name}
+      serverless: true
+      tags:
+        sdp_meta: ${var.sdp_meta_version}
+      libraries:
+        - notebook:
+            path: ../../shared/init_sdp_meta_pipeline.py
+      configuration:
+        layer: bronze_silver
+        bronze.dataflowspecTable: ${resources.catalogs.treasury.name}.sdp_meta.bronze_dataflowspec
+        bronze.group: treasury
+        silver.dataflowspecTable: ${resources.catalogs.treasury.name}.sdp_meta.silver_dataflowspec
+        silver.group: treasury
+        sdp_meta_dependency: ${var.sdp_meta_dependency}

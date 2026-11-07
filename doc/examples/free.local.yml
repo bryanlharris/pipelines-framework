@@ -1,5 +1,0 @@
-# The home Free Edition workspace. Machine-only (git-ignored).
-targets:
-  free:
-    workspace:
-      profile: DEFAULT

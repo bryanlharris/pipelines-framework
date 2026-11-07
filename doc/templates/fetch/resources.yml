@@ -1,0 +1,47 @@
+
+    # Does what the upload script does, inside Databricks. Downloads what
+    # fetch.yml lists into the inbox. The schedule starts paused.
+    YOUR_DATASET_fetch:
+      name: YOUR_DATASET - fetch
+      description: Downloads what fetch.yml lists into the inbox, where the ingest job takes over.
+      max_concurrent_runs: 1
+      schedule:
+        quartz_cron_expression: "0 17 4 * * ?"
+        timezone_id: America/Chicago
+        pause_status: PAUSED
+      tasks:
+        - task_key: list_fetches
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: default
+          spark_python_task:
+            python_file: ../../shared/list_fetches.py
+            parameters:
+              - --fetch_file
+              - ${workspace.file_path}/datasets/YOUR_DATASET/fetch.yml
+              - --inbox
+              - /Volumes/${resources.catalogs.YOUR_DATASET.name}/raw/inbox
+        # All of this dataset's files at once.
+        - task_key: fetch_all
+          depends_on:
+            - task_key: list_fetches
+          for_each_task:
+            inputs: "{{tasks.list_fetches.values.fetches}}"
+            concurrency: 4
+            task:
+              task_key: fetch
+              # Fail once, no retries.
+              disable_auto_optimization: true
+              environment_key: default
+              spark_python_task:
+                python_file: ../../shared/fetch_url.py
+                parameters:
+                  - --fetch
+                  - "{{input}}"
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "6"
+            # For list_fetches.py, which reads fetch.yml.
+            dependencies:
+              - pyyaml

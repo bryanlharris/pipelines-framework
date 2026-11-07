@@ -1,0 +1,19 @@
+# YOUR_TARGET: an enterprise workspace (dev, staging or prod).
+# Keep the real bucket name out of git: this file is targets/YOUR_TARGET.local.yml.
+#
+# Example, for the treasury dataset on dev:
+#
+#   catalog_prefix: dev_
+#   catalog_bucket: foobar
+#
+# gives:
+#
+#   catalog       dev_treasury
+#   storage root  s3://foobar/catalogs/dev_treasury/
+targets:
+  YOUR_TARGET:
+    workspace:
+      profile: YOUR_TARGET
+    variables:
+      catalog_prefix: CHANGE_ME → dev_ on dev, staging_ on staging, "" on prod
+      catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar; catalogs/ is added for you

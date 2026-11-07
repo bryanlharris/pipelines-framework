@@ -1,0 +1,39 @@
+# YOUR_DATASET: CHANGE_ME (one line) → what the data is and where it comes from.
+#
+# Each later template adds its section below (schemas, volumes, pipeline, jobs).
+
+# Enterprise catalogs live in each target's bucket, under catalogs/.
+# Free has no bucket; its catalogs use default storage.
+targets:
+  dev:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  staging:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  prod:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+
+resources:
+  catalogs:
+    # On free, the catalog is made by SQL first, then bound. On enterprise,
+    # the bundle creates it. See doc/procedures/build_one_scd2_table/add_catalog.md.
+    YOUR_DATASET:
+      name: ${var.catalog_prefix}YOUR_DATASET
+      comment: |-
+        CHANGE_ME → two or three sentences: what the data is, and what it is good for. Markdown: put a blank line between sentences you want apart.
+
+        - **Owner:** CHANGE_ME → who to ask about this data
+        - **About:** CHANGE_ME → a link to a page that explains the data
+        - **Format:** CHANGE_ME → e.g. XML
+        - **Arrives:** CHANGE_ME → e.g. daily, by the fetch job
+      # The workspace sets this itself; listing it keeps the plan clean.
+      properties:
+        collation: UTF8_BINARY

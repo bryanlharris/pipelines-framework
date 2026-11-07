@@ -1,0 +1,16 @@
+        # Skip the pipeline when the router moved nothing (e.g. only a bad file).
+        - task_key: any_moved
+          depends_on:
+            - task_key: router
+          condition_task:
+            op: GREATER_THAN
+            left: "{{tasks.router.values.moved}}"
+            right: "0"
+        - task_key: pipeline
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: any_moved
+              outcome: "true"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.YOUR_DATASET_pipeline.id}

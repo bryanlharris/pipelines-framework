@@ -1,0 +1,19 @@
+# Enterprise catalogs live in each target's bucket, under catalogs/.
+# Free has no bucket; its catalogs use default storage.
+targets:
+  dev:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  staging:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+  prod:
+    resources:
+      catalogs:
+        YOUR_DATASET:
+          storage_root: s3://${var.catalog_bucket}/catalogs/${var.catalog_prefix}YOUR_DATASET/
+

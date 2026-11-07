@@ -1,0 +1,45 @@
+
+    YOUR_DATASET_apply_settings:
+      name: YOUR_DATASET - apply settings
+      description: Copies YOUR_DATASET/conf to a volume, then writes sdp-meta's settings tables. Run after each change to conf/.
+      tasks:
+        - task_key: stage_conf
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: stage_conf
+            named_parameters:
+              source_conf_dir: ${workspace.file_path}/datasets/YOUR_DATASET/conf
+              uc_catalog: ${resources.catalogs.YOUR_DATASET.name}
+              uc_schema: ${resources.schemas.YOUR_DATASET_sdp_meta.name}
+              conf_volume: ${resources.volumes.YOUR_DATASET_sdp_meta_conf.name}
+        - task_key: apply
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: stage_conf
+          environment_key: sdp_meta
+          python_wheel_task:
+            package_name: databricks_labs_sdp_meta
+            entry_point: run
+            named_parameters:
+              onboard_layer: bronze_silver
+              database: ${resources.catalogs.YOUR_DATASET.name}.${resources.schemas.YOUR_DATASET_sdp_meta.name}
+              onboarding_file_path: /Volumes/${resources.catalogs.YOUR_DATASET.name}/sdp_meta/conf/conf/onboarding.yml
+              bronze_dataflowspec_table: bronze_dataflowspec
+              silver_dataflowspec_table: silver_dataflowspec
+              uc_enabled: "True"
+              import_author: ${workspace.current_user.userName}
+              version: v1
+              overwrite: "True"
+              # Every target reads the same _all keys in onboarding.yml.
+              env: all
+      environments:
+        - environment_key: sdp_meta
+          spec:
+            # sdp-meta needs Python below 3.13; version 6 is 3.12.
+            environment_version: "6"
+            dependencies:
+              - ${var.sdp_meta_dependency}

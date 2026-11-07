@@ -1,0 +1,8 @@
+# sdp-framework: lines for ~/.zshrc (or ~/.bash_profile, for bash) on a Mac.
+
+# The procedures run Python as py, as on Windows.
+alias py=python3
+
+# The procedures open files with edit. For VS Code: alias edit=code
+# (In VS Code, run "Shell Command: Install 'code' command in PATH" first.)
+alias edit=vim

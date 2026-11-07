@@ -1,27 +1,26 @@
-# Downloads this year's daily yield curve XML and uploads it to the treasury inbox.
-# Runs on the PC, like upload_edsm.ps1. The router (job "treasury - ingest") adds the
-# time stamp and moves it to raw.files. Each file holds the whole year so far.
+#!/usr/bin/env pwsh
+# Downloads yieldCurve and uploads it to the treasury inbox. Runs on your PC.
+# The ingest job moves it to raw files.
 #
-#   .\datasets\treasury\upload_treasury.ps1               # this year
-#   .\datasets\treasury\upload_treasury.ps1 -Year 2025    # another year
+#   pwsh datasets/treasury/upload_treasury.ps1
 
 param(
-    [int]$Year = (Get-Date).Year,
-    [string]$DatabricksProfile = "DEFAULT"
+    [string]$Catalog = "treasury",
+    [string]$DatabricksProfile = "free"
 )
 
-$inbox = "dbfs:/Volumes/treasury/raw/inbox"
-$work  = "$env:TEMP\treasury_upload"
-$xml   = "$work\yieldCurve.xml"
-$url   = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=$Year"
-New-Item -ItemType Directory -Force $work | Out-Null
+$table = "yieldCurve"
+$ext   = "xml"
+$url   = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=$((Get-Date).Year)"
+$inbox = "dbfs:/Volumes/$Catalog/raw/inbox"
+$file  = Join-Path ([System.IO.Path]::GetTempPath()) "$table.$ext"
 
-Write-Host "Downloading yieldCurve $Year"
-Invoke-WebRequest -Uri $url -OutFile $xml
+Write-Host "Downloading $table"
+Invoke-WebRequest -Uri $url -OutFile $file
 
-Write-Host "Uploading to $inbox/yieldCurve.xml"
-databricks fs cp $xml "$inbox/yieldCurve.xml" --overwrite --profile $DatabricksProfile
-if ($LASTEXITCODE -ne 0) { throw "Upload failed: yieldCurve" }
+Write-Host "Uploading to $inbox/$table.$ext"
+databricks fs cp $file "$inbox/$table.$ext" --overwrite --profile $DatabricksProfile
+if ($LASTEXITCODE -ne 0) { throw "Upload failed: $table" }
 
-Remove-Item $xml
-Write-Host "Done. Job "treasury - ingest" starts a minute or two after the last upload."
+Remove-Item $file
+Write-Host "Done."

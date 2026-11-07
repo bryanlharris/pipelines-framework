@@ -1,0 +1,20 @@
+
+  pipelines:
+    YOUR_DATASET_pipeline:
+      name: YOUR_DATASET - pipeline
+      catalog: ${resources.catalogs.YOUR_DATASET.name}
+      # Default schema only; each table's schema comes from conf/onboarding.yml.
+      schema: ${resources.schemas.YOUR_DATASET_bronze.name}
+      serverless: true
+      tags:
+        sdp_meta: ${var.sdp_meta_version}
+      libraries:
+        - notebook:
+            path: ../../shared/init_sdp_meta_pipeline.py
+      configuration:
+        layer: bronze_silver
+        bronze.dataflowspecTable: ${resources.catalogs.YOUR_DATASET.name}.sdp_meta.bronze_dataflowspec
+        bronze.group: YOUR_DATASET
+        silver.dataflowspecTable: ${resources.catalogs.YOUR_DATASET.name}.sdp_meta.silver_dataflowspec
+        silver.group: YOUR_DATASET
+        sdp_meta_dependency: ${var.sdp_meta_dependency}

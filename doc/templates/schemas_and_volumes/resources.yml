@@ -1,0 +1,38 @@
+
+  schemas:
+    YOUR_DATASET_raw:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: raw
+      comment: Files as they arrive. inbox is the drop zone. files is the permanent record.
+    YOUR_DATASET_bronze:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: bronze
+      comment: One table per file type. Every record from every file, as strings.
+    YOUR_DATASET_silver:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: silver
+      comment: Typed tables, plus views of the current records.
+    YOUR_DATASET_sdp_meta:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: sdp_meta
+      comment: The settings tables, and the copy of conf/ they are made from.
+
+  volumes:
+    YOUR_DATASET_raw_inbox:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_raw.name}
+      name: inbox
+      volume_type: MANAGED
+      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+    YOUR_DATASET_raw_files:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_raw.name}
+      name: files
+      volume_type: MANAGED
+      comment: Permanent record. Only the router writes here. Nothing is ever deleted. Full rebuilds read from here.
+    YOUR_DATASET_sdp_meta_conf:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      schema_name: ${resources.schemas.YOUR_DATASET_sdp_meta.name}
+      name: conf
+      volume_type: MANAGED
+      comment: Copy of YOUR_DATASET/conf, made when you apply settings. Serverless can't read workspace files.

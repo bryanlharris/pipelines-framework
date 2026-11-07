@@ -1,0 +1,16 @@
+{
+    // Easier to read file browser: wider indents, guides always on, one folder per line.
+    "workbench.tree.indent": 20,
+    "workbench.tree.renderIndentGuides": "always",
+    "explorer.compactFolders": false,
+
+    // Open md files as the preview.
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    },
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "workbench.editor.enablePreviewFromQuickOpen": true,
+
+    "editor.cursorBlinking": "solid",
+    "files.autoSave": "afterDelay"
+}

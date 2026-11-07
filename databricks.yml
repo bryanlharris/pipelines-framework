@@ -16,17 +16,21 @@ include:
   - targets/*.yml
   # One level only; ** does not recurse.
   - "datasets/*/resources.yml"
-  - shared/onboarding.yml
 
 sync:
   exclude:
     - tools/
-    - "datasets/*/upload_*.ps1"
 
 variables:
+  catalog_prefix:
+    description: Put before every catalog name, e.g. dev_. Set by each target; empty on free and prod.
+    default: ""
+  catalog_bucket:
+    description: The S3 bucket that holds this target's catalogs, under catalogs/. Set by dev, staging and prod; free has none.
+    default: ""
   datasets:
     description: Every dataset under datasets/, as a JSON list. Jobs that loop over all datasets use it.
-    default: '["edsm", "treasury", "documents"]'
+    default: '[]'
   sdp_meta_dependency:
     description: The sdp-meta package. Installed by the onboarding job and by the pipeline's runner notebook.
     default: databricks-labs-sdp-meta==0.1.0
