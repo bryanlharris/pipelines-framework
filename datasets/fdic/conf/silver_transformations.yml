@@ -1,0 +1,31 @@
+# Silver selects, one entry per silver table.
+# Bronze columns are all strings; silver casts them.
+# ingest_time comes from the time stamp the ingest job adds to the file
+# name (YOUR_TABLE_20261104_120000.xml), so rebuilds keep the same order.
+# SCD2 orders versions by it (sequence_by in onboarding.yml).
+
+# ---- One table. Copy from here, once per table, then uncomment. ----
+# - target_table: YOUR_TABLE_history
+#   select_exp:
+#     # CHANGE_ME → one line per column, cast from string.
+#     - "cast(CHANGE_ME as double) as CHANGE_ME"
+#     - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+#     - "source_file"
+#
+# ---- To here. ----
+- target_table: financials_history
+  select_exp:
+    # CERT names the bank; REPDTE is the quarter end, e.g. 20260331.
+    - "cast(CERT as int) as CERT"
+    - "to_date(REPDTE, 'yyyyMMdd') as REPDTE"
+    - "ID"
+    # Dollar amounts are in thousands.
+    - "cast(ASSET as bigint) as ASSET"
+    - "cast(DEP as bigint) as DEP"
+    - "cast(EQ as bigint) as EQ"
+    - "cast(NETINC as bigint) as NETINC"
+    # Percent: 1.55 = 1.55%.
+    - "cast(ROA as double) as ROA"
+    - "cast(ROE as double) as ROE"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"

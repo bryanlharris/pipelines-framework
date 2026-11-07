@@ -1,4 +1,4 @@
-← none | [test_dev.md](test_dev.md) →
+← none | [bind_catalogs.md](bind_catalogs.md) →
 
 # Set Up Dev
 
@@ -56,14 +56,9 @@ with its own prefix and bucket.
 9. Check the plan again. All show unchanged.
 10. Open a catalog in Catalog Explorer. Its storage root is in the bucket,
     under **catalogs/**.
-11. Bind each catalog to this workspace. In Catalog Explorer, open the
-    catalog, then the **Workspaces** tab. Clear **All workspaces have
-    access**. Click **Assign to workspaces**, and add this workspace if it
-    is missing.
-12. Turn on data classification for each catalog. Open the catalog, then the
-    **Details** tab. Next to **Data Classification**, click **Enable**, then
-    **Save**.
-13. End.
+11. Bind each catalog to this workspace, and turn on data classification:
+    [bind_catalogs.md](bind_catalogs.md).
+12. End.
 
 ```
 cp doc/templates/target/targets.local.yml targets/
@@ -77,4 +72,4 @@ py tools/bundle_plan.py dev
 
 ---
 
-← none | [test_dev.md](test_dev.md) →
+← none | [bind_catalogs.md](bind_catalogs.md) →

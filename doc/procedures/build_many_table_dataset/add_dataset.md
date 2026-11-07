@@ -23,8 +23,8 @@ The bundle creates the catalog, in the bucket the targets file names.
 7. Deploy. If the ingest job fails with **No volume is defined**, the new
    inbox isn't visible yet. Wait a few minutes, and deploy again.
 8. Check the plan again. All show unchanged.
-9. Bind the catalog, and turn on data classification, as in
-   [setup_dev.md](../dev/setup_dev.md) steps 11 and 12.
+9. Bind the catalog, and turn on data classification:
+   [bind_catalogs.md](../dev/bind_catalogs.md).
 10. End.
 
 ```

@@ -1,0 +1,15 @@
+# What the fetch job downloads for this dataset. One entry per file.
+# Name each file after its table, e.g. YOUR_TABLE.xml.
+# Comment an entry out to stop fetching it.
+#
+#   url         where to download from; put {year} where the url has a year
+#   inbox_file  the file's name in the inbox; the ingest job takes it from there
+#   gunzip      optional; true unzips a .gz on the way in
+
+# ---- One file. Copy from here, once per file, then uncomment. ----
+# - url: "CHANGE_ME → where to download it"
+#   inbox_file: YOUR_FILE
+#
+# ---- To here. ----
+- url: "https://fred.stlouisfed.org/graph/fredgraph.csv?id=FEDFUNDS"
+  inbox_file: fedfunds.csv

@@ -1,0 +1,90 @@
+# fred settings for sdp-meta. One entry per table.
+# The apply settings job turns this file into the settings tables.
+# Keys end in _all: every target reads the same ones.
+
+# ---- One table. Copy from here, once per table, then uncomment. ----
+# - data_flow_id: "CHANGE_ME → 1 for the first table, 2 for the next, and so on"
+#   data_flow_group: fred
+#   source_system: fred
+#   source_format: cloudFiles
+#   source_details:
+#     # Odd, but it keeps the catalog name out of this file. Apply settings
+#     # turns ${workspace.file_path}/conf into /Volumes/<catalog>/sdp_meta/conf/conf,
+#     # and the three ../ climb back to /Volumes/<catalog>/.
+#     source_path_all: "${workspace.file_path}/conf/../../../raw/files/YOUR_TABLE/"
+#     source_metadata:
+#       include_autoloader_metadata_column: "True"
+#       autoloader_metadata_col_name: source_metadata
+#       select_metadata_cols:
+#         source_file: "_metadata.file_path"
+#   # Schema only. The pipeline adds its catalog.
+#   bronze_database_all: bronze
+#   bronze_table: YOUR_TABLE
+#   bronze_table_comment: "CHANGE_ME → what one record is, e.g. Every record from every yieldCurve file, as strings."
+#   bronze_reader_options:
+#     cloudFiles.format: "CHANGE_ME → csv, json or xml"
+#     cloudFiles.inferColumnTypes: "false"
+#     cloudFiles.rescuedDataColumn: "_rescued_data"
+#     # CHANGE_ME → any options your format needs, e.g. for xml: rowTag.
+#     # All options: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/options
+#   # Schema only, like bronze.
+#   silver_database_all: silver
+#   silver_table: YOUR_TABLE_history
+#   silver_table_comment: "CHANGE_ME → what one version is, e.g. Full history of the daily yield curve (SCD2), one version per change to a day's rates."
+#   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
+#   silver_reader_options:
+#     skipChangeCommits: "true"
+#   silver_transformation_json_all: "${workspace.file_path}/conf/silver_transformations.yml"
+#   silver_cdc_apply_changes:
+#     keys: ["CHANGE_ME → the column that names one record, e.g. NEW_DATE"]
+#     sequence_by: "ingest_time"
+#     scd_type: "2"
+#     # A new version starts only when a value changes, not each time the
+#     # same record arrives again.
+#     # CHANGE_ME → add columns that change in every file but mean nothing, e.g. Id.
+#     track_history_except_column_list: ["ingest_time", "source_file"]
+#     # Or name only the columns to track, when that list is shorter.
+#     # Use one key or the other, not both.
+#     # track_history_column_list: ["CHANGE_ME"]
+#
+# ---- To here. ----
+- data_flow_id: "1"
+  data_flow_group: fred
+  source_system: fred
+  source_format: cloudFiles
+  source_details:
+    # Odd, but it keeps the catalog name out of this file. Apply settings
+    # turns ${workspace.file_path}/conf into /Volumes/<catalog>/sdp_meta/conf/conf,
+    # and the three ../ climb back to /Volumes/<catalog>/.
+    source_path_all: "${workspace.file_path}/conf/../../../raw/files/fedfunds/"
+    source_metadata:
+      include_autoloader_metadata_column: "True"
+      autoloader_metadata_col_name: source_metadata
+      select_metadata_cols:
+        source_file: "_metadata.file_path"
+  # Schema only. The pipeline adds its catalog.
+  bronze_database_all: bronze
+  bronze_table: fedfunds
+  bronze_table_comment: "Every record from every fedfunds file, as strings. The effective federal funds rate, one record per month."
+  bronze_reader_options:
+    cloudFiles.format: "csv"
+    cloudFiles.inferColumnTypes: "false"
+    cloudFiles.rescuedDataColumn: "_rescued_data"
+    # The first line holds the column names.
+    header: "true"
+    # All options: https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/options
+  # Schema only, like bronze.
+  silver_database_all: silver
+  silver_table: fedfunds_history
+  silver_table_comment: "Full history of the effective federal funds rate (SCD2), one version per change to a month's rate."
+  # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
+  silver_reader_options:
+    skipChangeCommits: "true"
+  silver_transformation_json_all: "${workspace.file_path}/conf/silver_transformations.yml"
+  silver_cdc_apply_changes:
+    keys: ["observation_date"]
+    sequence_by: "ingest_time"
+    scd_type: "2"
+    # A new version starts only when a value changes, not each time the
+    # same record arrives again.
+    track_history_column_list: ["FEDFUNDS"]
