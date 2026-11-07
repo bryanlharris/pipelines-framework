@@ -16,7 +16,7 @@ and live in the dev bucket.
 
 ## How It Works
 
-If **targets/dev.local.yml** sets these two lines:
+If **targets/targets.local.yml** sets these two lines for dev:
 
 ```
 catalog_prefix: dev_
@@ -40,11 +40,10 @@ with its own prefix and bucket.
 
 ## Steps
 
-1. Copy the target template into **targets/**, as **dev.local.yml**.
+1. Copy the targets template into **targets/**, unless you have it.
    Git ignores it, so the bucket name stays out of the repo.
-2. Replace **YOUR_TARGET** with **dev**.
-3. Change the **CHANGE_ME** lines: **catalog_prefix** is **dev_**, and
-   **catalog_bucket** is the dev bucket.
+2. Uncomment **dev**.
+3. Change its **CHANGE_ME** line to the dev bucket.
 4. Check each dataset's **resources.yml** for a **targets:** section. Datasets
    built on free may lack it.
 5. Read the catalog targets template into each one that lacks it. Go to
@@ -67,8 +66,8 @@ with its own prefix and bucket.
 13. End.
 
 ```
-cp doc/templates/target/target.yml targets/dev.local.yml
-edit targets/dev.local.yml
+cp doc/templates/target/targets.local.yml targets/
+edit targets/targets.local.yml
 git grep -L "^targets:" -- "datasets/*/resources.yml"
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py dev

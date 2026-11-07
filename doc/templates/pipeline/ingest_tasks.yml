@@ -7,8 +7,7 @@
             left: "{{tasks.router.values.moved}}"
             right: "0"
         - task_key: pipeline
-          # Fail once, no retries.
-          disable_auto_optimization: true
+          # No disable_auto_optimization: pipeline tasks drop it, so the plan never settles.
           depends_on:
             - task_key: any_moved
               outcome: "true"

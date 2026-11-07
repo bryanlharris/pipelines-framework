@@ -12,6 +12,5 @@ See: doc/procedures/.
 - doc/glossary.md: what sdp-meta calls things e.g. onboarding is like settings.
 - tools/bundle_plan.py: shows what a deploy would do, by real name.
 
-Personal targets like free are special i.e. ignored by git: copy
-doc/templates/target/free.local.yml to targets/free.local.yml (git-ignored)
-and set its profile.
+Targets are ignored by git: copy doc/templates/target/targets.local.yml
+to targets/, and uncomment the ones you use.

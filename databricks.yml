@@ -6,8 +6,8 @@
 #   databricks bundle deploy -t <target>
 #
 # No default target: every command names one with -t.
-# Machine-only targets (free, at home) go in a git-ignored
-# targets/<name>.local.yml.
+# Targets go in a git-ignored targets/targets.local.yml, copied from
+# doc/templates/target/targets.local.yml.
 
 bundle:
   name: sdp_framework

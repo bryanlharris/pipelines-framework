@@ -1,0 +1,44 @@
+# Every target. Copy to targets/targets.local.yml; git ignores it, so
+# bucket names stay out of the repo. Uncomment the targets this computer
+# deploys to, and change CHANGE_ME.
+#
+# Example, for the treasury dataset on dev:
+#
+#   catalog_prefix: dev_
+#   catalog_bucket: foobar
+#
+# gives:
+#
+#   catalog       dev_treasury
+#   storage root  s3://foobar/catalogs/dev_treasury/
+targets:
+#  # Free Edition, at home. No bucket, no prefix.
+#  free:
+#    workspace:
+#      profile: free
+#
+#  dev:
+#    # A failed pipeline update stops, no retries.
+#    presets:
+#      pipelines_development: true
+#    workspace:
+#      profile: dev
+#    variables:
+#      catalog_prefix: dev_
+#      catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
+#
+#  staging:
+#    presets:
+#      pipelines_development: true
+#    workspace:
+#      profile: staging
+#    variables:
+#      catalog_prefix: staging_
+#      catalog_bucket: CHANGE_ME → the bucket name only
+#
+#  prod:
+#    workspace:
+#      profile: prod
+#    variables:
+#      catalog_prefix: ""
+#      catalog_bucket: CHANGE_ME → the bucket name only

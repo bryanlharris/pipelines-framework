@@ -2,5 +2,5 @@
 __pycache__/
 *.pyc
 
-# Machine-only bundle files (the home free target).
+# Targets, with bucket names. Each computer keeps its own.
 targets/*.local.yml

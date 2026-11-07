@@ -35,4 +35,4 @@ saying what it is for.
 - [silver_scd2/](silver_scd2/onboarding.yml): one table's silver settings, plus [its selects](silver_scd2/silver_transformations.yml)
 - [view/](view/current.sql): a current view, plus [the ingest job's task](view/ingest_task.yml) that remakes it
 - [fetch/](fetch/fetch.yml): a dataset's fetch list, plus [the fetch job](fetch/resources.yml)
-- [target/](target/target.yml): an enterprise target, plus [the catalog's targets section](target/catalog_targets.yml) and [the free target](target/free.local.yml)
+- [target/](target/targets.local.yml): every target, commented out, plus [the catalog's targets section](target/catalog_targets.yml)
