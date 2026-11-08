@@ -10,13 +10,13 @@ Copy the ones you use, and uncomment the targets in them.
 
 ```
 pipelines-framework (today: sdp-framework)
-└── team-pipelines          bundle team
-    ├── jim/add-fred   →  dev      dev_team_jim_treasury
-    ├── sue/fix-rules  →  dev      dev_team_sue_treasury
-    ├── bob/new-table  →  dev      dev_team_bob_treasury
+└── team-pipelines                    bundle team
+    ├── jim/add-fred      →  dev      dev_team_jim_treasury
+    ├── sue/fix-rules     →  dev      dev_team_sue_treasury
+    ├── bob/new-table     →  dev      dev_team_bob_treasury
     └── master
-        └── staging_v0.01  →  staging  staging_treasury
-            └── prod_v0.1  →  prod     treasury
+        └── staging_v0.01 →  staging  staging_treasury
+            └── prod_v0.1 →  prod     treasury
 ```
 
 | Target  | Prefix            | Deploys from  | Who              | Procedure                            |
