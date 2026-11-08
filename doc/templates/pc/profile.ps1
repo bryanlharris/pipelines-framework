@@ -30,6 +30,9 @@ Set-Alias databricks databricks.exe
 function df { Get-PSDrive -PSProvider FileSystem }
 function export($kv) { $k, $v = $kv -split '=', 2; Set-Item "env:$k" $v }
 
+# Git doesn't ask to retry a folder it can't delete, e.g. one open in a terminal
+$env:GIT_ASK_YESNO = "false"
+
 # GNU versions of commands PowerShell or Windows already use (uutils-coreutils)
 foreach ($c in "cat", "ls", "cp", "rm", "mv", "sort") { Set-Alias "g$c" "$HOME\scoop\shims\$c.exe" }
 

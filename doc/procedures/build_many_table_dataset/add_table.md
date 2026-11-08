@@ -27,13 +27,14 @@ To copy a block, and uncomment the copy:
    the AI a sample file, and ask for the select lines.
 4. Do the same in **fetch.yml**.
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
-   **--names**, and uncomment the copy.
-6. Copy the view template into **views/**. Change its **CHANGE_ME** line.
+   **--names**, and the view's **# - file** block under **libraries**.
+   Uncomment the copies.
+6. Copy the view template into **tables/**. Change its **CHANGE_ME** line.
 7. Copy the silver rules template into **conf/silver_expectations/**.
    Change its **CHANGE_ME** line: the key every record needs.
 8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
 9. Search for leftovers outside comments. Nothing shows.
-10. Check the plan. The ingest job shows change, for **--names**. Nothing
+10. Check the plan. The ingest job and the pipeline show change. Nothing
    else changes.
 11. Deploy.
 12. Check the plan again. All show unchanged.
@@ -57,8 +58,8 @@ edit datasets/$d/conf/onboarding.yml
 edit datasets/$d/conf/silver_transformations.yml
 edit datasets/$d/fetch.yml
 edit datasets/$d/resources.yml
-cp doc/templates/dataset/views/YOUR_TABLE.sql datasets/$d/views/$t.sql
-edit datasets/$d/views/$t.sql
+cp doc/templates/dataset/tables/silver.YOUR_TABLE.sql datasets/$d/tables/silver.$t.sql
+edit datasets/$d/tables/silver.$t.sql
 cp doc/templates/dataset/conf/silver_expectations/YOUR_TABLE.yml datasets/$d/conf/silver_expectations/$t.yml
 edit datasets/$d/conf/silver_expectations/$t.yml
 sed -i "/^\s*#/!{s/YOUR_TABLE/$t/g; s/YOUR_FILE/$f/g}" (grep -rlE "YOUR_TABLE|YOUR_FILE" datasets/$d)
@@ -79,13 +80,14 @@ py tools/bundle_plan.py dev
 4. Do the same with the commented line in the upload script. If the
    dataset will run on enterprise too, do the same in **fetch.yml**.
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
-   **--names**, and uncomment the copy.
-6. Copy the view template into **views/**. Change its **CHANGE_ME** line.
+   **--names**, and the view's **# - file** block under **libraries**.
+   Uncomment the copies.
+6. Copy the view template into **tables/**. Change its **CHANGE_ME** line.
 7. Copy the silver rules template into **conf/silver_expectations/**.
    Change its **CHANGE_ME** line: the key every record needs.
 8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
 9. Search for leftovers outside comments. Nothing shows.
-10. Check the plan. The ingest job shows change, for **--names**. Nothing
+10. Check the plan. The ingest job and the pipeline show change. Nothing
    else changes.
 11. Deploy.
 12. Check the plan again. All show unchanged.
@@ -110,8 +112,8 @@ edit datasets/$d/conf/silver_transformations.yml
 edit datasets/$d/upload_$d.ps1
 edit datasets/$d/fetch.yml
 edit datasets/$d/resources.yml
-cp doc/templates/dataset/views/YOUR_TABLE.sql datasets/$d/views/$t.sql
-edit datasets/$d/views/$t.sql
+cp doc/templates/dataset/tables/silver.YOUR_TABLE.sql datasets/$d/tables/silver.$t.sql
+edit datasets/$d/tables/silver.$t.sql
 cp doc/templates/dataset/conf/silver_expectations/YOUR_TABLE.yml datasets/$d/conf/silver_expectations/$t.yml
 edit datasets/$d/conf/silver_expectations/$t.yml
 sed -i "/^\s*#/!{s/YOUR_TABLE/$t/g; s/YOUR_FILE/$f/g}" (grep -rlE "YOUR_TABLE|YOUR_FILE" datasets/$d)

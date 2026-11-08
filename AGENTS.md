@@ -26,9 +26,10 @@ How data flows, in each dataset:
    all strings, then **silver.<table>_history**, typed, with SCD2 history.
    Its settings come from **conf/**, loaded into tables by the apply
    settings job.
-4. The views task runs **views/*.sql**, which makes **silver.<table>**, the
-   current records. SQL files under **tables/** build more tables inside
-   the pipeline, usually in **gold**.
+4. The pipeline also runs the SQL files under **tables/**. Each
+   **tables/silver.<table>.sql** makes the view **silver.<table>**, the
+   current records. Other files build more tables, usually in **gold**,
+   and may read those views.
 
 ```
 databricks.yml              bundle and variables; includes targets/ and datasets/*/resources.yml
@@ -36,10 +37,10 @@ datasets/<d>/resources.yml  catalog, schemas, volumes, jobs, pipeline
 datasets/<d>/conf/          onboarding.yml, silver_transformations.yml,
                             bronze_expectations.yml, silver_expectations/<table>.yml
 datasets/<d>/fetch.yml      what the fetch job downloads
-datasets/<d>/views/         one <table>.sql per table, plus any extra views
-datasets/<d>/tables/        optional SQL tables the pipeline builds, e.g. edsm's gold layer
+datasets/<d>/tables/        SQL the pipeline runs: one silver.<table>.sql view per table,
+                            plus extra tables, e.g. edsm's gold layer
 datasets/<d>/upload_<d>.ps1 free only: downloads the files and puts them in the inbox
-shared/                     python the jobs run: router, fetch, views, the pipeline runner
+shared/                     python the jobs run: router, fetch, the pipeline runner
 targets/*.local.yml         targets, git-ignored, with the bucket names
 doc/procedures/             step-by-step procedures
 doc/templates/              files to copy
@@ -72,7 +73,8 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
   - conf/silver_expectations/<table>.yml: copied from the template
   - fetch.yml: one entry, with the file named after the table
   - resources.yml: one name in the router's **--names** list
-  - views/<table>.sql: copied from the template
+  - tables/silver.<table>.sql: copied from the template, and listed in
+    the pipeline's **libraries** in resources.yml
 - Don't invent a layout. When unsure, copy **datasets/edsm/**: several
   tables, gzipped files, and a gold layer.
 - Joins, group-bys and windows can't go in sdp-meta's YAML. Put them in SQL

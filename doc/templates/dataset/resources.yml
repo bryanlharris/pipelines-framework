@@ -121,19 +121,6 @@ resources:
               outcome: "true"
           pipeline_task:
             pipeline_id: ${resources.pipelines.YOUR_DATASET_pipeline.id}
-        - task_key: views
-          # Fail once, no retries.
-          disable_auto_optimization: true
-          depends_on:
-            - task_key: pipeline
-          environment_key: default
-          spark_python_task:
-            python_file: ../../shared/create_views.py
-            parameters:
-              - --catalog
-              - ${resources.catalogs.YOUR_DATASET.name}
-              - --folder
-              - ${workspace.file_path}/datasets/YOUR_DATASET/views
       environments:
         - environment_key: default
           spec:
@@ -254,6 +241,10 @@ resources:
       libraries:
         - notebook:
             path: ../../shared/init_sdp_meta_pipeline.py
+        # Current views. One entry per table, made from its
+        # tables/silver.<table>.sql. Copy for each table.
+        # - file:
+        #     path: tables/silver.YOUR_TABLE.sql
       configuration:
         layer: bronze_silver
         bronze.dataflowspecTable: ${resources.catalogs.YOUR_DATASET.name}.sdp_meta.bronze_dataflowspec

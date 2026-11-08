@@ -34,7 +34,7 @@ $d = "YOUR_DATASET"
 $o = "YOUR_OWNER"
 cp -r doc/templates/dataset datasets/$d
 mv datasets/$d/upload_YOUR_DATASET.ps1 datasets/$d/upload_$d.ps1
-rm datasets/$d/views/YOUR_TABLE.sql
+rm datasets/$d/tables/silver.YOUR_TABLE.sql
 rm datasets/$d/conf/silver_expectations/YOUR_TABLE.yml
 sed -i "s/YOUR_DATASET/$d/g; s/YOUR_OWNER/$o/g" (grep -rlE "YOUR_DATASET|YOUR_OWNER" datasets/$d)
 edit datasets/$d/resources.yml
@@ -75,7 +75,7 @@ $d = "YOUR_DATASET"
 $o = "YOUR_OWNER"
 cp -r doc/templates/dataset datasets/$d
 mv datasets/$d/upload_YOUR_DATASET.ps1 datasets/$d/upload_$d.ps1
-rm datasets/$d/views/YOUR_TABLE.sql
+rm datasets/$d/tables/silver.YOUR_TABLE.sql
 rm datasets/$d/conf/silver_expectations/YOUR_TABLE.yml
 sed -i "s/YOUR_DATASET/$d/g; s/YOUR_OWNER/$o/g" (grep -rlE "YOUR_DATASET|YOUR_OWNER" datasets/$d)
 edit datasets/$d/resources.yml

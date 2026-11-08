@@ -1,8 +1,10 @@
--- No catalog here. The views task picks it, so every target runs this file.
+-- No catalog here: the pipeline's catalog, so every target runs this file.
 -- One row per PDF, no PII values: which kinds of PII ai_classify found,
 -- counting only labels with confidence 0.8 or more.
-CREATE OR REPLACE VIEW silver.pii_inventory
-COMMENT 'One row per PDF: whether it holds PII, which kinds, and the highest confidence. No PII values.'
+CREATE VIEW silver.pii_inventory
+COMMENT 'View.
+
+One row per PDF: whether it holds PII, which kinds, and the highest confidence. No PII values.'
 AS WITH findings AS (
   SELECT source_file, ingest_time, f.value AS label, f.confidence_score AS confidence
   FROM silver.documents

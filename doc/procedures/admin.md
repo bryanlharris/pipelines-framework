@@ -59,7 +59,7 @@ databricks bundle run YOUR_DATASET_pipeline -t YOUR_TARGET --full-refresh bronze
 ## Run Ingest by Hand
 
 Files can sit in the inbox when a run was stopped, or the trigger missed
-them. The ingest job moves them, then runs the pipeline and the views.
+them. The ingest job moves them, then runs the pipeline.
 
 1. Run the ingest job.
 2. End.
@@ -107,6 +107,31 @@ count each record they drop or warn about.
 1. Open the pipeline in Jobs & Pipelines.
 2. Click **Stop**.
 3. End.
+
+## Table Is Managed by Another Pipeline
+
+Only the pipeline that made a table can update it. If the bundle loses its
+pipeline, e.g. after a deploy that stopped partway, it makes a new one, and
+the new one fails on the old tables. The error names the old pipeline's
+number.
+
+1. Look up the old pipeline by its number.
+2. If it exists, bind it to the bundle key. Then delete the new, empty
+   pipeline in the GUI: the one created later.
+3. If it doesn't exist, drop each table the error names. raw.files keeps
+   every file, so nothing is lost.
+4. Run the pipeline. It rebuilds what you dropped. If another table fails
+   with the same number, drop it too, and run again.
+5. Check the plan. All show unchanged.
+6. End.
+
+```
+databricks pipelines get YOUR_PIPELINE_ID -p YOUR_TARGET
+databricks bundle deployment bind YOUR_DATASET_pipeline YOUR_PIPELINE_ID -t YOUR_TARGET --auto-approve
+DROP TABLE YOUR_CATALOG.YOUR_SCHEMA.YOUR_TABLE;
+databricks bundle run YOUR_DATASET_pipeline -t YOUR_TARGET
+py tools/bundle_plan.py YOUR_TARGET
+```
 
 ## Pause or Start the Fetch Schedule
 

@@ -30,8 +30,8 @@ While you work:
   in. Leave the commented block for the next table.
 - Per table, fill all of these: conf/onboarding.yml,
   conf/silver_transformations.yml, conf/silver_expectations/<table>.yml,
-  views/<table>.sql, the router's --names in resources.yml, fetch.yml, and
-  on free the upload script.
+  tables/silver.<table>.sql, the router's --names and the pipeline's
+  libraries in resources.yml, fetch.yml, and on free the upload script.
 - When unsure, copy what datasets/edsm/ does.
 
 Before you finish:
