@@ -26,10 +26,6 @@ Set-Alias edit vim
 # Tab stops at "databricks", not "databricks." (databricks.yml also matches)
 Set-Alias databricks databricks.exe
 
-# Linux-style commands
-function df { Get-PSDrive -PSProvider FileSystem }
-function export($kv) { $k, $v = $kv -split '=', 2; Set-Item "env:$k" $v }
-
 # Git doesn't ask to retry a folder it can't delete, e.g. one open in a terminal
 $env:GIT_ASK_YESNO = "false"
 

@@ -25,7 +25,7 @@ Nothing should be left.
 Each new kind of thing adds a folder here, and a line to this list
 saying what it is for.
 
-- [pc/](pc/profile.ps1): PowerShell profile lines, plus [a WezTerm config](pc/wezterm.lua) and [VS Code settings](pc/vscode_settings.json)
+- [pc/](pc/profile.ps1): PowerShell profile lines, plus [a WezTerm config](pc/wezterm.lua) and [VS Code settings](pc/vscode_settings.jsonc)
 - [mac/](mac/shell_profile): shell profile lines, for zsh or bash
 - [genie/](genie/sdp-framework/SKILL.md): a Genie Code skill that points at AGENTS.md
 - [target/](target/): targets.free.local.yml for free, targets.team.local.yml for dev, staging and prod, plus [the catalog's targets section](target/catalog_targets.yml)

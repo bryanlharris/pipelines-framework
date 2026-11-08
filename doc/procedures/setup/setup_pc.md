@@ -30,7 +30,7 @@ cd YOUR_REPO
 mkdir -Force (Split-Path $PROFILE)
 cat doc/templates/pc/profile.ps1 >> $PROFILE
 cp doc/templates/pc/wezterm.lua ~/.wezterm.lua
-cp doc/templates/pc/vscode_settings.json $env:APPDATA/Code/User/settings.json
+cp doc/templates/pc/vscode_settings.jsonc $env:APPDATA/Code/User/settings.json
 ```
 
 ---
