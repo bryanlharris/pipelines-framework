@@ -1,73 +1,153 @@
 # AGENTS.md
 
-Instructions for AI assistants (Copilot, Claude and others) working in this repo.
+Instructions for AI assistants working in this repo: Genie Code, Claude,
+Copilot and others. Read this first, then the procedure for the task.
 
 ## What This Repo Is
 
 One Databricks Asset Bundle that loads files into Delta tables with
-sdp-meta (Databricks Labs). Each dataset is a folder under **datasets/**.
-Files arrive in a volume, a router files them, and one pipeline per dataset
-builds bronze, silver SCD2 and a current view per table.
+sdp-meta (Databricks Labs). Each dataset is a folder under **datasets/**,
+with its own catalog, jobs and pipeline. The same code deploys to free, dev,
+staging and prod; the target sets the catalog prefix and the bucket.
+
+How data flows, in each dataset:
+
+1. A file lands in the inbox volume, **raw.inbox**. The fetch job downloads
+   it from a URL in **fetch.yml**; on free, the upload script sends it; a
+   file can also be copied in.
+2. The ingest job's router moves it to **raw.files/<table>/**, adding a time
+   stamp to its name. A file is named after its table. Files the router
+   can't match go to **inbox/unknown_files**. Nothing in raw.files is ever
+   deleted.
+3. The pipeline, run by sdp-meta, reads raw.files into **bronze.<table>**,
+   all strings, then **silver.<table>_history**, typed, with SCD2 history.
+   Its settings come from **conf/**, loaded into tables by the apply
+   settings job.
+4. The views task runs **views/*.sql**, which makes **silver.<table>**, the
+   current records. SQL files under **tables/** build more tables inside
+   the pipeline, usually in **gold**.
 
 ```
-databricks.yml              bundle, variables; includes targets/ and datasets/*/resources.yml
+databricks.yml              bundle and variables; includes targets/ and datasets/*/resources.yml
 datasets/<d>/resources.yml  catalog, schemas, volumes, jobs, pipeline
-datasets/<d>/conf/          sdp-meta settings: onboarding.yml, silver_transformations.yml,
+datasets/<d>/conf/          onboarding.yml, silver_transformations.yml,
                             bronze_expectations.yml, silver_expectations/<table>.yml
-datasets/<d>/views/         one <table>.sql per table; extra views too, e.g. pii_inventory
-datasets/<d>/tables/        optional SQL tables the pipeline builds, e.g. edsm's gold layer
 datasets/<d>/fetch.yml      what the fetch job downloads
-shared/                     python the jobs run (router, fetch, views)
-targets/*.local.yml         targets, git-ignored (bucket names)
+datasets/<d>/views/         one <table>.sql per table, plus any extra views
+datasets/<d>/tables/        optional SQL tables the pipeline builds, e.g. edsm's gold layer
+datasets/<d>/upload_<d>.ps1 free only: downloads the files and puts them in the inbox
+shared/                     python the jobs run: router, fetch, views, the pipeline runner
+targets/*.local.yml         targets, git-ignored, with the bucket names
 doc/procedures/             step-by-step procedures
 doc/templates/              files to copy
-tools/                      bundle_plan.py (what a deploy would do), bind_catalogs.ps1, pack_for_ai.ps1
+tools/                      bundle_plan.py, bind_catalogs.ps1
 ```
+
+## Which Procedure
+
+| Task                                    | Procedure                                              |
+|-----------------------------------------|--------------------------------------------------------|
+| Set up a computer and the CLI           | doc/procedures/setup.md                                |
+| Add a dataset                           | doc/procedures/build_many_table_dataset/add_dataset.md |
+| Add a table                             | doc/procedures/build_many_table_dataset/add_table.md   |
+| Add a data quality rule                 | doc/procedures/add_rules.md                            |
+| Skip a bad file                         | doc/procedures/remove_bad_file.md                      |
+| Custom Python for one dataset           | doc/procedures/add_custom_code.md                      |
+| Dev target: set up, bind, test, release | doc/procedures/dev.md                                  |
+| Apply settings, refresh, errors         | doc/procedures/admin.md                                |
+| Learn how the pieces work               | doc/procedures/build_one_table_dataset.md              |
 
 ## Build From the Templates
 
-- New dataset: follow doc/procedures/build_many_table_dataset.md. Copy
-  doc/templates/dataset/, replace YOUR_DATASET, fill in CHANGE_ME lines.
-- New table: follow doc/procedures/build_many_table_dataset/add_table.md.
-  Each file keeps a commented block per table between copy markers. Copy the
-  block below its **To here** line, uncomment the copy, fill it in. Leave
-  the commented block for the next table. Per table:
+- A new dataset is a copy of **doc/templates/dataset/**, with YOUR_DATASET
+  and YOUR_OWNER replaced and the CHANGE_ME lines written.
+- A new table is one block per file. Each file keeps a commented block
+  between copy markers: copy it below its **To here** line, uncomment the
+  copy, fill it in, and leave the commented block for the next table.
   - conf/onboarding.yml: one entry, with the next data_flow_id
-  - conf/silver_transformations.yml: one entry
-  - fetch.yml: one entry; name the file after the table, e.g. powerPlay.json
-  - resources.yml: one name in the router's --names list
-  - views/<table>.sql: copied from doc/templates/dataset/views/YOUR_TABLE.sql
-  - conf/silver_expectations/<table>.yml: copied from the template; the key rule
-- Don't invent a new layout. Copy edsm (datasets/edsm/) when unsure: it has several tables, gunzip and a gold layer.
-- Rules: doc/procedures/add_rules.md. Bronze rules are one file per dataset (strings, use try_cast); silver rules are one file per table (typed). expect counts, expect_or_drop removes, expect_or_fail stops the pipeline.
-- Joins, group-bys and windows can't go in sdp-meta's YAML. They go in SQL files under tables/, as pipeline libraries, usually in a gold schema.
-- Custom Python for one dataset: doc/procedures/add_custom_code.md (its own pipeline runner). Avoid unless YAML and SQL can't do it.
+  - conf/silver_transformations.yml: one entry, with the casts
+  - conf/silver_expectations/<table>.yml: copied from the template
+  - fetch.yml: one entry, with the file named after the table
+  - resources.yml: one name in the router's **--names** list
+  - views/<table>.sql: copied from the template
+- Don't invent a layout. When unsure, copy **datasets/edsm/**: several
+  tables, gzipped files, and a gold layer.
+- Joins, group-bys and windows can't go in sdp-meta's YAML. Put them in SQL
+  files under **tables/**, listed as pipeline libraries, in the gold schema.
+- Custom Python is a last resort: a dataset gets its own pipeline runner.
 
 ## Names
 
-- Catalog: ${var.catalog_prefix}<dataset>, e.g. dev_treasury.
-- Schemas: raw, bronze, silver, sdp_meta. Volumes: raw.inbox, raw.files, sdp_meta.conf.
-- Jobs: "<dataset> - ingest", "<dataset> - apply settings", "<dataset> - fetch". Pipeline: "<dataset> - pipeline".
-- Tables: bronze.<table>, silver.<table>_history (SCD2), view silver.<table>.
-- Template blanks: YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE, YOUR_FILE, YOUR_TARGET, CHANGE_ME.
-- Every job and pipeline is tagged: dataset, role (ingest, apply_settings, fetch, pipeline), owner.
+- Catalog: `${var.catalog_prefix}<dataset>`, e.g. dev_treasury. On free, no prefix.
+- Schemas: raw, bronze, silver, sdp_meta, and gold when there are SQL tables.
+  Volumes: raw.inbox, raw.files, sdp_meta.conf.
+- Jobs: "<dataset> - ingest", "<dataset> - apply settings", "<dataset> - fetch".
+  Pipeline: "<dataset> - pipeline".
+- Tables: bronze.<table>, silver.<table>_history, view silver.<table>.
+- Blanks in templates: YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
+  YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.
+- Tags on every job and pipeline: dataset, role (ingest, apply_settings,
+  fetch, pipeline), owner.
+- `databricks bundle run` takes the key from resources.yml, e.g.
+  edsm_pipeline, not the name the GUI shows.
 
 ## Rules
 
-- Check every change: `py tools/bundle_plan.py <target>`, deploy, plan again. The second plan shows all unchanged.
-- Never commit bucket names or tokens. They live in targets/*.local.yml.
-- Every compute task sets `disable_auto_optimization: true`, so it fails once with no retries. Pipeline tasks don't: they ignore it.
-- Free, dev and staging set `presets: pipelines_development: true`. Don't use `mode: development` or `presets.name_prefix`: they rename the schemas and break the /Volumes paths.
-- Comment every catalog, schema, volume and table. Catalog comments are markdown: blank lines between sentences, bullets for lists.
-- Free Edition: no bucket; the catalog is made with SQL, then bound; files come from the upload script.
-- Enterprise: the bundle makes the catalog in the target's bucket; files come from the fetch job. After deploy, run `./tools/bind_catalogs.ps1 -Target <t>`: it binds each catalog to the workspace, isolates it and turns on data classification (the bundle can't yet).
-- A bad file: never delete it from raw/files. List it in the dataset's not_a_bad_file rule, then full refresh; see doc/procedures/remove_bad_file.md. The router puts files it can't match in inbox/unknown_files.
-- conf/ changes need deploy, then the apply settings job. resources.yml changes need only deploy. Small tasks: doc/procedures/admin.md.
-- `databricks bundle run` takes the key from resources.yml (edsm_pipeline), not the GUI name (edsm - pipeline).
-- Windows: PowerShell (pwsh), `py` not `python3`, GNU grep and sed via scoop. Mac: pwsh too.
+Checking:
+
+- After every change: `py tools/bundle_plan.py <target>`, deploy, plan
+  again. The second plan shows all unchanged.
+- A change to **conf/** needs a deploy, then the apply settings job. A change
+  to **resources.yml** needs only a deploy.
+- A full refresh rebuilds every table from raw.files. It costs compute, and
+  edsm has over a million records. Ask before running one on a big dataset.
+
+Safety:
+
+- Never commit bucket names, hosts or tokens. They live in
+  **targets/*.local.yml**, which git ignores. A fresh clone has no targets
+  file: copy **doc/templates/target/targets.local.yml** and fill it in.
+- Deploy to free or dev. Staging and prod get releases, by tag; see dev.md.
+- Never delete a file from raw.files. To skip a bad file, list it in the
+  dataset's **not_a_bad_file** rule, then full refresh.
+- Free Edition has a daily serverless limit. RESOURCE_EXHAUSTED means wait.
+
+Jobs and pipelines:
+
+- Every compute task sets `disable_auto_optimization: true`, so it fails
+  once with no retries. Pipeline tasks ignore it, so they don't set it.
+- Free, dev and staging set `presets: pipelines_development: true`, so a
+  failed update stops. Never use `mode: development` or
+  `presets.name_prefix`: they rename the schemas and break the volume paths.
+- Comment every catalog, schema, volume and table. Catalog comments are
+  markdown: blank lines between sentences, bullets for lists.
+
+Data quality rules:
+
+- Bronze rules: one file per dataset, on string columns, so cast with
+  try_cast. Silver rules: one file per table, on typed columns.
+- `expect` counts a bad record, `expect_or_drop` removes it,
+  `expect_or_fail` stops the pipeline. Fail only when the whole file is
+  broken.
+
+Targets:
+
+- Free: no bucket. The catalog is made with SQL, then bound. Files come from
+  the upload script.
+- Enterprise: the bundle makes the catalog in the target's bucket. Files
+  come from the fetch job. After the first deploy, and after each new
+  dataset, run `./tools/bind_catalogs.ps1 -Target <t>`: it binds each
+  catalog to the workspace, isolates it and turns on data classification.
+
+## Commands
+
+- The procedures' commands are PowerShell (pwsh), on Windows and Mac alike.
+- Windows: `py`, not `python3`; GNU grep and sed from scoop; `edit` opens
+  the editor.
 
 ## Writing
 
 - Short sentences, plain words, actor before action. Cut extra words.
-- Procedures: numbered steps, then one code block of commands only, in step order. See doc/procedures/ for examples.
+- Procedures: numbered steps, then one code block of commands only, in step
+  order. Blanks in **bold**. See doc/procedures/ for examples.
 - Commits: short subject, blank line, short bullets.
