@@ -10,45 +10,45 @@
 #
 # Each catalog keeps its data in s3://<bucket>/catalogs/<catalog>/.
 targets:
-#  dev:
-#    # A failed pipeline update stops, no retries.
-#    presets:
-#      pipelines_development: true
-#    workspace:
-#      profile: dev
-#    variables:
-#      # Your first name keeps your copy apart from everyone else's.
-#      catalog_prefix: dev_${bundle.name}_CHANGE_ME_   # → your first name, e.g. dev_${bundle.name}_jim_
-#      catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
+#   dev:
+#     # A failed pipeline update stops, no retries.
+#     presets:
+#       pipelines_development: true
+#     workspace:
+#       profile: dev
+#     variables:
+#       # Your first name keeps your copy apart from everyone else's.
+#       catalog_prefix: dev_${bundle.name}_CHANGE_ME_   # → your first name, e.g. dev_${bundle.name}_jim_
+#       catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
 #
-#  staging:
-#    presets:
-#      pipelines_development: true
-#    workspace:
-#      profile: staging
-#      # One shared copy: its state lives here, not in your home folder.
-#      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
-#    permissions:
-#      - user_name: CHANGE_ME → the team lead's email
-#        level: CAN_MANAGE
-#      - group_name: CHANGE_ME → the team's group
-#        level: CAN_VIEW
-#    variables:
-#      catalog_prefix: staging_
-#      catalog_bucket: CHANGE_ME → the bucket name only
+#   staging:
+#     presets:
+#       pipelines_development: true
+#     workspace:
+#       profile: staging
+#       # One shared copy: its state lives here, not in your home folder.
+#       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+#     permissions:
+#       - user_name: CHANGE_ME → the team lead's email
+#         level: CAN_MANAGE
+#       - group_name: CHANGE_ME → the team's group
+#         level: CAN_VIEW
+#     variables:
+#       catalog_prefix: staging_
+#       catalog_bucket: CHANGE_ME → the bucket name only
 #
-#  prod:
-#    workspace:
-#      profile: prod
-#      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
-#    # Jobs and pipelines run as the service principal, not as whoever deployed.
-#    run_as:
-#      service_principal_name: CHANGE_ME → the sp's application id
-#    permissions:
-#      - group_name: CHANGE_ME → the admins' group
-#        level: CAN_MANAGE
-#      - group_name: CHANGE_ME → the team's group
-#        level: CAN_VIEW
-#    variables:
-#      catalog_prefix: ""
-#      catalog_bucket: CHANGE_ME → the bucket name only
+#   prod:
+#     workspace:
+#       profile: prod
+#       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+#     # Jobs and pipelines run as the service principal, not as whoever deployed.
+#     run_as:
+#       service_principal_name: CHANGE_ME → the sp's application id
+#     permissions:
+#       - group_name: CHANGE_ME → the admins' group
+#         level: CAN_MANAGE
+#       - group_name: CHANGE_ME → the team's group
+#         level: CAN_VIEW
+#     variables:
+#       catalog_prefix: ""
+#       catalog_bucket: CHANGE_ME → the bucket name only

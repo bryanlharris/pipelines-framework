@@ -4,9 +4,9 @@
 # Free has no bucket and no prefix: the treasury dataset deploys as the
 # catalog treasury.
 targets:
-#  free:
-#    # A failed pipeline update stops, no retries.
-#    presets:
-#      pipelines_development: true
-#    workspace:
-#      profile: free
+#   free:
+#     # A failed pipeline update stops, no retries.
+#     presets:
+#       pipelines_development: true
+#     workspace:
+#       profile: free
