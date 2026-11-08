@@ -24,8 +24,8 @@ copy, kept apart by the first name in their prefix, e.g.
 7. Deploy.
 8. Check the plan again. All show unchanged.
 9. Bind your catalogs, and turn on data classification.
-10. For each dataset, run the fetch job, then apply settings, then the
-    ingest job by hand.
+10. For each dataset, run apply settings, then the fetch job. The ingest
+    job starts when the files land; if it doesn't, run it by hand.
 11. When it works, merge your branch into master and push. If the team
     uses pull requests, push the branch and open one instead.
 12. End.
@@ -39,8 +39,8 @@ py tools/bundle_plan.py dev
 databricks bundle deploy -t dev
 py tools/bundle_plan.py dev
 ./tools/bind_catalogs.ps1 -Target dev
-databricks bundle run YOUR_DATASET_fetch -t dev
 databricks bundle run YOUR_DATASET_apply_settings -t dev
+databricks bundle run YOUR_DATASET_fetch -t dev
 databricks bundle run YOUR_DATASET_ingest -t dev
 git switch master
 git merge YOUR_BRANCH

@@ -1,7 +1,8 @@
 # Glossary
 
-- **apply settings:** sdp-meta calls it onboarding
-- **settings tables:** sdp-meta's dataflowspec tables
-- **bad file:** a file the bronze rule skips
-- **unknown file:** a file the router couldn't match to a table
-- **SCD2:** full history tables (keeps every version of a record)
+- **apply settings:** Load all your settings from **conf/** so they can be used in the job
+- **settings tables:** These are the tables loaded by the **apply settings** jobs
+- **bad file:** we list bad files in a data quality rule so they never get loaded
+- **unknown file:** a file the router skips because it couldn't recognize the filename
+- **SCD2:** full history tables (**valid_from** - **valid_to** style tables)
+- **SDP:** SDP Meta is the Databricks Labs code we're using
