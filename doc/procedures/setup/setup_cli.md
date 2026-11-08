@@ -1,4 +1,4 @@
-← [setup_pc.md](setup_pc.md) or [setup_mac.md](setup_mac.md) | none →
+← [setup_pc.md](setup_pc.md) or [setup_mac.md](setup_mac.md) | [setup_genie.md](setup_genie.md) →
 
 # Set Up the Databricks CLI
 
@@ -61,4 +61,4 @@ default_profile = free
 
 ---
 
-← [setup_pc.md](setup_pc.md) or [setup_mac.md](setup_mac.md) | none →
+← [setup_pc.md](setup_pc.md) or [setup_mac.md](setup_mac.md) | [setup_genie.md](setup_genie.md) →

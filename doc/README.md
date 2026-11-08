@@ -14,7 +14,7 @@ How to set up, build and release with this repo. Start with
 ```
 doc/
   procedures/
-    setup/                     parts of setup.md: PC, Mac, CLI
+    setup/                     parts of setup.md: PC, Mac, CLI, Genie
     build_one_table_dataset/   parts of build_one_table_dataset.md, the bootcamp
     build_many_table_dataset/  parts of build_many_table_dataset.md: dataset, table
     dev/                       parts of dev.md: set up, bind, test, release
@@ -23,6 +23,7 @@ doc/
     build_one_table_dataset/   one folder per bootcamp part
     target/                    the targets file
     pc/, mac/                  shell profile, editor and terminal settings
+    genie/                     the Genie Code skill
 ```
 
 A procedure with parts is a file, plus a folder of the same name. The file
