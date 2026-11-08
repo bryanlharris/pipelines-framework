@@ -12,7 +12,7 @@ history table.
 3. Read the library template into the pipeline. Go to the notebook
    library's last line, **path**, and add the template's lines below it.
    In vim, type
-   :r doc/templates/build_one_table_dataset/view/pipeline_library.yml
+   :r doc/templates/bootcamp/view/pipeline_library.yml
 4. Replace **YOUR_TABLE** in **resources.yml**.
 5. Open the view, **tables/silver.YOUR_TABLE**.sql.
 6. Replace **YOUR_TABLE**.
@@ -28,7 +28,7 @@ history table.
 
 ```
 mkdir datasets/YOUR_DATASET/tables/
-cp doc/templates/build_one_table_dataset/view/current.sql datasets/YOUR_DATASET/tables/silver.YOUR_TABLE.sql
+cp doc/templates/bootcamp/view/current.sql datasets/YOUR_DATASET/tables/silver.YOUR_TABLE.sql
 edit datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/tables/silver.YOUR_TABLE.sql
 py tools/bundle_plan.py YOUR_TARGET

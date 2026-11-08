@@ -18,8 +18,8 @@ Silver keeps every version of each record with a **__START_AT** and
     name, unless a value changed.
 
 ```
-cat doc/templates/build_one_table_dataset/silver_scd2/onboarding.yml >> datasets/YOUR_DATASET/conf/onboarding.yml
-cp doc/templates/build_one_table_dataset/silver_scd2/silver_transformations.yml datasets/YOUR_DATASET/conf/
+cat doc/templates/bootcamp/silver_scd2/onboarding.yml >> datasets/YOUR_DATASET/conf/onboarding.yml
+cp doc/templates/bootcamp/silver_scd2/silver_transformations.yml datasets/YOUR_DATASET/conf/
 edit datasets/YOUR_DATASET/conf/onboarding.yml
 edit datasets/YOUR_DATASET/conf/silver_transformations.yml
 databricks bundle deploy -t YOUR_TARGET

@@ -15,13 +15,13 @@ How to set up, build and release with this repo. Start with
 doc/
   procedures/
     setup/                     parts of setup.md: PC, Mac, CLI, Genie
-    build_one_table_dataset/   parts of build_one_table_dataset.md, the bootcamp
+    bootcamp/                  parts of bootcamp.md: learn one piece at a time
     build_many_table_dataset/  parts of build_many_table_dataset.md: dataset, table
     targets/                   one procedure per target; dev/ holds the parts of dev.md
   templates/
     dataset/                   a whole dataset, ready to copy
-    build_one_table_dataset/   one folder per bootcamp part
-    target/                    the targets file
+    bootcamp/                  one folder per bootcamp part
+    target/                    the targets templates: free and team
     pc/, mac/                  shell profile, editor and terminal settings
     genie/                     the Genie Code skill
 ```

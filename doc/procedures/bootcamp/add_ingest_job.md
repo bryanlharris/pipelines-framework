@@ -14,7 +14,7 @@ pipeline part adds the rest: bronze and silver.
 7. List **files/**. The file is there, with a time stamp.
 
 ```
-cat doc/templates/build_one_table_dataset/ingest/resources.yml >> datasets/YOUR_DATASET/resources.yml
+cat doc/templates/bootcamp/ingest/resources.yml >> datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET

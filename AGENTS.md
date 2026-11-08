@@ -65,7 +65,7 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 | Custom Python for one dataset           | doc/procedures/add_custom_code.md                      |
 | Set up a target: free, dev, staging, prod | doc/procedures/targets/README.md                     |
 | Apply settings, refresh, errors         | doc/procedures/admin.md                                |
-| Learn how the pieces work; not for real work | doc/procedures/build_one_table_dataset.md         |
+| Learn how the pieces work; not for real work | doc/procedures/bootcamp.md            |
 
 ## Build From the Templates
 

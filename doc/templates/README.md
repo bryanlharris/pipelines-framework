@@ -31,14 +31,14 @@ saying what it is for.
 - [target/](target/): targets.free.local.yml for free, targets.team.local.yml for dev, staging and prod, plus [the catalog's targets section](target/catalog_targets.yml)
 - [dataset/](dataset/resources.yml): a whole dataset, ready to copy, with [bronze rules](dataset/conf/bronze_expectations.yml). Per-table blocks are commented out; copy one for each table
 - [custom_runner/](custom_runner/init_sdp_meta_pipeline.py): a pipeline runner with custom code, for one dataset
-- [build_one_table_dataset/](build_one_table_dataset/): the teaching parts, one folder per part of [build_one_table_dataset.md](../procedures/build_one_table_dataset.md)
-  - [catalog/](build_one_table_dataset/catalog/resources.yml): the start of a dataset's resources.yml, its catalog
-  - [schemas_and_volumes/](build_one_table_dataset/schemas_and_volumes/resources.yml): a dataset's schemas and volumes, added to resources.yml
-  - [upload/](build_one_table_dataset/upload/upload.ps1): a script that downloads a file and puts it in the inbox
-  - [ingest/](build_one_table_dataset/ingest/resources.yml): the job that moves new files from the inbox to files
-  - [settings/](build_one_table_dataset/settings/resources.yml): the job that applies a dataset's settings
-  - [bronze/](build_one_table_dataset/bronze/onboarding.yml): the start of a dataset's conf/onboarding.yml, one table's bronze entry
-  - [pipeline/](build_one_table_dataset/pipeline/resources.yml): a dataset's pipeline, plus [the ingest job's tasks](build_one_table_dataset/pipeline/ingest_tasks.yml) that run it
-  - [silver_scd2/](build_one_table_dataset/silver_scd2/onboarding.yml): one table's silver settings, plus [its selects](build_one_table_dataset/silver_scd2/silver_transformations.yml)
-  - [view/](build_one_table_dataset/view/current.sql): a current view, plus [the ingest job's task](build_one_table_dataset/view/ingest_task.yml) that remakes it
-  - [fetch/](build_one_table_dataset/fetch/fetch.yml): a dataset's fetch list, plus [the fetch job](build_one_table_dataset/fetch/resources.yml)
+- [bootcamp/](bootcamp/): the teaching parts, one folder per part of [bootcamp.md](../procedures/bootcamp.md)
+  - [catalog/](bootcamp/catalog/resources.yml): the start of a dataset's resources.yml, its catalog
+  - [schemas_and_volumes/](bootcamp/schemas_and_volumes/resources.yml): a dataset's schemas and volumes, added to resources.yml
+  - [upload/](bootcamp/upload/upload.ps1): a script that downloads a file and puts it in the inbox
+  - [ingest/](bootcamp/ingest/resources.yml): the job that moves new files from the inbox to files
+  - [settings/](bootcamp/settings/resources.yml): the job that applies a dataset's settings
+  - [bronze/](bootcamp/bronze/onboarding.yml): the start of a dataset's conf/onboarding.yml, one table's bronze entry
+  - [pipeline/](bootcamp/pipeline/resources.yml): a dataset's pipeline, plus [the ingest job's tasks](bootcamp/pipeline/ingest_tasks.yml) that run it
+  - [silver_scd2/](bootcamp/silver_scd2/onboarding.yml): one table's silver settings, plus [its selects](bootcamp/silver_scd2/silver_transformations.yml)
+  - [view/](bootcamp/view/current.sql): a current view, plus [the ingest job's task](bootcamp/view/ingest_task.yml) that remakes it
+  - [fetch/](bootcamp/fetch/fetch.yml): a dataset's fetch list, plus [the fetch job](bootcamp/fetch/resources.yml)

@@ -9,7 +9,7 @@ tables say. The ingest job runs it after the router moves a file.
 2. Read the ingest tasks template into the ingest job, after the router
    task. Go to the router's last line, **YOUR_TABLE**, and add the
    template's lines below it. In vim, type
-   :r doc/templates/build_one_table_dataset/pipeline/ingest_tasks.yml
+   :r doc/templates/bootcamp/pipeline/ingest_tasks.yml
 3. Replace **YOUR_DATASET**.
 4. Check the plan. One pipeline shows create, and the ingest job update.
 5. Deploy.
@@ -21,7 +21,7 @@ tables say. The ingest job runs it after the router moves a file.
 10. Ask Genie how many records the bronze table has.
 
 ```
-cat doc/templates/build_one_table_dataset/pipeline/resources.yml >> datasets/YOUR_DATASET/resources.yml
+cat doc/templates/bootcamp/pipeline/resources.yml >> datasets/YOUR_DATASET/resources.yml
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET

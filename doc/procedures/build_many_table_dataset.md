@@ -2,7 +2,7 @@
 
 Builds a dataset with any number of tables, from the whole dataset template.
 Each table gets bronze, silver SCD2 and a current view. To learn how each
-piece works, see [build_one_table_dataset.md](build_one_table_dataset.md).
+piece works, see [bootcamp.md](bootcamp.md).
 
 ## Prerequisites
 
