@@ -5,7 +5,7 @@ How to set up, build and release with this repo. Start with
 
 - [procedures/](procedures/README.md): step-by-step instructions, one file per task
 - [templates/](templates/README.md): files to copy, which the procedures fill in
-- [glossary.md](glossary.md): definitions of uncommon terms
+- [glossary.md](glossary.md): list of terms with their definitions
 - [/tools/](../tools/README.md): scripts, e.g. bundle_plan.py, which shows what a deploy would do
 - [/AGENTS.md](../AGENTS.md): instructions for AI assistants, e.g. Copilot. Ask one to add a dataset or a table
 
