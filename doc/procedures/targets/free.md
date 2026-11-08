@@ -11,7 +11,7 @@ then bind it.
 
 ## Steps
 
-1. Copy the targets template into **targets/**, unless you have it.
+1. Copy the free targets template into **targets/**, unless you have it.
 2. Uncomment **free**.
 3. List the catalogs the bundle needs. It prints one name per dataset.
 4. Create each catalog in the SQL editor.
@@ -28,8 +28,8 @@ then bind it.
 11. End.
 
 ```
-cp doc/templates/target/targets.local.yml targets/
-edit targets/targets.local.yml
+cp doc/templates/target/targets.free.local.yml targets/
+edit targets/targets.free.local.yml
 $catalogs = (databricks bundle validate -t free -o json | ConvertFrom-Json).resources.catalogs.PSObject.Properties
 $catalogs.Value.name
 CREATE CATALOG YOUR_CATALOG

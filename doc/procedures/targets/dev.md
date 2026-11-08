@@ -1,5 +1,7 @@
 # Dev
 
+> **Old setup:** one shared dev, with the prefix **dev_**. The team setup replaces it: see [README.md](README.md). Its template is gone; copy **targets.team.local.yml** and set the prefixes this page shows.
+
 Sets up the dev target, tests it with a dataset, then releases master to it.
 
 ## Prerequisites

@@ -1,0 +1,12 @@
+# The free target: Free Edition, at home. Copy to targets/; git ignores it,
+# so it stays on this computer. Uncomment free.
+#
+# Free has no bucket and no prefix: the treasury dataset deploys as the
+# catalog treasury.
+targets:
+#  free:
+#    # A failed pipeline update stops, no retries.
+#    presets:
+#      pipelines_development: true
+#    workspace:
+#      profile: free

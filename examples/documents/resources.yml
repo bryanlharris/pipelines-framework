@@ -83,7 +83,7 @@ resources:
 
   jobs:
     documents_ingest:
-      name: documents - ingest
+      name: ${var.catalog_prefix}documents - ingest
       tags:
         dataset: documents
         role: ingest
@@ -132,7 +132,7 @@ resources:
             environment_version: "6"
 
     documents_apply_settings:
-      name: documents - apply settings
+      name: ${var.catalog_prefix}documents - apply settings
       tags:
         dataset: documents
         role: apply_settings
@@ -183,7 +183,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     documents_fetch:
-      name: documents - fetch
+      name: ${var.catalog_prefix}documents - fetch
       tags:
         dataset: documents
         role: fetch
@@ -233,7 +233,7 @@ resources:
 
   pipelines:
     documents_pipeline:
-      name: documents - pipeline
+      name: ${var.catalog_prefix}documents - pipeline
       catalog: ${resources.catalogs.documents.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.documents_bronze.name}

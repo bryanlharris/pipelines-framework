@@ -6,8 +6,8 @@
 #   databricks bundle deploy -t <target>
 #
 # No default target: every command names one with -t.
-# Targets go in a git-ignored targets/targets.local.yml, copied from
-# doc/templates/target/targets.local.yml.
+# Targets go in git-ignored files in targets/, copied from
+# doc/templates/target/: targets.free.local.yml or targets.team.local.yml.
 
 bundle:
   # Change to your team, e.g. sdp_edsm. The name sets where the bundle keeps its state.

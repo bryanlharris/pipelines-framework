@@ -40,14 +40,14 @@ The free target is for home use only, so git ignores it.
    ([how](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 2. Add the free profile to the config file, with your host and token.
 3. Check the profile. It prints your user.
-4. Copy the targets template into **targets/**.
+4. Copy the free targets template into **targets/**.
 5. Uncomment **free**.
 
 ```
 edit ~/.databrickscfg
 databricks current-user me --profile free
-cp doc/templates/target/targets.local.yml targets/
-edit targets/targets.local.yml
+cp doc/templates/target/targets.free.local.yml targets/
+edit targets/targets.free.local.yml
 ```
 
 ```

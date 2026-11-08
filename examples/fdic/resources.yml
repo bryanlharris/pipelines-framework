@@ -83,7 +83,7 @@ resources:
 
   jobs:
     fdic_ingest:
-      name: fdic - ingest
+      name: ${var.catalog_prefix}fdic - ingest
       tags:
         dataset: fdic
         role: ingest
@@ -132,7 +132,7 @@ resources:
             environment_version: "6"
 
     fdic_apply_settings:
-      name: fdic - apply settings
+      name: ${var.catalog_prefix}fdic - apply settings
       tags:
         dataset: fdic
         role: apply_settings
@@ -183,7 +183,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     fdic_fetch:
-      name: fdic - fetch
+      name: ${var.catalog_prefix}fdic - fetch
       tags:
         dataset: fdic
         role: fetch
@@ -233,7 +233,7 @@ resources:
 
   pipelines:
     fdic_pipeline:
-      name: fdic - pipeline
+      name: ${var.catalog_prefix}fdic - pipeline
       catalog: ${resources.catalogs.fdic.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.fdic_bronze.name}

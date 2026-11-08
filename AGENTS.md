@@ -89,11 +89,14 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 
 ## Names
 
-- Catalog: `${var.catalog_prefix}<dataset>`, e.g. dev_treasury. On free, no prefix.
+- Catalog: `${var.catalog_prefix}<dataset>`. On free and prod, no prefix:
+  treasury. Team dev adds the bundle and a first name: dev_team_jim_treasury.
+  Staging: staging_treasury.
 - Schemas: raw, bronze, silver, sdp_meta, and gold when there are SQL tables.
   Volumes: raw.inbox, raw.files, sdp_meta.conf.
-- Jobs: "<dataset> - ingest", "<dataset> - apply settings", "<dataset> - fetch".
-  Pipeline: "<dataset> - pipeline".
+- Jobs: "<prefix><dataset> - ingest", "- apply settings", "- fetch".
+  Pipeline: "<prefix><dataset> - pipeline". On free and prod the prefix is
+  empty, e.g. "treasury - ingest"; on team dev, "dev_team_jim_treasury - ingest".
 - Tables: bronze.<table>, silver.<table>_history, view silver.<table>.
 - Blanks in templates: YOUR_TEAM (the bundle name), YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
   YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.
@@ -117,8 +120,10 @@ Safety:
 
 - Never commit bucket names, hosts or tokens. They live in
   **targets/*.local.yml**, which git ignores. A fresh clone has no targets
-  file: copy **doc/templates/target/targets.local.yml** and fill it in.
-- Deploy to free or dev. Staging and prod get releases, by tag; see doc/procedures/targets/.
+  file: copy **doc/templates/target/targets.free.local.yml** or
+  **targets.team.local.yml**, and fill it in.
+- Deploy to free or your own dev. Staging and prod get releases, by tag, from
+  the lead and an admin; see doc/procedures/targets/.
 - Never delete a file from raw.files. To skip a bad file, list it in the
   dataset's **not_a_bad_file** rule, then full refresh.
 - Free Edition has a daily serverless limit. RESOURCE_EXHAUSTED means wait.

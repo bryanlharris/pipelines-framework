@@ -2,6 +2,8 @@
 
 # Set Up Dev
 
+> **Old setup:** one shared dev, with the prefix **dev_**. The team setup replaces it: see [README.md](../README.md). Its template is gone; copy **targets.team.local.yml** and set the prefixes this page shows.
+
 Adds the dev target. Its catalogs get the prefix **dev_**, e.g. **dev_treasury**,
 and live in the dev bucket.
 
@@ -16,7 +18,7 @@ and live in the dev bucket.
 
 ## How It Works
 
-If **targets/targets.local.yml** sets these two lines for dev:
+If **targets/targets.team.local.yml** sets these two lines for dev:
 
 ```
 catalog_prefix: dev_
@@ -61,8 +63,8 @@ with its own prefix and bucket.
 12. End.
 
 ```
-cp doc/templates/target/targets.local.yml targets/
-edit targets/targets.local.yml
+cp doc/templates/target/targets.team.local.yml targets/
+edit targets/targets.team.local.yml
 git grep -L "^targets:" -- "datasets/*/resources.yml"
 edit datasets/YOUR_DATASET/resources.yml
 py tools/bundle_plan.py dev

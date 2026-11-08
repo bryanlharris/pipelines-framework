@@ -28,7 +28,7 @@ saying what it is for.
 - [pc/](pc/profile.ps1): PowerShell profile lines, plus [a WezTerm config](pc/wezterm.lua) and [VS Code settings](pc/vscode_settings.json)
 - [mac/](mac/shell_profile): shell profile lines, for zsh or bash
 - [genie/](genie/sdp-framework/SKILL.md): a Genie Code skill that points at AGENTS.md
-- [target/](target/targets.local.yml): every target, commented out, plus [the catalog's targets section](target/catalog_targets.yml)
+- [target/](target/): targets.free.local.yml for free, targets.team.local.yml for dev, staging and prod, plus [the catalog's targets section](target/catalog_targets.yml)
 - [dataset/](dataset/resources.yml): a whole dataset, ready to copy, with [bronze rules](dataset/conf/bronze_expectations.yml). Per-table blocks are commented out; copy one for each table
 - [custom_runner/](custom_runner/init_sdp_meta_pipeline.py): a pipeline runner with custom code, for one dataset
 - [build_one_table_dataset/](build_one_table_dataset/): the teaching parts, one folder per part of [build_one_table_dataset.md](../procedures/build_one_table_dataset.md)

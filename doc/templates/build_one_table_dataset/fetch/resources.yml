@@ -2,7 +2,7 @@
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     YOUR_DATASET_fetch:
-      name: YOUR_DATASET - fetch
+      name: ${var.catalog_prefix}YOUR_DATASET - fetch
       description: Downloads what fetch.yml lists into the inbox, where the ingest job takes over.
       max_concurrent_runs: 1
       schedule:

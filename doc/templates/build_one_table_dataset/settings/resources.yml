@@ -1,6 +1,6 @@
 
     YOUR_DATASET_apply_settings:
-      name: YOUR_DATASET - apply settings
+      name: ${var.catalog_prefix}YOUR_DATASET - apply settings
       description: Copies YOUR_DATASET/conf to a volume, then writes sdp-meta's settings tables. Run after each change to conf/.
       tasks:
         - task_key: stage_conf

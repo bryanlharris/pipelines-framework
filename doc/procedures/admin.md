@@ -10,9 +10,11 @@ shows.
 ```
   pipelines:
     edsm_pipeline:              <- the key: databricks bundle run edsm_pipeline
-      name: edsm - pipeline     <- the name in the GUI
+      name: ${var.catalog_prefix}edsm - pipeline   <- the name in the GUI
 ```
 
+The GUI name starts with the target's prefix, e.g. **edsm - pipeline** on
+free, **dev_team_jim_edsm - pipeline** on team dev. The key never changes.
 Jobs work the same way, e.g. **edsm_apply_settings** and **edsm_ingest**.
 
 ## Apply Settings

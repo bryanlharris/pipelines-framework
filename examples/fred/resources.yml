@@ -83,7 +83,7 @@ resources:
 
   jobs:
     fred_ingest:
-      name: fred - ingest
+      name: ${var.catalog_prefix}fred - ingest
       tags:
         dataset: fred
         role: ingest
@@ -132,7 +132,7 @@ resources:
             environment_version: "6"
 
     fred_apply_settings:
-      name: fred - apply settings
+      name: ${var.catalog_prefix}fred - apply settings
       tags:
         dataset: fred
         role: apply_settings
@@ -183,7 +183,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     fred_fetch:
-      name: fred - fetch
+      name: ${var.catalog_prefix}fred - fetch
       tags:
         dataset: fred
         role: fetch
@@ -233,7 +233,7 @@ resources:
 
   pipelines:
     fred_pipeline:
-      name: fred - pipeline
+      name: ${var.catalog_prefix}fred - pipeline
       catalog: ${resources.catalogs.fred.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.fred_bronze.name}

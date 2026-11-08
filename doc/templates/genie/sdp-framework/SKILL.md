@@ -11,11 +11,13 @@ Before you start:
 
 - Switch the Git folder to master, and pull. Make a new branch from master.
 - Find out which workspace this is. A catalog named like a dataset with no
-  prefix, e.g. treasury, means the free target. dev_treasury means dev.
+  prefix, e.g. treasury, means free or prod. dev_team_jim_treasury means
+  Jim's dev.
   Check the user's answer against it.
-- Make sure targets/targets.local.yml exists. If it doesn't, copy
-  doc/templates/target/targets.local.yml, uncomment the right target, and
-  ask for any CHANGE_ME values. Never commit it.
+- Make sure a targets file exists in targets/. If not, copy
+  doc/templates/target/targets.free.local.yml on free, or
+  targets.team.local.yml at work. Uncomment the right target, and ask for
+  any CHANGE_ME values, e.g. the user's first name. Never commit it.
 - Ask for everything at once: the dataset's name and owner, and for each
   table its name, file name, download URL, format and key.
 

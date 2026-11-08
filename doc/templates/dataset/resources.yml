@@ -79,7 +79,7 @@ resources:
 
   jobs:
     YOUR_DATASET_ingest:
-      name: YOUR_DATASET - ingest
+      name: ${var.catalog_prefix}YOUR_DATASET - ingest
       tags:
         dataset: YOUR_DATASET
         role: ingest
@@ -127,7 +127,7 @@ resources:
             environment_version: "6"
 
     YOUR_DATASET_apply_settings:
-      name: YOUR_DATASET - apply settings
+      name: ${var.catalog_prefix}YOUR_DATASET - apply settings
       tags:
         dataset: YOUR_DATASET
         role: apply_settings
@@ -178,7 +178,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     YOUR_DATASET_fetch:
-      name: YOUR_DATASET - fetch
+      name: ${var.catalog_prefix}YOUR_DATASET - fetch
       tags:
         dataset: YOUR_DATASET
         role: fetch
@@ -228,7 +228,7 @@ resources:
 
   pipelines:
     YOUR_DATASET_pipeline:
-      name: YOUR_DATASET - pipeline
+      name: ${var.catalog_prefix}YOUR_DATASET - pipeline
       catalog: ${resources.catalogs.YOUR_DATASET.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.YOUR_DATASET_bronze.name}

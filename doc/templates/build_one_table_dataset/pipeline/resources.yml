@@ -1,7 +1,7 @@
 
   pipelines:
     YOUR_DATASET_pipeline:
-      name: YOUR_DATASET - pipeline
+      name: ${var.catalog_prefix}YOUR_DATASET - pipeline
       catalog: ${resources.catalogs.YOUR_DATASET.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.YOUR_DATASET_bronze.name}

@@ -82,7 +82,7 @@ resources:
 
   jobs:
     treasury_ingest:
-      name: treasury - ingest
+      name: ${var.catalog_prefix}treasury - ingest
       tags:
         dataset: treasury
         role: ingest
@@ -128,7 +128,7 @@ resources:
             environment_version: "6"
 
     treasury_apply_settings:
-      name: treasury - apply settings
+      name: ${var.catalog_prefix}treasury - apply settings
       tags:
         dataset: treasury
         role: apply_settings
@@ -179,7 +179,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     treasury_fetch:
-      name: treasury - fetch
+      name: ${var.catalog_prefix}treasury - fetch
       tags:
         dataset: treasury
         role: fetch
@@ -229,7 +229,7 @@ resources:
 
   pipelines:
     treasury_pipeline:
-      name: treasury - pipeline
+      name: ${var.catalog_prefix}treasury - pipeline
       catalog: ${resources.catalogs.treasury.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.treasury_bronze.name}

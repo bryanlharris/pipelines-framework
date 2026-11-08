@@ -1,7 +1,7 @@
 
   jobs:
     YOUR_DATASET_ingest:
-      name: YOUR_DATASET - ingest
+      name: ${var.catalog_prefix}YOUR_DATASET - ingest
       description: Moves new files from inbox to files.
       max_concurrent_runs: 1
       queue:

@@ -87,7 +87,7 @@ resources:
 
   jobs:
     edsm_ingest:
-      name: edsm - ingest
+      name: ${var.catalog_prefix}edsm - ingest
       tags:
         dataset: edsm
         role: ingest
@@ -139,7 +139,7 @@ resources:
             environment_version: "6"
 
     edsm_apply_settings:
-      name: edsm - apply settings
+      name: ${var.catalog_prefix}edsm - apply settings
       tags:
         dataset: edsm
         role: apply_settings
@@ -190,7 +190,7 @@ resources:
     # Does what the upload script does, inside Databricks. Downloads what
     # fetch.yml lists into the inbox. The schedule starts paused.
     edsm_fetch:
-      name: edsm - fetch
+      name: ${var.catalog_prefix}edsm - fetch
       tags:
         dataset: edsm
         role: fetch
@@ -240,7 +240,7 @@ resources:
 
   pipelines:
     edsm_pipeline:
-      name: edsm - pipeline
+      name: ${var.catalog_prefix}edsm - pipeline
       catalog: ${resources.catalogs.edsm.name}
       # Default schema only; each table's schema comes from conf/onboarding.yml.
       schema: ${resources.schemas.edsm_bronze.name}

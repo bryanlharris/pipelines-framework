@@ -1,5 +1,7 @@
 # Set Up Prod
 
+> **Old setup:** one shared dev, with the prefix **dev_**. The team setup replaces it: see [README.md](README.md). Its template is gone; copy **targets.team.local.yml** and set the prefixes this page shows.
+
 Deploys a release to prod. Prod runs tags, never your working files, so it
 gets only what passed staging. Prod catalogs have no prefix, and prod
 pipelines retry on errors.
@@ -10,7 +12,7 @@ pipelines retry on errors.
 
 ## Steps
 
-1. Uncomment **prod** in **targets/targets.local.yml**, and change its
+1. Uncomment **prod** in **targets/targets.team.local.yml**, and change its
    **CHANGE_ME** line to the prod bucket.
 2. Tag the staging release you tested for prod, e.g. **prod_v0.1**, and push
    the tag.
@@ -23,7 +25,7 @@ pipelines retry on errors.
 9. End.
 
 ```
-edit targets/targets.local.yml
+edit targets/targets.team.local.yml
 git tag YOUR_TAG YOUR_STAGING_TAG
 git push origin YOUR_TAG
 git switch --detach YOUR_TAG
