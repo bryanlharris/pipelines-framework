@@ -13,6 +13,10 @@ sdp-meta (Databricks Labs). Each dataset is a folder under **datasets/**,
 with its own catalog, jobs and pipeline. The same code deploys to free, dev,
 staging and prod; the target sets the catalog prefix and the bucket.
 
+This repo is upstream: it ships no datasets and deploys nothing. Each team
+clones it, see doc/procedures/start_repo.md, and copies datasets from
+**examples/** or builds its own.
+
 How data flows, in each dataset:
 
 1. A file lands in the inbox volume, **raw.inbox**. The fetch job downloads
@@ -40,6 +44,7 @@ datasets/<d>/fetch.yml      what the fetch job downloads
 datasets/<d>/tables/        SQL the pipeline runs: one silver.<table>.sql view per table,
                             plus extra tables, e.g. edsm's gold layer
 datasets/<d>/upload_<d>.ps1 free only: downloads the files and puts them in the inbox
+examples/                   finished datasets to copy into datasets/; never deployed
 shared/                     python the jobs run: router, fetch, the pipeline runner
 targets/*.local.yml         targets, git-ignored, with the bucket names
 doc/procedures/             step-by-step procedures
@@ -52,6 +57,7 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 | Task                                    | Procedure                                              |
 |-----------------------------------------|--------------------------------------------------------|
 | Set up a computer and the CLI           | doc/procedures/setup.md                                |
+| Start a team's repo from this one       | doc/procedures/start_repo.md                           |
 | Add a dataset                           | doc/procedures/build_many_table_dataset/add_dataset.md |
 | Add a table to an existing dataset      | doc/procedures/build_many_table_dataset/add_table.md   |
 | Add a data quality rule                 | doc/procedures/add_rules.md                            |
@@ -75,7 +81,7 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
   - resources.yml: one name in the router's **--names** list
   - tables/silver.<table>.sql: copied from the template, and listed in
     the pipeline's **libraries** in resources.yml
-- Don't invent a layout. When unsure, copy **datasets/edsm/**: several
+- Don't invent a layout. When unsure, copy **examples/edsm/**: several
   tables, gzipped files, and a gold layer.
 - Joins, group-bys and windows can't go in sdp-meta's YAML. Put them in SQL
   files under **tables/**, listed as pipeline libraries, in the gold schema.
@@ -89,7 +95,7 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 - Jobs: "<dataset> - ingest", "<dataset> - apply settings", "<dataset> - fetch".
   Pipeline: "<dataset> - pipeline".
 - Tables: bronze.<table>, silver.<table>_history, view silver.<table>.
-- Blanks in templates: YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
+- Blanks in templates: YOUR_TEAM (the bundle name), YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
   YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.
 - Tags on every job and pipeline: dataset, role (ingest, apply_settings,
   fetch, pipeline), owner.

@@ -32,7 +32,7 @@ While you work:
   conf/silver_transformations.yml, conf/silver_expectations/<table>.yml,
   tables/silver.<table>.sql, the router's --names and the pipeline's
   libraries in resources.yml, fetch.yml, and on free the upload script.
-- When unsure, copy what datasets/edsm/ does.
+- When unsure, copy what examples/edsm/ does.
 
 Before you finish:
 

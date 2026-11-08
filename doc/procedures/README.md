@@ -5,6 +5,7 @@ To write a new procedure, copy one like it.
 ## Procedures
 
 - [setup.md](setup.md): set up the computer and CLI
+- [start_repo.md](start_repo.md): make your team's own repo from this one
 - [build_one_table_dataset.md](build_one_table_dataset.md): teaches how to build a full table pipeline using sdp-meta techniques
 - [build_many_table_dataset.md](build_many_table_dataset.md): builds a dataset with any number of tables, from the dataset template
 - [targets/](targets/README.md): set up a target: free, dev, staging or prod
