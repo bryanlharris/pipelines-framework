@@ -9,7 +9,7 @@
 5. Install the GNU tools.
 6. Install the Databricks CLI.
 7. Open the new PowerShell, **pwsh**.
-8. Clone the repo. It holds the templates.
+8. Clone your team's repo, or this one if you maintain it. It holds the templates.
 9. Add the profile template to your PowerShell profile. It sets **edit** to
    vim; change it to code for VS Code.
 10. Copy the WezTerm template to your home folder, unless you have one.
@@ -25,8 +25,8 @@ scoop install vim pwsh wezterm posh-git
 scoop install grep sed gawk uutils-coreutils
 winget install Databricks.DatabricksCLI
 pwsh
-git clone git@github.com:bryanlharris/sdp-framework.git
-cd sdp-framework
+git clone YOUR_REPO_URL
+cd YOUR_REPO
 mkdir -Force (Split-Path $PROFILE)
 cat doc/templates/pc/profile.ps1 >> $PROFILE
 cp doc/templates/pc/wezterm.lua ~/.wezterm.lua
