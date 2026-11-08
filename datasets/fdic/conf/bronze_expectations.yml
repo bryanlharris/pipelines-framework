@@ -1,0 +1,19 @@
+# Bronze rules for fdic.
+# expect_or_fail stops the pipeline: the file is broken. See doc/procedures/remove_bad_file.md.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+# Records from these files are dropped. One line per bad file, e.g.
+# '%/powerPlay_20261107_150000.json'. '%/none' keeps the list from being empty.
+# See doc/procedures/remove_bad_file.md.
+expect_or_drop:
+  not_a_bad_file: >-
+    NOT source_file LIKE ANY (
+      '%/none'
+    )
+
+expect_or_fail:
+  cert_is_number: "try_cast(CERT AS INT) IS NOT NULL"
+  quarter_is_date: "try_to_timestamp(REPDTE, 'yyyyMMdd') IS NOT NULL"
+
+expect:
+  assets_not_negative: "try_cast(ASSET AS BIGINT) >= 0"

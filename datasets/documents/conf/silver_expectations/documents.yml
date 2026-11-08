@@ -1,0 +1,6 @@
+# Silver rules for documents, checked after the AI calls.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect:
+  classified: "classification IS NOT NULL"
+  no_ai_error: "get_json_object(classification, '$.error_message') IS NULL"

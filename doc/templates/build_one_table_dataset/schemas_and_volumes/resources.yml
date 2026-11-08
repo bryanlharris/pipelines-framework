@@ -23,7 +23,7 @@
       schema_name: ${resources.schemas.YOUR_DATASET_raw.name}
       name: inbox
       volume_type: MANAGED
-      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+      comment: Drop zone. The router moves each file to files, or to inbox/unknown_files. Deletes are fine here.
     YOUR_DATASET_raw_files:
       catalog_name: ${resources.catalogs.YOUR_DATASET.name}
       schema_name: ${resources.schemas.YOUR_DATASET_raw.name}

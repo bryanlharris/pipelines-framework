@@ -1,0 +1,17 @@
+# Bronze rules for every YOUR_DATASET table.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+# Each rule is SQL that is true for a good record.
+
+# Records from these files are dropped. One line per bad file, e.g.
+# '%/YOUR_TABLE_20261107_150000.json'. '%/none' keeps the list from being empty.
+# See doc/procedures/remove_bad_file.md.
+expect_or_drop:
+  not_a_bad_file: >-
+    NOT source_file LIKE ANY (
+      '%/none'
+    )
+  # CHANGE_ME → a rule every good record passes, e.g. id_is_number: "try_cast(id AS BIGINT) IS NOT NULL"
+
+# Optional: rules worth counting but not dropping.
+# expect:
+#   has_name: "name IS NOT NULL"

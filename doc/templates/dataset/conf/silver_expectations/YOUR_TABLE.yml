@@ -1,0 +1,9 @@
+# Silver rules for YOUR_TABLE, checked after the casts. One file per table.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  # CHANGE_ME → the key every record needs, e.g. has_id: "id IS NOT NULL"
+
+# Optional: rules worth counting but not dropping, e.g. a value in range.
+# expect:
+#   rate_in_range: "rate BETWEEN 0 AND 25"

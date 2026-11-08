@@ -1,0 +1,9 @@
+# Silver rules for financials, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_key: "CERT IS NOT NULL AND REPDTE IS NOT NULL"
+
+expect:
+  assets_not_negative: "ASSET >= 0"
+  deposits_within_assets: "DEP <= ASSET"

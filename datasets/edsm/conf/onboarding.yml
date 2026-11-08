@@ -21,6 +21,10 @@
 #   bronze_database_all: bronze
 #   bronze_table: YOUR_TABLE
 #   bronze_table_comment: "CHANGE_ME → what one record is, e.g. Every record from every yieldCurve file, as strings."
+#   # Rules for bronze records, in conf/bronze_expectations.yml.
+#   bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+#   # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+#   bronze_quarantine_table: ""
 #   bronze_reader_options:
 #     cloudFiles.format: "CHANGE_ME → csv, json or xml"
 #     cloudFiles.inferColumnTypes: "false"
@@ -31,6 +35,8 @@
 #   silver_database_all: silver
 #   silver_table: YOUR_TABLE_history
 #   silver_table_comment: "CHANGE_ME → what one version is, e.g. Full history of the daily yield curve (SCD2), one version per change to a day's rates."
+#   # Rules for this table's silver records.
+#   silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/YOUR_TABLE.yml"
 #   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
 #   silver_reader_options:
 #     skipChangeCommits: "true"
@@ -67,6 +73,10 @@
   bronze_database_all: bronze
   bronze_table: powerPlay
   bronze_table_comment: "Every record from every powerPlay dump file, as strings. Which systems each Power controls or exploits."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "json"
     cloudFiles.inferColumnTypes: "false"
@@ -78,6 +88,8 @@
   silver_database_all: silver
   silver_table: powerPlay_history
   silver_table_comment: "Full history of powerPlay (SCD2), one version per change. View silver.powerPlay shows only current records."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/powerPlay.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"
@@ -108,6 +120,10 @@
   bronze_database_all: bronze
   bronze_table: systemsWithCoordinates7days
   bronze_table_comment: "Every record from every systemsWithCoordinates7days dump file, as strings. Star systems updated in the last 7 days."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "json"
     cloudFiles.inferColumnTypes: "false"
@@ -119,6 +135,8 @@
   silver_database_all: silver
   silver_table: systemsWithCoordinates7days_history
   silver_table_comment: "Full history of star systems (SCD2), one version per change. View silver.systemsWithCoordinates7days shows only current records."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/systemsWithCoordinates7days.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"
@@ -149,6 +167,10 @@
   bronze_database_all: bronze
   bronze_table: systemsWithoutCoordinates
   bronze_table_comment: "Every record from every systemsWithoutCoordinates dump file, as strings. Star systems with only estimated coordinates."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "json"
     cloudFiles.inferColumnTypes: "false"
@@ -160,6 +182,8 @@
   silver_database_all: silver
   silver_table: systemsWithoutCoordinates_history
   silver_table_comment: "Full history of star systems with estimated coordinates (SCD2), one version per change. View silver.systemsWithoutCoordinates shows only current records."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/systemsWithoutCoordinates.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"
@@ -190,6 +214,10 @@
   bronze_database_all: bronze
   bronze_table: bodies7days
   bronze_table_comment: "Every record from every bodies7days dump file, as strings. Planets, moons and stars updated in the last 7 days."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "json"
     cloudFiles.inferColumnTypes: "false"
@@ -201,6 +229,8 @@
   silver_database_all: silver
   silver_table: bodies7days_history
   silver_table_comment: "Full history of bodies (SCD2), one version per change. View silver.bodies7days shows only current records."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/bodies7days.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"

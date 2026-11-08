@@ -67,7 +67,7 @@ resources:
       schema_name: ${resources.schemas.documents_raw.name}
       name: inbox
       volume_type: MANAGED
-      comment: Drop zone. The router moves each file to files, or to inbox/bad_files. Deletes are fine here.
+      comment: Drop zone. The router moves each file to files, or to inbox/unknown_files. Deletes are fine here.
     documents_raw_files:
       catalog_name: ${resources.catalogs.documents.name}
       schema_name: ${resources.schemas.documents_raw.name}
@@ -111,7 +111,7 @@ resources:
               # table its name starts with. Copy for each table.
               # - YOUR_TABLE
               - documents
-        # Skip the pipeline when the router moved nothing (e.g. only a bad file).
+        # Skip the pipeline when the router moved nothing (e.g. only an unknown file).
         - task_key: any_moved
           depends_on:
             - task_key: router

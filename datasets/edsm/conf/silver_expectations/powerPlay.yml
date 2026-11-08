@@ -1,0 +1,10 @@
+# Silver rules for powerPlay, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_key: "id IS NOT NULL AND power IS NOT NULL"
+
+expect:
+  coords_complete: "coords.x IS NOT NULL AND coords.y IS NOT NULL AND coords.z IS NOT NULL"
+  # The galaxy is about 100,000 light years across.
+  coords_in_galaxy: "abs(coords.x) < 100000 AND abs(coords.y) < 100000 AND abs(coords.z) < 100000"

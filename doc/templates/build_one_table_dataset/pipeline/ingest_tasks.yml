@@ -1,4 +1,4 @@
-        # Skip the pipeline when the router moved nothing (e.g. only a bad file).
+        # Skip the pipeline when the router moved nothing (e.g. only an unknown file).
         - task_key: any_moved
           depends_on:
             - task_key: router

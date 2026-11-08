@@ -6,7 +6,7 @@ Adds a table to a dataset: bronze, silver SCD2 and a current view. Each
 dataset file keeps one commented block per table; you copy it, and
 uncomment the copy.
 
-To add several tables, do steps 1–8 for each table, then steps 9–17 once.
+To add several tables, do steps 1–9 for each table, then steps 10–18 once.
 
 To copy a block, and uncomment the copy:
 
@@ -29,23 +29,25 @@ To copy a block, and uncomment the copy:
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
    **--names**, and uncomment the copy.
 6. Copy the view template into **views/**. Change its **CHANGE_ME** line.
-7. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
-8. Search for leftovers outside comments. Nothing shows.
-9. Check the plan. The ingest job shows change, for **--names**. Nothing
+7. Copy the silver rules template into **conf/silver_expectations/**.
+   Change its **CHANGE_ME** line: the key every record needs.
+8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
+9. Search for leftovers outside comments. Nothing shows.
+10. Check the plan. The ingest job shows change, for **--names**. Nothing
    else changes.
-10. Deploy.
-11. Check the plan again. All show unchanged.
-12. Run the fetch job, **YOUR_DATASET - fetch**. It fetches every file in
+11. Deploy.
+12. Check the plan again. All show unchanged.
+13. Run the fetch job, **YOUR_DATASET - fetch**. It fetches every file in
     **fetch.yml**, not just the new table's; repeats add no new versions.
     The ingest job runs, and skips the new table: its settings come next.
-13. Run the apply settings job. In Jobs & Pipelines, open
+14. Run the apply settings job. In Jobs & Pipelines, open
     **YOUR_DATASET - apply settings**, and click Run now. Apply settings
     after the file lands: the pipeline fails on a new table with no files.
-14. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
+15. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
     run is green.
-15. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
-16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
-17. End.
+16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
+17. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
+18. End.
 
 ```
 $d = "YOUR_DATASET"
@@ -57,6 +59,8 @@ edit datasets/$d/fetch.yml
 edit datasets/$d/resources.yml
 cp doc/templates/dataset/views/YOUR_TABLE.sql datasets/$d/views/$t.sql
 edit datasets/$d/views/$t.sql
+cp doc/templates/dataset/conf/silver_expectations/YOUR_TABLE.yml datasets/$d/conf/silver_expectations/$t.yml
+edit datasets/$d/conf/silver_expectations/$t.yml
 sed -i "/^\s*#/!{s/YOUR_TABLE/$t/g; s/YOUR_FILE/$f/g}" (grep -rlE "YOUR_TABLE|YOUR_FILE" datasets/$d)
 grep -rnE "YOUR_|CHANGE_ME" datasets/$d | grep -vE ":[0-9]+:\s*(#|--)"
 py tools/bundle_plan.py dev
@@ -77,23 +81,25 @@ py tools/bundle_plan.py dev
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
    **--names**, and uncomment the copy.
 6. Copy the view template into **views/**. Change its **CHANGE_ME** line.
-7. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
-8. Search for leftovers outside comments. Nothing shows.
-9. Check the plan. The ingest job shows change, for **--names**. Nothing
+7. Copy the silver rules template into **conf/silver_expectations/**.
+   Change its **CHANGE_ME** line: the key every record needs.
+8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
+9. Search for leftovers outside comments. Nothing shows.
+10. Check the plan. The ingest job shows change, for **--names**. Nothing
    else changes.
-10. Deploy.
-11. Check the plan again. All show unchanged.
-12. Run the upload script. It sends every file it lists, not just the new
+11. Deploy.
+12. Check the plan again. All show unchanged.
+13. Run the upload script. It sends every file it lists, not just the new
     table's; repeats add no new versions. The ingest job runs, and skips
     the new table: its settings come next.
-13. Run the apply settings job. In Jobs & Pipelines, open
+14. Run the apply settings job. In Jobs & Pipelines, open
     **YOUR_DATASET - apply settings**, and click Run now. Apply settings
     after the file lands: the pipeline fails on a new table with no files.
-14. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
+15. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
     run is green.
-15. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
-16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
-17. End.
+16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
+17. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
+18. End.
 
 ```
 $d = "YOUR_DATASET"
@@ -106,6 +112,8 @@ edit datasets/$d/fetch.yml
 edit datasets/$d/resources.yml
 cp doc/templates/dataset/views/YOUR_TABLE.sql datasets/$d/views/$t.sql
 edit datasets/$d/views/$t.sql
+cp doc/templates/dataset/conf/silver_expectations/YOUR_TABLE.yml datasets/$d/conf/silver_expectations/$t.yml
+edit datasets/$d/conf/silver_expectations/$t.yml
 sed -i "/^\s*#/!{s/YOUR_TABLE/$t/g; s/YOUR_FILE/$f/g}" (grep -rlE "YOUR_TABLE|YOUR_FILE" datasets/$d)
 grep -rnE "YOUR_|CHANGE_ME" datasets/$d | grep -vE ":[0-9]+:\s*(#|--)"
 py tools/bundle_plan.py free

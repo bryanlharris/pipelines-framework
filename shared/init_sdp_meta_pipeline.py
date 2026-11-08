@@ -25,33 +25,6 @@ if dep == "__SET_ME__" or not dep:
 
 layer = spark.conf.get("layer", None)
 from databricks.labs.sdp_meta.dataflow_pipeline import DataflowPipeline
-from pyspark.sql import functions as F
 
-
-def drop_repeats_within_file(df, dataflow_spec):
-    """Drop exact repeat records inside one file (port of framework dedupe_within_file).
-
-    Every column counts, source_file included, so the same record in two
-    different files is kept. Only bronze cloudFiles flows get this.
-
-    The metadata structs are left out: a big file is read in blocks, and
-    file_block_start differs between blocks of the same file.
-
-    A file always lands in one micro-batch. The batch time column gives a
-    watermark that never sees late data, so dedupe state is cleared after
-    10 minutes instead of growing forever.
-    """
-    if dataflow_spec.sourceFormat != "cloudFiles":
-        return df
-    columns = [c for c in df.columns if c not in ("_metadata", "source_metadata")]
-    return (
-        df.withColumn("_batch_time", F.current_timestamp())
-        .withWatermark("_batch_time", "10 minutes")
-        .dropDuplicatesWithinWatermark(columns)
-        .drop("_batch_time")
-    )
-
-
-DataflowPipeline.invoke_dlt_pipeline(
-    spark, layer, bronze_custom_transform_func=drop_repeats_within_file
-)
+# Custom code for one dataset: see doc/procedures/add_custom_code.md.
+DataflowPipeline.invoke_dlt_pipeline(spark, layer)

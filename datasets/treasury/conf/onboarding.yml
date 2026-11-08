@@ -20,6 +20,10 @@
   bronze_database_all: bronze
   bronze_table: yieldCurve
   bronze_table_comment: "Every record from every yieldCurve file, as strings. Daily par yield curve rates, one record per business day. Each file holds the whole year so far."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "xml"
     cloudFiles.inferColumnTypes: "false"
@@ -32,6 +36,8 @@
   silver_database_all: silver
   silver_table: yieldCurve_history
   silver_table_comment: "Full history of the daily yield curve (SCD2), one version per change to a day's rates."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/yieldCurve.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"

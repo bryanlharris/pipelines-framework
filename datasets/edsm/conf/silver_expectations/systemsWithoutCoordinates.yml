@@ -1,0 +1,8 @@
+# Silver rules for systemsWithoutCoordinates, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_id: "id IS NOT NULL"
+
+expect:
+  estimate_complete: "estimatedCoordinates.x IS NOT NULL AND estimatedCoordinates.y IS NOT NULL AND estimatedCoordinates.z IS NOT NULL"

@@ -1,0 +1,9 @@
+# Silver rules for fedfunds, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_date: "observation_date IS NOT NULL"
+
+expect:
+  # Percent. The peak was 19.1 in 1981.
+  rate_in_range: "FEDFUNDS BETWEEN 0 AND 25"

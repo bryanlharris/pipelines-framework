@@ -1,0 +1,12 @@
+# Silver rules for bodies7days, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_id: "id IS NOT NULL"
+
+expect:
+  has_system: "systemId IS NOT NULL"
+  distance_not_negative: "distanceToArrival IS NULL OR distanceToArrival >= 0"
+  gravity_not_negative: "gravity IS NULL OR gravity >= 0"
+  # Kelvin: nothing is colder than absolute zero.
+  temperature_not_negative: "surfaceTemperature IS NULL OR surfaceTemperature >= 0"

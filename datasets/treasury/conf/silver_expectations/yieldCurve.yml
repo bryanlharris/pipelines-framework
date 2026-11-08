@@ -1,0 +1,9 @@
+# Silver rules for yieldCurve, checked after the casts.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+expect_or_drop:
+  has_date: "NEW_DATE IS NOT NULL"
+
+expect:
+  # Percent. Rates have stayed between 0 and 20 since the series began.
+  rate_10_year_in_range: "BC_10YEAR BETWEEN 0 AND 20"

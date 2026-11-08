@@ -21,6 +21,10 @@
 #   bronze_database_all: bronze
 #   bronze_table: YOUR_TABLE
 #   bronze_table_comment: "CHANGE_ME → what one record is, e.g. Every record from every yieldCurve file, as strings."
+#   # Rules for bronze records, in conf/bronze_expectations.yml.
+#   bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+#   # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+#   bronze_quarantine_table: ""
 #   bronze_reader_options:
 #     cloudFiles.format: "CHANGE_ME → csv, json or xml"
 #     cloudFiles.inferColumnTypes: "false"
@@ -31,6 +35,8 @@
 #   silver_database_all: silver
 #   silver_table: YOUR_TABLE_history
 #   silver_table_comment: "CHANGE_ME → what one version is, e.g. Full history of the daily yield curve (SCD2), one version per change to a day's rates."
+#   # Rules for this table's silver records.
+#   silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/YOUR_TABLE.yml"
 #   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
 #   silver_reader_options:
 #     skipChangeCommits: "true"
@@ -66,6 +72,10 @@
   bronze_database_all: bronze
   bronze_table: fedfunds
   bronze_table_comment: "Every record from every fedfunds file, as strings. The effective federal funds rate, one record per month."
+  # Rules for bronze records, in conf/bronze_expectations.yml.
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  # sdp-meta needs this key when a rules file is set. Empty: no quarantine table.
+  bronze_quarantine_table: ""
   bronze_reader_options:
     cloudFiles.format: "csv"
     cloudFiles.inferColumnTypes: "false"
@@ -77,6 +87,8 @@
   silver_database_all: silver
   silver_table: fedfunds_history
   silver_table_comment: "Full history of the effective federal funds rate (SCD2), one version per change to a month's rate."
+  # Rules for this table's silver records.
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/fedfunds.yml"
   # Skip deletes in bronze (e.g. removing a bad file's records) instead of failing.
   silver_reader_options:
     skipChangeCommits: "true"

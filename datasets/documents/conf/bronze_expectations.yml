@@ -1,0 +1,15 @@
+# Bronze rules for documents.
+# expect_or_drop removes the record; expect keeps it and counts it in the event log.
+
+# Records from these files are dropped. One line per bad file, e.g.
+# '%/powerPlay_20261107_150000.json'. '%/none' keeps the list from being empty.
+# See doc/procedures/remove_bad_file.md.
+expect_or_drop:
+  not_a_bad_file: >-
+    NOT source_file LIKE ANY (
+      '%/none'
+    )
+  is_pdf: "cast(substring(content, 1, 5) AS STRING) = '%PDF-'"
+
+expect:
+  under_10_mb: "length < 10485760"
