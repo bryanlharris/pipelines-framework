@@ -1,6 +1,5 @@
 # Bronze rules for every edsm table.
 # expect_or_drop removes the record; expect keeps it and counts it in the event log.
-# The dumps are one big JSON array: the "[" and "]" lines parse as empty records.
 
 # Records from these files are dropped. One line per bad file, e.g.
 # '%/powerPlay_20261107_150000.json'. '%/none' keeps the list from being empty.
@@ -10,6 +9,10 @@ expect_or_drop:
     NOT source_file LIKE ANY (
       '%/none'
     )
+  # Each dump is one big JSON array. Reading it as one document (multiLine)
+  # is slow, so we read it line by line. Then the "[" and "]" lines come in
+  # as empty records, with no id. This drops them.
+  not_a_bracket_line: "id IS NOT NULL"
   id_is_number: "try_cast(id AS BIGINT) IS NOT NULL"
 
 expect:
