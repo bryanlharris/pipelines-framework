@@ -7,7 +7,7 @@ piece works, see [build_one_table_dataset.md](build_one_table_dataset.md).
 ## Prerequisites
 
 1. [setup.md](setup.md): set up the computer and CLI
-2. [dev.md](dev.md): set up dev, on enterprise only
+2. [targets/](targets/README.md): set up your target
 
 ## Steps
 

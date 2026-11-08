@@ -3,6 +3,9 @@
 Instructions for AI assistants working in this repo: Genie Code, Claude,
 Copilot and others. Read this first, then the procedure for the task.
 
+Genie users: add the skill in doc/templates/genie/, which points here. See
+doc/procedures/setup/setup_genie.md.
+
 ## What This Repo Is
 
 One Databricks Asset Bundle that loads files into Delta tables with
@@ -49,13 +52,13 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 |-----------------------------------------|--------------------------------------------------------|
 | Set up a computer and the CLI           | doc/procedures/setup.md                                |
 | Add a dataset                           | doc/procedures/build_many_table_dataset/add_dataset.md |
-| Add a table                             | doc/procedures/build_many_table_dataset/add_table.md   |
+| Add a table to an existing dataset      | doc/procedures/build_many_table_dataset/add_table.md   |
 | Add a data quality rule                 | doc/procedures/add_rules.md                            |
 | Skip a bad file                         | doc/procedures/remove_bad_file.md                      |
 | Custom Python for one dataset           | doc/procedures/add_custom_code.md                      |
-| Dev target: set up, bind, test, release | doc/procedures/dev.md                                  |
+| Set up a target: free, dev, staging, prod | doc/procedures/targets/README.md                     |
 | Apply settings, refresh, errors         | doc/procedures/admin.md                                |
-| Learn how the pieces work               | doc/procedures/build_one_table_dataset.md              |
+| Learn how the pieces work; not for real work | doc/procedures/build_one_table_dataset.md         |
 
 ## Build From the Templates
 
@@ -107,7 +110,7 @@ Safety:
 - Never commit bucket names, hosts or tokens. They live in
   **targets/*.local.yml**, which git ignores. A fresh clone has no targets
   file: copy **doc/templates/target/targets.local.yml** and fill it in.
-- Deploy to free or dev. Staging and prod get releases, by tag; see dev.md.
+- Deploy to free or dev. Staging and prod get releases, by tag; see doc/procedures/targets/.
 - Never delete a file from raw.files. To skip a bad file, list it in the
   dataset's **not_a_bad_file** rule, then full refresh.
 - Free Edition has a daily serverless limit. RESOURCE_EXHAUSTED means wait.

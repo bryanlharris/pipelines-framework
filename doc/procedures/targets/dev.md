@@ -4,7 +4,7 @@ Sets up the dev target, tests it with a dataset, then releases master to it.
 
 ## Prerequisites
 
-1. [setup.md](setup.md): set up the computer and CLI
+1. [setup.md](../setup.md): set up the computer and CLI
 
 ## Steps
 

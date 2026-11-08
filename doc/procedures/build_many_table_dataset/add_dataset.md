@@ -26,7 +26,7 @@ The bundle creates the catalog, in the bucket the targets file names.
    inbox isn't visible yet. Wait a few minutes, and deploy again.
 9. Check the plan again. All show unchanged.
 10. Bind the catalog, and turn on data classification:
-   [bind_catalogs.md](../dev/bind_catalogs.md).
+   [bind_catalogs.md](../targets/dev/bind_catalogs.md).
 11. End.
 
 ```

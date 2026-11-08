@@ -17,7 +17,7 @@ doc/
     setup/                     parts of setup.md: PC, Mac, CLI, Genie
     build_one_table_dataset/   parts of build_one_table_dataset.md, the bootcamp
     build_many_table_dataset/  parts of build_many_table_dataset.md: dataset, table
-    dev/                       parts of dev.md: set up, bind, test, release
+    targets/                   one procedure per target; dev/ holds the parts of dev.md
   templates/
     dataset/                   a whole dataset, ready to copy
     build_one_table_dataset/   one folder per bootcamp part

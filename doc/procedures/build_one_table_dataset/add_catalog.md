@@ -11,7 +11,7 @@ the deploy fails, make the catalog by hand in Catalog Explorer (or ask
 an admin), then bind it as in Free steps 6 and 7.
 
 Each target puts its prefix on the catalog's name, and names its bucket
-in **targets/targets.local.yml**. See [setup_dev.md](../dev/setup_dev.md).
+in **targets/targets.local.yml**. See [setup_dev.md](../targets/dev/setup_dev.md).
 The template's **targets:** section adds the storage path on dev,
 staging and prod only.
 

@@ -1,0 +1,43 @@
+# Set Up Free
+
+Deploys every dataset to a Free Edition workspace, and loads its files. Free
+can't create catalogs through the bundle, so you make each one with SQL,
+then bind it.
+
+## Prerequisites
+
+1. [setup.md](../setup.md): set up the computer and the CLI, with the
+   **free** profile
+
+## Steps
+
+1. Copy the targets template into **targets/**, unless you have it.
+2. Uncomment **free**.
+3. List the catalogs the bundle needs. It prints one name per dataset.
+4. Create each catalog in the SQL editor.
+5. Bind each one, so the bundle takes it over.
+6. Check the plan. All show create, but the catalogs show update. A catalog
+   that shows create didn't bind.
+7. Deploy. If the ingest job fails with **No volume is defined**, wait a few
+   minutes, and deploy again.
+8. Check the plan again. All show unchanged.
+9. For each dataset, run its upload script. Its ingest job starts when the
+   files land.
+10. For each dataset, run the apply settings job, then run the ingest job by
+    hand.
+11. End.
+
+```
+cp doc/templates/target/targets.local.yml targets/
+edit targets/targets.local.yml
+$catalogs = (databricks bundle validate -t free -o json | ConvertFrom-Json).resources.catalogs.PSObject.Properties
+$catalogs.Value.name
+CREATE CATALOG YOUR_CATALOG
+foreach ($c in $catalogs) { databricks bundle deployment bind $c.Name $c.Value.name -t free --auto-approve }
+py tools/bundle_plan.py free
+databricks bundle deploy -t free
+py tools/bundle_plan.py free
+& ./datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
+databricks bundle run YOUR_DATASET_apply_settings -t free
+databricks bundle run YOUR_DATASET_ingest -t free
+```

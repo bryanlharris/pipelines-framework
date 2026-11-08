@@ -7,7 +7,7 @@ To write a new procedure, copy one like it.
 - [setup.md](setup.md): set up the computer and CLI
 - [build_one_table_dataset.md](build_one_table_dataset.md): teaches how to build a full table pipeline using sdp-meta techniques
 - [build_many_table_dataset.md](build_many_table_dataset.md): builds a dataset with any number of tables, from the dataset template
-- [dev.md](dev.md): set up the dev target, test it, then release to it
+- [targets/](targets/README.md): set up a target: free, dev, staging or prod
 - [add_rules.md](add_rules.md): add a data quality rule: warn, drop, or fail
 - [remove_bad_file.md](remove_bad_file.md): skip a bad file, and load a fixed copy
 - [admin.md](admin.md): small tasks, e.g. apply settings, refresh, full refresh
@@ -21,7 +21,7 @@ To write a new procedure, copy one like it.
 
 [build_many_table_dataset.md](build_many_table_dataset.md): You copy one folder and fill in the blanks. This procedure is much easier once you do the build_one_table_dataset procedure.
 
-[dev.md](dev.md): This shows how the dev target works and sets it up. You'll see how each target names its own bucket, so all three targets use the same code. It also shows how to tag a release and deploy it to dev.
+[targets/](targets/README.md): One procedure per target. dev.md shows how the dev target works and sets it up. You'll see how each target names its own bucket, so all three targets use the same code. It also shows how to tag a release and deploy it to dev.
 
 [remove_bad_file.md](remove_bad_file.md): This skips a bad file without deleting it, since nothing in raw/files is ever deleted. If the pipeline stopped on the file, you fix a copy and upload it. If its records already landed, a full refresh takes them out.
 

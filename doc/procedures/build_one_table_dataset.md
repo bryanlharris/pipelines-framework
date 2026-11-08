@@ -15,7 +15,7 @@ a simple view to only show the "current" records from the SCD2.
 ## Prerequisites
 
 1. [setup.md](setup.md): set up the computer and CLI
-2. [dev.md](dev.md): set up dev, on enterprise only
+2. [targets/](targets/README.md): set up your target
 
 ## Build
 
@@ -43,7 +43,7 @@ US Treasury publishes daily interest rates as an XML file. Use these values for 
 | YOUR_FILE    | yieldCurve.xml |
 | YOUR_TARGET  | free           |
 
-On dev, YOUR_CATALOG is **dev_treasury**. See [setup_dev.md](dev/setup_dev.md).
+On dev, YOUR_CATALOG is **dev_treasury**. See [setup_dev.md](targets/dev/setup_dev.md).
 
 The url for **fetch.yml**:
 

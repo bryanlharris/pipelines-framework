@@ -178,15 +178,15 @@ def main():
         s = state(entry)
 
         if kind in workspace_rows:
-            row = Row(s.get('name'), action, protected(config, kind, key), key,
+            row = Row(s.get('name') or key, action, protected(config, kind, key), key,
                       changes(entry))
             workspace_rows[kind].append(row)
         elif kind == 'schemas':
-            row = Row(s.get('name'), action, protected(config, kind, key), key,
+            row = Row(s.get('name') or key, action, protected(config, kind, key), key,
                       changes(entry))
             catalogs.setdefault(s.get('catalog_name'), []).append(row)
         else:
-            row = Row(s.get('name'), action, protected(config, kind, key), key,
+            row = Row(s.get('name') or key, action, protected(config, kind, key), key,
                       changes(entry))
             path = f"/Volumes/{s.get('catalog_name')}/{s.get('schema_name')}"
             volumes.setdefault(path, []).append(row)
