@@ -9,8 +9,8 @@ A target is a place to deploy. Targets live in git-ignored files in
 Copy the ones you use, and uncomment the targets in them.
 
 ```
-pipelines-framework (today: sdp-framework)
-└── team-pipelines                    bundle team
+pipelines-framework
+└── team-pipelines                    (bundle name: team)
     ├── jim/add-fred      →  dev      dev_team_jim_treasury
     ├── sue/fix-rules     →  dev      dev_team_sue_treasury
     ├── bob/new-table     →  dev      dev_team_bob_treasury
