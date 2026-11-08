@@ -130,10 +130,29 @@ databricks bundle deploy -t YOUR_TARGET
         pause_status: PAUSED
 ```
 
+## Give a User One Catalog
+
+CREATE CATALOG covers every name, so instead an admin makes the catalog and
+hands it over. The user's bundle then takes it over with a bind.
+
+1. An admin creates the catalog, e.g. **dev_YOUR_DATASET**.
+2. The admin makes the user its owner, or grants **ALL PRIVILEGES**.
+3. The user binds it, once per target.
+4. Check the plan. The catalog shows update, never create.
+5. Deploy.
+6. End.
+
+```
+CREATE CATALOG dev_YOUR_DATASET
+databricks bundle deployment bind YOUR_DATASET dev_YOUR_DATASET -t YOUR_TARGET --auto-approve
+py tools/bundle_plan.py YOUR_TARGET
+databricks bundle deploy -t YOUR_TARGET
+```
+
 ## Deploy Fails: No Volume Is Defined
 
-A new dataset's inbox can take a few minutes to show up. Until then, the
-ingest job can't watch it.
+A new dataset's inbox can take a few minutes to show up. If that happens
+just run the deploy again after a minute or two.
 
 1. Wait a few minutes.
 2. Deploy again.
@@ -142,3 +161,8 @@ ingest job can't watch it.
 ```
 databricks bundle deploy -t YOUR_TARGET
 ```
+
+When I deployed new datasets on free,
+  the ingest job failed with "No volume is defined at /Volumes/edsm/raw/inbox/". The inbox volume had
+  just been made and wasn't visible yet. A few minutes later, deploying again worked. It happened for
+  edsm, fred and documents
