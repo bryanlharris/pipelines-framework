@@ -2,7 +2,7 @@
 
 Deploys your branch to your own copy in dev. Everyone on the team has a
 copy, kept apart by the first name in their prefix, e.g.
-**dev_team_jim_treasury**. Nobody else's copy changes.
+**dev_jim_treasury**. Nobody else's copy changes.
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 # Start a Repo
 
-Done once per team, by one person, usually the lead. Makes the team's repo
+Done once per team. Makes the team's repo
 from this one, e.g. **team-pipelines**. Everyone else then clones the team
 repo and works on branches: [targets/dev_team.md](targets/dev_team.md).
 
@@ -20,7 +20,7 @@ nothing. The team repo pulls from it to get fixes.
 3. In **databricks.yml**, change the bundle's name, **YOUR_TEAM**, to the
    team's name, e.g. **team**. The bundle name comes from this line, not
    from the repo name. It starts every dev catalog, e.g.
-   **dev_team_jim_treasury**, and it never changes after this.
+   **dev_jim_treasury**, and it never changes after this.
 4. Copy the examples you want into **datasets/**, or add your own later
    with [build_many_table_dataset.md](build_many_table_dataset.md).
 5. Commit, and push to origin.

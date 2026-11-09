@@ -31,7 +31,7 @@ month.
 | Blank        | Free                 | Dev                   |
 |--------------|----------------------|-----------------------|
 | YOUR_DATASET | treasury             | treasury              |
-| YOUR_CATALOG | treasury             | dev_team_jim_treasury |
+| YOUR_CATALOG | treasury             | dev_jim_treasury      |
 | YOUR_TABLE   | yieldCurve_monthly   | yieldCurve_monthly    |
 | YOUR_VIEW    | yieldCurve           | yieldCurve            |
 | YOUR_TARGET  | free                 | dev                   |

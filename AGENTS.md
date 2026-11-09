@@ -91,13 +91,13 @@ tools/                                         bundle_plan.py, govern_catalogs.p
 ## Names
 
 - Catalog: `${var.catalog_prefix}YOUR_DATASET`. On free and prod, no prefix:
-  treasury. Team dev adds the bundle and a first name: dev_team_jim_treasury.
+  treasury. Team dev adds a first name: dev_jim_treasury.
   Staging: staging_treasury.
 - Schemas: raw, bronze, silver, sdp_meta, and gold when there are SQL tables.
   Volumes: raw.inbox, raw.files, sdp_meta.conf.
 - Jobs: "${var.catalog_prefix}YOUR_DATASET - ingest", "- apply settings", "- fetch".
   Pipeline: "${var.catalog_prefix}YOUR_DATASET - pipeline". On free and prod the prefix is
-  empty, e.g. "treasury - ingest"; on team dev, "dev_team_jim_treasury - ingest".
+  empty, e.g. "treasury - ingest"; on team dev, "dev_jim_treasury - ingest".
 - Tables: bronze.YOUR_TABLE, silver.YOUR_TABLE_history, view silver.YOUR_TABLE.
 - Blanks in templates: YOUR_TEAM (the bundle name), YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
   YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.

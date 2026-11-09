@@ -4,7 +4,7 @@
 #
 # For the treasury dataset, in a bundle named team, for Jim:
 #
-# - dev       dev_team_jim_treasury   Jim's own copy, from his branch
+# - dev       dev_jim_treasury        Jim's own copy, from his branch
 # - staging   staging_treasury        one copy, from a tag, by the lead
 # - prod      treasury                one copy, from a tag, by an admin
 #
@@ -18,7 +18,7 @@ targets:
 #       profile: dev
 #     variables:
 #       # Your first name keeps your copy apart from everyone else's.
-#       catalog_prefix: dev_${bundle.name}_CHANGE_ME_   # → your first name, e.g. dev_${bundle.name}_jim_
+#       catalog_prefix: dev_CHANGE_ME_   # → your first name, e.g. dev_jim_
 #       catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
 #
 #   staging:

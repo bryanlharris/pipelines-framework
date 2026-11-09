@@ -13,7 +13,7 @@ adds the storage path on dev, staging and prod only.
 
 | Target  | Prefix          | Catalog                   |
 |---------|-----------------|---------------------------|
-| dev     | `dev_team_jim_` | dev_team_jim_YOUR_DATASET |
+| dev     | `dev_jim_`      | dev_jim_YOUR_DATASET      |
 | staging | `staging_`      | staging_YOUR_DATASET      |
 | prod    | none            | YOUR_DATASET              |
 

@@ -36,13 +36,13 @@ US Treasury publishes daily interest rates as an XML file. Use these values for 
 | Blank        | Free           | Dev                   |
 |--------------|----------------|-----------------------|
 | YOUR_DATASET | treasury       | treasury              |
-| YOUR_CATALOG | treasury       | dev_team_jim_treasury |
+| YOUR_CATALOG | treasury       | dev_jim_treasury      |
 | YOUR_TABLE   | yieldCurve     | yieldCurve            |
 | YOUR_FILE    | yieldCurve.xml | yieldCurve.xml        |
 | YOUR_TARGET  | free           | dev                   |
 
-On dev, the catalog starts with dev_, your team's bundle name, and your
-first name. See [dev_team.md](targets/dev_team.md).
+On dev, the catalog starts with dev_ and your first name. See
+[dev_team.md](targets/dev_team.md).
 
 The url for **fetch.yml**:
 

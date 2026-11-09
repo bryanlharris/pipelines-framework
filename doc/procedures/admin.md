@@ -14,7 +14,7 @@ shows.
 ```
 
 The GUI name starts with the target's prefix, e.g. **edsm - pipeline** on
-free, **dev_team_jim_edsm - pipeline** on team dev. The key never changes.
+free, **dev_jim_edsm - pipeline** on team dev. The key never changes.
 Jobs work the same way, e.g. **edsm_apply_settings** and **edsm_ingest**.
 
 ## Apply Settings
@@ -167,7 +167,7 @@ databricks bundle deploy -t YOUR_TARGET
 CREATE CATALOG covers every name, so instead an admin makes the catalog and
 hands it over. The user's bundle then takes it over with a bind.
 
-1. An admin creates the catalog, **YOUR_CATALOG**, e.g. **dev_team_jim_treasury**.
+1. An admin creates the catalog, **YOUR_CATALOG**, e.g. **dev_jim_treasury**.
 2. The admin makes the user its owner, or grants **ALL PRIVILEGES**.
 3. The user binds it, once per target.
 4. Check the plan. The catalog shows change, never create.

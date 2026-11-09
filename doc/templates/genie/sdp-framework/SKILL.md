@@ -11,7 +11,7 @@ Before you start:
 
 - Switch the Git folder to master, and pull. Make a new branch from master.
 - Find out which workspace this is. A catalog named like a dataset with no
-  prefix, e.g. treasury, means free or prod. dev_team_jim_treasury means
+  prefix, e.g. treasury, means free or prod. dev_jim_treasury means
   Jim's dev.
   Check the user's answer against it.
 - Make sure a targets file exists in targets/. If not, copy

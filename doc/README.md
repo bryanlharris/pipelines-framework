@@ -26,6 +26,3 @@ doc/
     pc/, mac/                  shell profile, editor and terminal settings
     genie/                     the Genie Code skill
 ```
-
-A procedure with parts is a file, plus a folder of the same name. The file
-lists the parts in order; each part links to the one before and after.
