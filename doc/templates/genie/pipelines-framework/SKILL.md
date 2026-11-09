@@ -1,11 +1,11 @@
 ---
-name: sdp-framework
-description: Build, change and deploy the sdp-framework repo. Use when asked to set up a target (free, dev, staging, prod), add a dataset or a table, add rules, skip a bad file, check the plan, or deploy.
+name: pipelines-framework
+description: Build, change and deploy the team's pipelines repo. Use when asked to set up a target (free, dev, staging, prod), add a dataset or a table, add rules, skip a bad file, check the plan, or deploy.
 ---
 
-Find the sdp-framework Git folder in this workspace. Read its AGENTS.md
-before any change. Then open the procedure AGENTS.md names for the task,
-under doc/procedures/, and follow its steps.
+Find the team's Git folder in this workspace, e.g. YOUR_TEAM-pipelines.
+Read its AGENTS.md before any change. Then open the procedure AGENTS.md
+names for the task, under doc/procedures/, and follow its steps.
 
 Before you start:
 

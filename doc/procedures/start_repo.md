@@ -19,8 +19,8 @@ nothing. The team repo pulls from it to get fixes.
 2. Rename the remote to **upstream**, and add the team repo as **origin**.
 3. In **databricks.yml**, change the bundle's name, **YOUR_TEAM**, to the
    team's name, e.g. **team**. The bundle name comes from this line, not
-   from the repo name. It starts every dev catalog, e.g.
-   **dev_jim_treasury**, and it never changes after this.
+   from the repo name. It names the bundle's state folder. Don't change
+   it after the first deploy: a new name means a destroy and a redeploy.
 4. Copy the examples you want into **datasets/**, or add your own later
    with [build_many_table_dataset.md](build_many_table_dataset.md).
 5. Commit, and push to origin.

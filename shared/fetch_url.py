@@ -33,7 +33,7 @@ with tempfile.TemporaryDirectory() as tmp:
     download = Path(tmp) / inbox_file.name
     try:
         # www.edsm.net answers 403 to the default requests User-Agent, so name the script.
-        with requests.get(url, timeout=300, stream=True, headers={"User-Agent": "sdp-framework-fetch/1.0"}) as response:
+        with requests.get(url, timeout=300, stream=True, headers={"User-Agent": "pipelines-framework-fetch/1.0"}) as response:
             response.raise_for_status()
             response.raw.decode_content = True
             body = gzip.GzipFile(fileobj=response.raw) if gunzip else response.raw

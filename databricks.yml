@@ -1,4 +1,4 @@
-# sdp-framework: one bundle for your datasets. Each dataset is built with
+# pipelines-framework: one bundle for your datasets. Each dataset is built with
 # sdp-meta (Databricks Labs) and has its own folder: datasets/<dataset>/resources.yml,
 # conf/, tables/, upload script. Shared code is in shared/. Each target has
 # its own file in targets/.

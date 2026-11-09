@@ -1,4 +1,4 @@
-# sdp-framework
+# pipelines-framework
 
 Loads files into Databricks delta tables, with
 **sdp-meta** (Databricks Labs) pipelines. One bundle with
