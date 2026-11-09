@@ -2,23 +2,24 @@
 
 # Add the Pipeline
 
-The pipeline loads files into bronze, then silver, as the settings
-tables say. The ingest job runs it after the router moves a file.
+The pipeline loads files into bronze and silver.
 
 1. Add the pipeline template to the end of **resources.yml**.
 2. Read the ingest tasks template into the ingest job, after the router
    task. Go to the router's last line, **YOUR_TABLE**, and add the
-   template's lines below it. In vim, type
-   :r doc/templates/bootcamp/pipeline/ingest_tasks.yml
-3. Replace **YOUR_DATASET**.
-4. Check the plan. One pipeline shows create, and the ingest job update.
-5. Deploy.
-6. Check the plan again. All show unchanged.
-7. Open the ingest job in Jobs & Pipelines. Its tasks now run **router**,
+   template's lines below it.
+   - vim: type **:r doc/templates/bootcamp/pipeline/ingest_tasks.yml**
+   - VS Code: open the template, press **Ctrl+A** and **Ctrl+C**. Click
+     the very start of the next line, and press **Ctrl+V**.
+   - Then replace **YOUR_DATASET** in **resources.yml**.
+3. Check the plan. One pipeline shows create, and the ingest job change.
+4. Deploy.
+5. Check the plan again. All show unchanged.
+6. Open the ingest job in Jobs & Pipelines. Its tasks now run **router**,
    **any_moved**, **pipeline**, in a chain.
-8. Upload a file. The ingest job runs the router, then the pipeline.
-9. Open the pipeline's latest update. Its graph shows the bronze table.
-10. Ask Genie how many records the bronze table has.
+7. Upload a file. The ingest job runs the router, then the pipeline.
+8. Open the pipeline's latest update. Its graph shows the bronze table.
+9. Ask Genie how many records the bronze table has.
 
 ```
 cat doc/templates/bootcamp/pipeline/resources.yml >> datasets/YOUR_DATASET/resources.yml

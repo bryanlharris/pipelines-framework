@@ -22,34 +22,34 @@ How data flows, in each dataset:
 1. A file lands in the inbox volume, **raw.inbox**. The fetch job downloads
    it from a URL in **fetch.yml**; on free, the upload script sends it; a
    file can also be copied in.
-2. The ingest job's router moves it to **raw.files/<table>/**, adding a time
+2. The ingest job's router moves it to **raw.files/YOUR_TABLE/**, adding a time
    stamp to its name. A file is named after its table. Files the router
    can't match go to **inbox/unknown_files**. Nothing in raw.files is ever
    deleted.
-3. The pipeline, run by sdp-meta, reads raw.files into **bronze.<table>**,
-   all strings, then **silver.<table>_history**, typed, with SCD2 history.
+3. The pipeline, run by sdp-meta, reads raw.files into **bronze.YOUR_TABLE**,
+   all strings, then **silver.YOUR_TABLE_history**, typed, with SCD2 history.
    Its settings come from **conf/**, loaded into tables by the apply
    settings job.
 4. The pipeline also runs the SQL files under **tables/**. Each
-   **tables/silver.<table>.sql** makes the view **silver.<table>**, the
+   **tables/silver.YOUR_TABLE.sql** makes the view **silver.YOUR_TABLE**, the
    current records. Other files build more tables, usually in **gold**,
    and may read those views.
 
 ```
-databricks.yml              bundle and variables; includes targets/ and datasets/*/resources.yml
-datasets/<d>/resources.yml  catalog, schemas, volumes, jobs, pipeline
-datasets/<d>/conf/          onboarding.yml, silver_transformations.yml,
-                            bronze_expectations.yml, silver_expectations/<table>.yml
-datasets/<d>/fetch.yml      what the fetch job downloads
-datasets/<d>/tables/        SQL the pipeline runs: one silver.<table>.sql view per table,
-                            plus extra tables, e.g. edsm's gold layer
-datasets/<d>/upload_<d>.ps1 free only: downloads the files and puts them in the inbox
-examples/                   finished datasets to copy into datasets/; never deployed
-shared/                     python the jobs run: router, fetch, the pipeline runner
-targets/*.local.yml         targets, git-ignored, with the bucket names
-doc/procedures/             step-by-step procedures
-doc/templates/              files to copy
-tools/                      bundle_plan.py, bind_catalogs.ps1
+databricks.yml                                 bundle and variables; includes targets/ and datasets/*/resources.yml
+datasets/YOUR_DATASET/resources.yml            catalog, schemas, volumes, jobs, pipeline
+datasets/YOUR_DATASET/conf/                    onboarding.yml, silver_transformations.yml,
+                                               bronze_expectations.yml, silver_expectations/YOUR_TABLE.yml
+datasets/YOUR_DATASET/fetch.yml                what the fetch job downloads
+datasets/YOUR_DATASET/tables/                  SQL the pipeline runs: one silver.YOUR_TABLE.sql view per table,
+                                               plus extra tables, e.g. edsm's gold layer
+datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1  free only: downloads the files and puts them in the inbox
+examples/                                      finished datasets to copy into datasets/; never deployed
+shared/                                        python the jobs run: router, fetch, the pipeline runner
+targets/*.local.yml                            targets, git-ignored, with the bucket names
+doc/procedures/                                step-by-step procedures
+doc/templates/                                 files to copy
+tools/                                         bundle_plan.py, govern_catalogs.ps1
 ```
 
 ## Which Procedure
@@ -66,6 +66,7 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 | Set up a target: free, dev, staging, prod | doc/procedures/targets/README.md                     |
 | Apply settings, refresh, errors         | doc/procedures/admin.md                                |
 | Learn how the pieces work; not for real work | doc/procedures/bootcamp.md            |
+| Add a gold SQL table, for SQL people    | doc/procedures/bootcamp_sql.md                         |
 
 ## Build From the Templates
 
@@ -76,10 +77,10 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
   copy, fill it in, and leave the commented block for the next table.
   - conf/onboarding.yml: one entry, with the next data_flow_id
   - conf/silver_transformations.yml: one entry, with the casts
-  - conf/silver_expectations/<table>.yml: copied from the template
+  - conf/silver_expectations/YOUR_TABLE.yml: copied from the template
   - fetch.yml: one entry, with the file named after the table
   - resources.yml: one name in the router's **--names** list
-  - tables/silver.<table>.sql: copied from the template, and listed in
+  - tables/silver.YOUR_TABLE.sql: copied from the template, and listed in
     the pipeline's **libraries** in resources.yml
 - Don't invent a layout. When unsure, copy **examples/edsm/**: several
   tables, gzipped files, and a gold layer.
@@ -89,15 +90,15 @@ tools/                      bundle_plan.py, bind_catalogs.ps1
 
 ## Names
 
-- Catalog: `${var.catalog_prefix}<dataset>`. On free and prod, no prefix:
+- Catalog: `${var.catalog_prefix}YOUR_DATASET`. On free and prod, no prefix:
   treasury. Team dev adds the bundle and a first name: dev_team_jim_treasury.
   Staging: staging_treasury.
 - Schemas: raw, bronze, silver, sdp_meta, and gold when there are SQL tables.
   Volumes: raw.inbox, raw.files, sdp_meta.conf.
-- Jobs: "<prefix><dataset> - ingest", "- apply settings", "- fetch".
-  Pipeline: "<prefix><dataset> - pipeline". On free and prod the prefix is
+- Jobs: "${var.catalog_prefix}YOUR_DATASET - ingest", "- apply settings", "- fetch".
+  Pipeline: "${var.catalog_prefix}YOUR_DATASET - pipeline". On free and prod the prefix is
   empty, e.g. "treasury - ingest"; on team dev, "dev_team_jim_treasury - ingest".
-- Tables: bronze.<table>, silver.<table>_history, view silver.<table>.
+- Tables: bronze.YOUR_TABLE, silver.YOUR_TABLE_history, view silver.YOUR_TABLE.
 - Blanks in templates: YOUR_TEAM (the bundle name), YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
   YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.
 - Tags on every job and pipeline: dataset, role (ingest, apply_settings,
@@ -151,9 +152,11 @@ Targets:
 - Free: no bucket. The catalog is made with SQL, then bound. Files come from
   the upload script.
 - Enterprise: the bundle makes the catalog in the target's bucket. Files
-  come from the fetch job. After the first deploy, and after each new
-  dataset, run `./tools/bind_catalogs.ps1 -Target <t>`: it binds each
-  catalog to the workspace, isolates it and turns on data classification.
+  come from the fetch job.
+- Every target: after the first deploy, and after each new dataset, run
+  `./tools/govern_catalogs.ps1 -Target <t>`. It binds each catalog to the
+  workspace, isolates it, turns on data classification (not on free), and
+  turns on data quality monitoring for silver and gold.
 
 ## Commands
 

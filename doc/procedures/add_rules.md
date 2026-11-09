@@ -39,8 +39,7 @@ The default:
 
 1. Add the rule under its kind, with a short name.
 2. Deploy.
-3. Run the apply settings job. In Jobs & Pipelines, open
-   **YOUR_DATASET - apply settings**, and click Run now.
+3. Run the apply settings job.
 4. Rules check new records only. To check every record, full refresh the
    pipeline; see [admin.md](admin.md).
 5. Open the pipeline, click the table, and open the **Data quality** tab.
@@ -50,6 +49,7 @@ The default:
 ```
 edit datasets/YOUR_DATASET/conf/silver_expectations/YOUR_TABLE.yml
 databricks bundle deploy -t YOUR_TARGET
+databricks bundle run YOUR_DATASET_apply_settings -t YOUR_TARGET
 ```
 
 ```

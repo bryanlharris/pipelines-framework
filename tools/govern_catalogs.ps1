@@ -1,9 +1,10 @@
 #!/usr/bin/env pwsh
-# Binds each of the bundle's catalogs to this workspace, isolates it, and
-# turns on data classification. The bundle can't do these yet.
+# Binds each of the bundle's catalogs to this workspace, isolates it, turns
+# on data classification, and turns on data quality monitoring for silver
+# and gold. The bundle can't do these yet.
 # Safe to run again; it skips each step that is already done.
 #
-#   ./tools/bind_catalogs.ps1 -Target dev
+#   ./tools/govern_catalogs.ps1 -Target dev
 
 param([Parameter(Mandatory)][string]$Target)
 
@@ -41,5 +42,20 @@ foreach ($c in $catalogs) {
         databricks data-classification create-catalog-config "catalogs/$c" -p $Target 2>&1 | Out-Null
         if ($LASTEXITCODE -eq 0) { Write-Host "   classification on" }
         else { Write-Host "   classification failed, e.g. not supported on free" }
+    }
+
+    # Data quality monitoring watches silver and gold for stale or odd data.
+    foreach ($s in "silver", "gold") {
+        $id = (databricks schemas get "$c.$s" -p $Target -o json 2>$null | ConvertFrom-Json).schema_id
+        if (-not $id) { continue }
+        databricks data-quality get-monitor schema $id -p $Target 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "   $s monitoring already on"
+        } else {
+            $monitor = @{ object_type = "schema"; object_id = $id; anomaly_detection_config = @{} } | ConvertTo-Json -Compress
+            databricks data-quality create-monitor --json $monitor -p $Target 2>&1 | Out-Null
+            if ($LASTEXITCODE -eq 0) { Write-Host "   $s monitoring on" }
+            else { Write-Host "   $s monitoring failed" }
+        }
     }
 }

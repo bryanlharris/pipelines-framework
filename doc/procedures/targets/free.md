@@ -21,13 +21,16 @@ then bind it.
 7. Deploy. If the ingest job fails with **No volume is defined**, wait a few
    minutes, and deploy again.
 8. Check the plan again. All show unchanged.
-9. For each dataset, run the apply settings job. Do this before the files
-   land, so each ingest run has its settings. Free runs one or two jobs at
-   a time; the rest wait in a queue.
-10. For each dataset, run its upload script. Its ingest job starts when the
+9. Run govern_catalogs. It limits each catalog to this workspace, and turns
+   on data quality monitoring. Classification shows failed: free doesn't
+   support it.
+10. For each dataset, run the apply settings job. Do this before the files
+    land, so each ingest run has its settings. Free runs one or two jobs at
+    a time; the rest wait in a queue.
+11. For each dataset, run its upload script. Its ingest job starts when the
     files land. A file that lands in the first minute after the deploy
     doesn't start it; then run the ingest job by hand.
-11. End.
+12. End.
 
 ```
 cp doc/templates/target/targets.free.local.yml targets/
@@ -39,6 +42,7 @@ foreach ($c in $catalogs) { databricks bundle deployment bind $c.Name $c.Value.n
 py tools/bundle_plan.py free
 databricks bundle deploy -t free
 py tools/bundle_plan.py free
+./tools/govern_catalogs.ps1 -Target free
 databricks bundle run YOUR_DATASET_apply_settings -t free
 & ./datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
 databricks bundle run YOUR_DATASET_ingest -t free

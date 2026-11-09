@@ -32,6 +32,6 @@ git switch --detach YOUR_TAG
 py tools/bundle_plan.py prod
 databricks bundle deploy -t prod
 py tools/bundle_plan.py prod
-./tools/bind_catalogs.ps1 -Target prod
+./tools/govern_catalogs.ps1 -Target prod
 git switch master
 ```

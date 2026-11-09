@@ -17,7 +17,7 @@ The bundle creates the catalog, in the bucket the targets file names.
 4. Replace **YOUR_DATASET** and **YOUR_OWNER** in every file. The owner
    goes in the catalog's comment and in each job's tags.
 5. Change the **CHANGE_ME** lines in **resources.yml**: the top line and
-   the catalog's comment. For the comment, give the AI the About link and
+   the catalog's comment. For the comment, give Genie the About link and
    ask for a draft.
 6. Change the **CHANGE_ME** line in **conf/bronze_expectations.yml**: a
    rule every good record passes.
@@ -57,13 +57,13 @@ then bind it: the bundle takes over the catalog that already exists.
 4. Replace **YOUR_DATASET** and **YOUR_OWNER** in every file. The owner
    goes in the catalog's comment and in each job's tags.
 5. Change the **CHANGE_ME** lines in **resources.yml**: the top line and
-   the catalog's comment. For the comment, give the AI the About link and
+   the catalog's comment. For the comment, give Genie the About link and
    ask for a draft.
 6. Change the **CHANGE_ME** line in **conf/bronze_expectations.yml**: a
    rule every good record passes.
 7. Create the catalog in the SQL editor.
 8. Bind it, so the bundle takes it over.
-9. Check the plan. All show create, but the catalog shows update. If it
+9. Check the plan. All show create, but the catalog shows change. If it
    shows create, the bind failed.
 10. Deploy. If the ingest job fails with **No volume is defined**, the new
    inbox isn't visible yet. Wait a few minutes, and deploy again.

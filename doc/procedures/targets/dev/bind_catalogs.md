@@ -15,7 +15,7 @@ deploy to a target, and after each new dataset. Running it again is safe.
 3. End.
 
 ```
-./tools/bind_catalogs.ps1 -Target dev
+./tools/govern_catalogs.ps1 -Target dev
 ```
 
 ---

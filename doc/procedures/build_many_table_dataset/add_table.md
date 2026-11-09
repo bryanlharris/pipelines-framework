@@ -24,7 +24,7 @@ To copy a block, and uncomment the copy:
 2. In **conf/onboarding.yml**, copy the table block, and uncomment the
    copy. Change its **CHANGE_ME** lines.
 3. Do the same in **conf/silver_transformations.yml**. For the casts, give
-   the AI a sample file, and ask for the select lines.
+   Genie a sample file, and ask for the select lines.
 4. Do the same in **fetch.yml**.
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
    **--names**, and the view's **# - file** block under **libraries**.
@@ -41,11 +41,9 @@ To copy a block, and uncomment the copy:
 13. Run the fetch job, **YOUR_DATASET - fetch**. It fetches every file in
     **fetch.yml**, not just the new table's; repeats add no new versions.
     The ingest job runs, and skips the new table: its settings come next.
-14. Run the apply settings job. In Jobs & Pipelines, open
-    **YOUR_DATASET - apply settings**, and click Run now. Apply settings
-    after the file lands: the pipeline fails on a new table with no files.
-15. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
-    run is green.
+14. Run the apply settings job. Apply settings after the file lands: the
+    pipeline fails on a new table with no files.
+15. Run the ingest job by hand. The run is green.
 16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
 17. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
 18. End.
@@ -67,6 +65,9 @@ grep -rnE "YOUR_|CHANGE_ME" datasets/$d | grep -vE ":[0-9]+:\s*(#|--)"
 py tools/bundle_plan.py dev
 databricks bundle deploy -t dev
 py tools/bundle_plan.py dev
+databricks bundle run ${d}_fetch -t dev
+databricks bundle run ${d}_apply_settings -t dev
+databricks bundle run ${d}_ingest -t dev
 ```
 
 ## Free Edition
@@ -76,7 +77,7 @@ py tools/bundle_plan.py dev
 2. In **conf/onboarding.yml**, copy the table block, and uncomment the
    copy. Change its **CHANGE_ME** lines.
 3. Do the same in **conf/silver_transformations.yml**. For the casts, give
-   the AI a sample file, and ask for the select lines.
+   Genie a sample file, and ask for the select lines.
 4. Do the same with the commented line in the upload script. If the
    dataset will run on enterprise too, do the same in **fetch.yml**.
 5. In **resources.yml**, copy the **# - YOUR_TABLE** line under
@@ -94,11 +95,9 @@ py tools/bundle_plan.py dev
 13. Run the upload script. It sends every file it lists, not just the new
     table's; repeats add no new versions. The ingest job runs, and skips
     the new table: its settings come next.
-14. Run the apply settings job. In Jobs & Pipelines, open
-    **YOUR_DATASET - apply settings**, and click Run now. Apply settings
-    after the file lands: the pipeline fails on a new table with no files.
-15. Run **YOUR_DATASET - ingest** by hand: open it, and click Run now. The
-    run is green.
+14. Run the apply settings job. Apply settings after the file lands: the
+    pipeline fails on a new table with no files.
+15. Run the ingest job by hand. The run is green.
 16. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE_history?"
 17. Ask Genie: "How many records are in YOUR_CATALOG.silver.YOUR_TABLE?"
 18. End.
@@ -122,6 +121,8 @@ py tools/bundle_plan.py free
 databricks bundle deploy -t free
 py tools/bundle_plan.py free
 & ./datasets/$d/upload_$d.ps1
+databricks bundle run ${d}_apply_settings -t free
+databricks bundle run ${d}_ingest -t free
 ```
 
 ---

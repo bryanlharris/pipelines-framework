@@ -21,7 +21,7 @@ as the admin. Prod catalogs have no prefix, e.g. **treasury**.
 4. Check the plan. It shows only what the release changes.
 5. Deploy.
 6. Check the plan again. All show unchanged.
-7. On the first deploy, bind the catalogs, and turn on data classification.
+7. On the first deploy, bind the catalogs, and turn on classification and monitoring.
 8. Start each fetch schedule you want: they deploy paused. See
    [admin.md](../admin.md#pause-or-start-the-fetch-schedule).
 9. Switch back to master.
@@ -35,6 +35,6 @@ git switch --detach YOUR_TAG
 py tools/bundle_plan.py prod
 databricks bundle deploy -t prod
 py tools/bundle_plan.py prod
-./tools/bind_catalogs.ps1 -Target prod
+./tools/govern_catalogs.ps1 -Target prod
 git switch master
 ```

@@ -7,7 +7,7 @@ How to set up, build and release with this repo. Start with
 - [templates/](templates/README.md): files to copy, which the procedures fill in
 - [glossary.md](glossary.md): list of terms with their definitions
 - [/tools/](../tools/README.md): scripts, e.g. bundle_plan.py, which shows what a deploy would do
-- [/AGENTS.md](../AGENTS.md): instructions for AI assistants, e.g. Copilot. Ask one to add a dataset or a table
+- [/AGENTS.md](../AGENTS.md): instructions for AI assistants, e.g. Genie. Ask one to add a dataset or a table
 
 ## Folders
 
@@ -21,6 +21,7 @@ doc/
   templates/
     dataset/                   a whole dataset, ready to copy
     bootcamp/                  one folder per bootcamp part
+    bootcamp_sql/              gold table, gold schema and library, for bootcamp_sql.md
     target/                    the targets templates: free and team
     pc/, mac/                  shell profile, editor and terminal settings
     genie/                     the Genie Code skill

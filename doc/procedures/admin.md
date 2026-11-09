@@ -98,17 +98,22 @@ count each record they drop or warn about.
 
 ## Find a Pipeline Error
 
-1. Open the pipeline in Jobs & Pipelines.
-2. Click the failed update.
-3. In the event log, filter on **Error**. The first error is the cause; the
-   rest follow from it.
-4. End.
+1. Open the pipeline's failed update.
+2. List its errors. The first error is the cause; the rest follow from it.
+3. End.
+
+```
+databricks pipelines logs YOUR_DATASET_pipeline -t YOUR_TARGET --level ERROR
+```
 
 ## Stop a Stuck Pipeline
 
-1. Open the pipeline in Jobs & Pipelines.
-2. Click **Stop**.
-3. End.
+1. Stop the pipeline.
+2. End.
+
+```
+databricks pipelines stop YOUR_DATASET_pipeline -t YOUR_TARGET
+```
 
 ## Table Is Managed by Another Pipeline
 
@@ -162,16 +167,16 @@ databricks bundle deploy -t YOUR_TARGET
 CREATE CATALOG covers every name, so instead an admin makes the catalog and
 hands it over. The user's bundle then takes it over with a bind.
 
-1. An admin creates the catalog, e.g. **dev_YOUR_DATASET**.
+1. An admin creates the catalog, **YOUR_CATALOG**, e.g. **dev_team_jim_treasury**.
 2. The admin makes the user its owner, or grants **ALL PRIVILEGES**.
 3. The user binds it, once per target.
-4. Check the plan. The catalog shows update, never create.
+4. Check the plan. The catalog shows change, never create.
 5. Deploy.
 6. End.
 
 ```
-CREATE CATALOG dev_YOUR_DATASET
-databricks bundle deployment bind YOUR_DATASET dev_YOUR_DATASET -t YOUR_TARGET --auto-approve
+CREATE CATALOG YOUR_CATALOG
+databricks bundle deployment bind YOUR_DATASET YOUR_CATALOG -t YOUR_TARGET --auto-approve
 py tools/bundle_plan.py YOUR_TARGET
 databricks bundle deploy -t YOUR_TARGET
 ```

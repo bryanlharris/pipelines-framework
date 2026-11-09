@@ -1,8 +1,6 @@
-# Build a One Table Dataset
+# Bootcamp
 
-This procedure teaches how to build a one-table pipeline using sdp-meta techniques. The finished
-product reads an xml from a URL, saves it to S3, loads to bronze, then silver SCD2, then builds
-a simple view to only show the "current" records from the SCD2.
+This procedure teaches how to build a one-table pipeline. You'll learn about each of these things:
 
 - Catalog
 - Schemas and volumes
@@ -35,15 +33,16 @@ a simple view to only show the "current" records from the SCD2.
 
 US Treasury publishes daily interest rates as an XML file. Use these values for the blanks.
 
-| Blank        | Value          |
-|--------------|----------------|
-| YOUR_DATASET | treasury       |
-| YOUR_CATALOG | treasury       |
-| YOUR_TABLE   | yieldCurve     |
-| YOUR_FILE    | yieldCurve.xml |
-| YOUR_TARGET  | free           |
+| Blank        | Free           | Dev                   |
+|--------------|----------------|-----------------------|
+| YOUR_DATASET | treasury       | treasury              |
+| YOUR_CATALOG | treasury       | dev_team_jim_treasury |
+| YOUR_TABLE   | yieldCurve     | yieldCurve            |
+| YOUR_FILE    | yieldCurve.xml | yieldCurve.xml        |
+| YOUR_TARGET  | free           | dev                   |
 
-On dev, YOUR_CATALOG is **dev_treasury**. See [setup_dev.md](targets/dev/setup_dev.md).
+On dev, the catalog starts with dev_, your team's bundle name, and your
+first name. See [dev_team.md](targets/dev_team.md).
 
 The url for **fetch.yml**:
 

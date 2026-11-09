@@ -2,7 +2,7 @@
 
 # Add an Upload Script
 
-Puts a file in **inbox/** from your computer.
+The upload script sends a file from your computer to **/Volumes/YOUR_CATALOG/raw/inbox/**.
 
 1. Copy the upload template into the dataset's folder.
 2. Replace **YOUR_DATASET** and **YOUR_TABLE**.

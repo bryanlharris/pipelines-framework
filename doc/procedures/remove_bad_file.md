@@ -16,11 +16,10 @@ no full refresh is needed.
 3. Add a line for it to the **not_a_bad_file** rule: **'%/** and the
    file's name.
 4. Deploy.
-5. Run the apply settings job. In Jobs & Pipelines, open
-   **YOUR_DATASET - apply settings**, and click Run now.
+5. Run the apply settings job.
 6. Upload the fixed file to the inbox. The router gives it a new name, and
    the ingest job runs.
-7. Open **YOUR_DATASET - ingest**. The run is green.
+7. Check the ingest job's latest run. It's green.
 8. End.
 
 ```
@@ -28,6 +27,7 @@ databricks fs cp dbfs:/Volumes/YOUR_CATALOG/raw/files/YOUR_TABLE/YOUR_FILE . -p 
 edit YOUR_FILE
 edit datasets/YOUR_DATASET/conf/bronze_expectations.yml
 databricks bundle deploy -t YOUR_TARGET
+databricks bundle run YOUR_DATASET_apply_settings -t YOUR_TARGET
 databricks fs cp YOUR_FILE dbfs:/Volumes/YOUR_CATALOG/raw/inbox/ -p YOUR_TARGET
 ```
 
@@ -49,6 +49,7 @@ rebuilds both from **raw/files**, without them.
 databricks fs ls dbfs:/Volumes/YOUR_CATALOG/raw/files/YOUR_TABLE
 edit datasets/YOUR_DATASET/conf/bronze_expectations.yml
 databricks bundle deploy -t YOUR_TARGET
+databricks bundle run YOUR_DATASET_apply_settings -t YOUR_TARGET
 databricks bundle run YOUR_DATASET_pipeline -t YOUR_TARGET --full-refresh-all
 ```
 

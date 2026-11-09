@@ -22,7 +22,7 @@ lives in a shared folder, so only the lead can change it.
 6. Check the plan. It shows only what the release changes.
 7. Deploy.
 8. Check the plan again. All show unchanged.
-9. On the first deploy, bind the catalogs, and turn on data classification.
+9. On the first deploy, bind the catalogs, and turn on classification and monitoring.
 10. Switch back to master.
 11. End.
 
@@ -37,6 +37,6 @@ git switch --detach YOUR_TAG
 py tools/bundle_plan.py staging
 databricks bundle deploy -t staging
 py tools/bundle_plan.py staging
-./tools/bind_catalogs.ps1 -Target staging
+./tools/govern_catalogs.ps1 -Target staging
 git switch master
 ```

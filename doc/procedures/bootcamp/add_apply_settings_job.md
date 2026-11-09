@@ -2,10 +2,10 @@
 
 # Add the Apply Settings Job
 
-The sdp pipeline reads its settings from tables this job writes. It
-turns **datasets/YOUR_DATASET/conf/*.yml** into those tables. Run it
-after each change to **conf/*.yml**. Databricks folks call this onboarding; we
-call it apply settings, for now.
+This job turns **datasets/YOUR_DATASET/conf/*.yml** into tables. The
+pipeline reads its settings from those tables. Run the job after each
+change to **conf/*.yml**. Databricks calls this step onboarding. We call it
+apply settings.
 
 The template adds a second job under the **jobs:** section, so the
 ingest job must be last in **resources.yml**.

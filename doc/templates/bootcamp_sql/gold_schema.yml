@@ -1,0 +1,4 @@
+    YOUR_DATASET_gold:
+      catalog_name: ${resources.catalogs.YOUR_DATASET.name}
+      name: gold
+      comment: Our own SQL tables, built from silver inside the pipeline (tables/*.sql).

@@ -20,9 +20,11 @@ Set-PSReadLineKeyHandler -Key Ctrl+e -Function EndOfLine
 
 Set-Alias which Get-Command
 Set-Alias vi vim
-# The procedures open files with edit. For VS Code: Set-Alias edit code
+# The procedures open files with edit. Uncomment the line for your editor.
 # (This hides Windows' own edit command in PowerShell.)
-Set-Alias edit vim
+# Set-Alias edit code
+# Set-Alias edit notepad
+# Set-Alias edit vim
 # Tab stops at "databricks", not "databricks." (databricks.yml also matches)
 Set-Alias databricks databricks.exe
 
