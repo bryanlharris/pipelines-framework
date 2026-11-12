@@ -70,7 +70,7 @@ foreach ($c in $catalogs) {
             $monitor = @{ object_type = "schema"; object_id = $id; anomaly_detection_config = @{} } | ConvertTo-Json -Compress
             databricks data-quality create-monitor --json $monitor -p $Target 2>&1 | Out-Null
             if ($LASTEXITCODE -eq 0) { Write-Host "   $s monitoring on" }
-            else { Write-Host "   $s monitoring failed" }
+            else { Write-Host "   $s monitoring failed, e.g. off in the workspace's Previews" }
         }
     }
 }

@@ -16,7 +16,8 @@ copy, kept apart by the first name in their prefix, e.g.
 1. Clone the team repo, unless you have it.
 2. Copy the team targets template into **targets/**, unless you have it.
 3. Uncomment **dev**. Change its **CHANGE_ME** lines: your first name in
-   the prefix, the bucket, and the team's group.
+   the prefix, the bucket, the team's group, and the SQL warehouse's id
+   if a dataset has a **genie.yml**.
 4. Make a branch for your change.
 5. Make the change, e.g. with
    [build_many_table_dataset.md](../build_many_table_dataset.md).

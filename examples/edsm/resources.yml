@@ -300,19 +300,6 @@ resources:
             path: tables/gold.power_bodies.sql
         - file:
             path: tables/gold.power_scoreboard.sql
-        # The same tables in silver, to show SQL tables work in any schema.
-        - file:
-            path: tables/silver.systems_with_power.sql
-        - file:
-            path: tables/silver.bodies_with_system.sql
-        - file:
-            path: tables/silver.power_summary.sql
-        - file:
-            path: tables/silver.power_rank.sql
-        - file:
-            path: tables/silver.power_bodies.sql
-        - file:
-            path: tables/silver.power_scoreboard.sql
       configuration:
         layer: bronze_silver
         bronze.dataflowspecTable: ${resources.catalogs.edsm.name}.sdp_meta.bronze_dataflowspec

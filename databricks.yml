@@ -17,6 +17,7 @@ include:
   - targets/*.yml
   # One level only; ** does not recurse.
   - "datasets/*/resources.yml"
+  - "datasets/*/genie.yml"
 
 sync:
   exclude:
@@ -37,6 +38,9 @@ variables:
     default: account users
   catalog_bucket:
     description: The S3 bucket that holds this target's catalogs, under catalogs/. Set by dev, staging and prod; free has none.
+    default: ""
+  warehouse_id:
+    description: The SQL warehouse that runs each Genie agent's queries. Set by each target that has a datasets/*/genie.yml.
     default: ""
   sdp_meta_dependency:
     description: The sdp-meta package. Installed by the onboarding job and by the pipeline's runner notebook.

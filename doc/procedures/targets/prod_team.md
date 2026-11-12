@@ -19,7 +19,8 @@ principal, not as the lead. Prod catalogs have no prefix, e.g. **treasury**.
 
 1. Uncomment **prod** in the team targets file. Change its **CHANGE_ME**
    lines: the service principal's application id, the lead, the team's
-   group, and the bucket.
+   group, the bucket, and the SQL warehouse's id if a dataset has a
+   **genie.yml**.
 2. Tag the staging release you tested, e.g. **prod_v0.1**, and push the
    tag.
 3. Switch to the tag.

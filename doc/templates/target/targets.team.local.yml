@@ -21,6 +21,7 @@ targets:
 #       catalog_prefix: dev_CHANGE_ME_   # → your first name, e.g. dev_jim_
 #       catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
 #       team_group: CHANGE_ME → the team's group
+#       warehouse_id: CHANGE_ME → the SQL warehouse's id
 #
 #   staging:
 #     presets:
@@ -40,6 +41,7 @@ targets:
 #       files_prefix: ""
 #       catalog_bucket: CHANGE_ME → the bucket name only
 #       team_group: CHANGE_ME → the team's group
+#       warehouse_id: CHANGE_ME → the SQL warehouse's id
 #
 #   prod:
 #     workspace:
@@ -61,3 +63,4 @@ targets:
 #       run_as: CHANGE_ME → the sp's application id
 #       catalog_bucket: CHANGE_ME → the bucket name only
 #       team_group: CHANGE_ME → the team's group
+#       warehouse_id: CHANGE_ME → the SQL warehouse's id

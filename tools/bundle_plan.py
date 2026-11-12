@@ -3,7 +3,7 @@ Show what a bundle deploy would do, by real name.
 
 bundle plan lists resource keys (schemas.edsm_bronze); this prints the name
 each lands on (edsm.bronze), grouped by type, with the fields a change
-would touch. Catalogs, pipelines and jobs hang from their workspace, schemas
+would touch. Catalogs, pipelines, jobs and Genie agents hang from their workspace, schemas
 from their catalog and volumes from their schema.
 -v adds the bundle keys. Read only: it runs bundle validate and plan, never
 deploy.
@@ -168,7 +168,7 @@ def main():
 
     # Sort each resource into its section, and count the actions.
     counts = {}
-    workspace_rows = {'catalogs': [], 'pipelines': [], 'jobs': []}
+    workspace_rows = {'catalogs': [], 'pipelines': [], 'jobs': [], 'genie_spaces': []}
     catalogs = {}   # catalog name -> schema rows
     volumes = {}    # /Volumes/<catalog>/<schema> -> volume rows
     for full_key, entry in entries.items():
@@ -178,8 +178,8 @@ def main():
         s = state(entry)
 
         if kind in workspace_rows:
-            row = Row(s.get('name') or key, action, protected(config, kind, key), key,
-                      changes(entry))
+            row = Row(s.get('name') or s.get('title') or key, action,
+                      protected(config, kind, key), key, changes(entry))
             workspace_rows[kind].append(row)
         elif kind == 'schemas':
             row = Row(s.get('name') or key, action, protected(config, kind, key), key,
@@ -215,6 +215,7 @@ def main():
         'Volumes': volume_section,
         'Pipelines': by_workspace('pipelines'),
         'Jobs': by_workspace('jobs'),
+        'Genie agents': by_workspace('genie_spaces'),
     }
 
     # The name column is as wide as the longest name in any section.

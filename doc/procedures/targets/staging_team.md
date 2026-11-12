@@ -30,7 +30,8 @@ prod. Staging checks only its deploy. Prod's first run is its first test.
 ## Steps
 
 1. Uncomment **staging** in the team targets file. Change its
-   **CHANGE_ME** lines: the lead, the team's group, and the bucket.
+   **CHANGE_ME** lines: the lead, the team's group, the bucket, and the
+   SQL warehouse's id if a dataset has a **genie.yml**.
 2. Switch to master, and pull.
 3. List the staging tags. Pick the next number, e.g. **staging_v0.01**.
 4. Tag master, and push the tag.

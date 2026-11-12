@@ -44,6 +44,7 @@ datasets/YOUR_DATASET/fetch.yml                what the fetch job downloads
 datasets/YOUR_DATASET/tables/                  SQL the pipeline runs: one silver.YOUR_TABLE.sql view per table,
                                                plus extra tables, e.g. edsm's gold layer
 datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1  free only: downloads the files and puts them in the inbox
+datasets/YOUR_DATASET/genie.yml                optional Genie agent over silver and gold, e.g. edsm's
 examples/                                      finished datasets to copy into datasets/; never deployed
 shared/                                        python the jobs run: router, fetch, the pipeline runner
 targets/*.local.yml                            targets, git-ignored, with the bucket names

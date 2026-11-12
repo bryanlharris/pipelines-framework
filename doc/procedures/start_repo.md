@@ -26,9 +26,14 @@ nothing. The team repo pulls from it to get fixes.
    copy them all, skip **examples/README.md**, so it doesn't overwrite
    **datasets/README.md**.
 5. Commit, and push to origin.
-6. Later, to get upstream's fixes, pull from upstream, then push to origin.
-   Everyone else gets them with a plain pull.
-7. End.
+6. Later, to get upstream's fixes, pull from upstream.
+7. Check the bundle's name in **databricks.yml**. A pull can set it back
+   to **YOUR_TEAM**. Put the team's name back, or the plan shows create on
+   everything.
+8. Check the plan. Nothing shows create.
+9. Commit, and push to origin. Everyone else gets the fixes with a plain
+   pull.
+10. End.
 
 ```
 git clone YOUR_UPSTREAM_URL YOUR_TEAM-pipelines
@@ -42,5 +47,8 @@ git add -A
 git commit -m "Start the YOUR_TEAM repo"
 git push -u origin master
 git pull upstream master
+edit databricks.yml
+py tools/bundle_plan.py dev
+git commit -am "Keep the team's bundle name"
 git push
 ```

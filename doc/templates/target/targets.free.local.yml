@@ -10,3 +10,5 @@ targets:
 #       pipelines_development: true
 #     workspace:
 #       profile: free
+#     variables:
+#       warehouse_id: CHANGE_ME → the SQL warehouse's id, from its page

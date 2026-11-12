@@ -1,0 +1,368 @@
+# edsm's Genie agent: questions in plain English about silver and gold.
+# Built in the GUI, then copied with:
+#   databricks bundle generate genie-space --existing-id YOUR_SPACE_ID --key edsm_genie
+# The definition is YAML, not the generated .geniespace.json, because
+# variables only work in YAML: each table names the target's catalog.
+resources:
+  genie_spaces:
+    edsm_genie:
+      title: ${var.catalog_prefix}edsm - genie
+      description: Answers questions about the EDSM catalog — star systems, celestial bodies, and related catalog data. Supports detailed lookups (e.g., "what's in the Sol system"), spatial queries (e.g., "systems within 50 light-years of Sol"), and aggregates/rankings across catalogued systems.
+      warehouse_id: ${var.warehouse_id}
+      parent_path: /Workspace/Users/${workspace.current_user.userName}
+      serialized_space:
+        benchmarks:
+          questions:
+          - answer:
+            - content:
+              - SELECT name, power, powerState FROM ${resources.catalogs.edsm.name}.silver.powerplay_history WHERE __END_AT IS NULL AND name = 'Chi Herculis'
+              format: SQL
+            id: 01f1dd6b0fb11847bff2e98f8ceffe5d
+            question:
+            - What is the current powerplay state of Chi Herculis?
+          - answer:
+            - content:
+              - SELECT name, SQRT(POWER(coords.x,2) + POWER(coords.y,2) + POWER(coords.z,2)) AS distance_from_sol_ly FROM ${resources.catalogs.edsm.name}.silver.systemswithcoordinates7days ORDER BY distance_from_sol_ly ASC LIMIT 10
+              format: SQL
+            id: 01f1dd6b0fa01747bc9aa86357f9deb2
+            question:
+            - Which 10 recently updated star systems are closest to Sol?
+          - answer:
+            - content:
+              - SELECT rank, power, controlled, share_pct FROM ${resources.catalogs.edsm.name}.gold.power_scoreboard ORDER BY rank
+              format: SQL
+            id: 01f1dd6afa20182c978df6df0dc7ee53
+            question:
+            - Which powers control the most systems, and what share of occupied systems does each hold?
+        config:
+          sample_questions:
+          - id: 01f1dd6aeea0156a800c00467659b334
+            question:
+            - Which powers control the most systems, and what share of occupied systems does each hold?
+          - id: 01f1dd6aeeb119b2aa8247ff4791ba48
+            question:
+            - Which recently updated star systems are closest to Sol?
+          - id: 01f1dd6aeec11d3f93df38884427d573
+            question:
+            - How many landable planets were catalogued this week, and which systems have the most?
+          - id: 01f1dd6aeed61a82bad841da122734a6
+            question:
+            - What is the current powerplay state of Chi Herculis?
+          - id: 01f1dd6db45b1dfc8684fcfaebdecaed
+            question:
+            - What tables are there and how are they connected? Give me a short summary.
+        data_sources:
+          tables:
+          - column_configs:
+            - column_name: coords
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: isLandable
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: subType
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: systemId
+              enable_format_assistance: true
+            - column_name: systemName
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: terraformingState
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: type
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.bodies_with_system
+          - column_configs:
+            - column_name: bodies
+              enable_format_assistance: true
+            - column_name: earth_like
+              enable_format_assistance: true
+            - column_name: landable
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: terraformable
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.power_bodies
+          - column_configs:
+            - column_name: controlled
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: rank
+              enable_format_assistance: true
+            - column_name: share_pct
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.power_rank
+          - column_configs:
+            - column_name: bodies
+              enable_format_assistance: true
+            - column_name: controlled
+              enable_format_assistance: true
+            - column_name: earth_like
+              enable_format_assistance: true
+            - column_name: landable
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: rank
+              enable_format_assistance: true
+            - column_name: share_pct
+              enable_format_assistance: true
+            - column_name: terraformable
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.power_scoreboard
+          - column_configs:
+            - column_name: controlled
+              enable_format_assistance: true
+            - column_name: exploited
+              enable_format_assistance: true
+            - column_name: fortified
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: stronghold
+              enable_format_assistance: true
+            - column_name: unoccupied
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.power_summary
+          - column_configs:
+            - column_name: allegiance
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: coords
+            - column_name: government
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: powerState
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: recently_updated
+              enable_format_assistance: true
+            - column_name: state
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.gold.systems_with_power
+          - column_configs:
+            - column_name: atmosphereType
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: bodyId
+              enable_format_assistance: true
+            - column_name: distanceToArrival
+              enable_format_assistance: true
+            - column_name: earthMasses
+              enable_format_assistance: true
+            - column_name: gravity
+              enable_format_assistance: true
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: id64
+              enable_format_assistance: true
+            - column_name: ingest_time
+              enable_format_assistance: true
+            - column_name: isLandable
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: radius
+              enable_format_assistance: true
+            - column_name: reserveLevel
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: source_file
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: subType
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: surfaceTemperature
+              enable_format_assistance: true
+            - column_name: systemId
+              enable_format_assistance: true
+            - column_name: systemId64
+              enable_format_assistance: true
+            - column_name: systemName
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: terraformingState
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: type
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: updateTime
+              enable_format_assistance: true
+            - column_name: volcanismType
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.silver.bodies7days
+          - column_configs:
+            - column_name: allegiance
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: coords
+            - column_name: date
+              enable_format_assistance: true
+            - column_name: government
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: id64
+              enable_format_assistance: true
+            - column_name: ingest_time
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: power
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: powerState
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: source_file
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: state
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.silver.powerplay
+          - column_configs:
+            - column_name: coords
+            - column_name: date
+              enable_format_assistance: true
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: id64
+              enable_format_assistance: true
+            - column_name: ingest_time
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: source_file
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.silver.systemswithcoordinates7days
+          - column_configs:
+            - column_name: date
+              enable_format_assistance: true
+            - column_name: estimatedCoordinates
+            - column_name: id
+              enable_format_assistance: true
+            - column_name: id64
+              enable_format_assistance: true
+            - column_name: ingest_time
+              enable_format_assistance: true
+            - column_name: name
+              enable_entity_matching: true
+              enable_format_assistance: true
+            - column_name: source_file
+              enable_entity_matching: true
+              enable_format_assistance: true
+            identifier: ${resources.catalogs.edsm.name}.silver.systemswithoutcoordinates
+        instructions:
+          example_question_sqls:
+          - id: 01f1dd6adf0012e8b96c93c4f04bae0c
+            question:
+            - 'Closest systems to Sol — question: Which recently updated star systems are closest to Sol?'
+            sql:
+            - SELECT name, SQRT(POWER(coords.x,2) + POWER(coords.y,2) + POWER(coords.z,2)) AS distance_from_sol_ly FROM ${resources.catalogs.edsm.name}.silver.systemswithcoordinates7days ORDER BY distance_from_sol_ly ASC LIMIT 10
+          - id: 01f1dd6adf001c53af5fbdc650f9737d
+            question:
+            - 'Landable planets nearest to Sol (join + distance) — question: Which landable planets are in the systems closest to Sol?'
+            sql:
+            - SELECT b.name AS body_name, b.systemName, b.subType, b.isLandable, b.gravity, ROUND(SQRT(POWER(s.coords.x,2) + POWER(s.coords.y,2) + POWER(s.coords.z,2)), 1) AS distance_from_sol_ly FROM ${resources.catalogs.edsm.name}.silver.bodies7days b JOIN ${resources.catalogs.edsm.name}.silver.systemswithcoordinates7days s ON b.systemId = s.id WHERE b.isLandable = true AND s.coords.x IS NOT NULL ORDER BY distance_from_sol_ly ASC LIMIT 25
+          - id: 01f1dd6adf0115978e7db7105987dc4f
+            question:
+            - 'Controlled systems per power — question: How many systems does each power currently control? (reconciles with gold.power_scoreboard)'
+            sql:
+            - SELECT power, COUNT(DISTINCT name) AS controlled_systems FROM ${resources.catalogs.edsm.name}.silver.powerplay_history WHERE __END_AT IS NULL AND powerState IN ('Exploited','Fortified','Stronghold') GROUP BY power ORDER BY controlled_systems DESC
+          sql_snippets:
+            expressions:
+            - display_name: Distance from Sol in light-years (${resources.catalogs.edsm.name}.silver.systemswithcoordinates7days; Sol is at coordinate origin)
+              id: 01f1dd6ada4a15eaa786125a8165bdc1
+              sql:
+              - SQRT(POWER(coords.x,2) + POWER(coords.y,2) + POWER(coords.z,2))
+            filters:
+            - display_name: Current powerplay state (${resources.catalogs.edsm.name}.silver.powerplay_history)
+              id: 01f1dd6ada4913c6a021fe5e59fa937f
+              sql:
+              - __END_AT IS NULL
+            - display_name: Occupied (controlled) systems (${resources.catalogs.edsm.name}.silver.powerplay_history)
+              id: 01f1dd6ada491cf59aa1a3582a5f1eb0
+              sql:
+              - powerState IN ('Exploited','Fortified','Stronghold')
+          text_instructions:
+          - content:
+            - |
+              This agent answers questions about the EDSM (Elite Dangerous Star Map) catalog.
+            - |2+
+
+            - |
+              Data coverage:
+            - |
+              - The systems-with-coordinates and bodies tables are 7-day rolling windows: they hold only systems and bodies updated in EDSM during the latest weekly snapshot (Nov 1-7, 2026), not the full galaxy catalog.
+            - |
+              - Never conclude a system "does not exist" because it is missing from those tables; it likely just was not updated in the window (Sol itself is absent, for example). For systems not found there, check the systems-without-coordinates table, which is the full historical set.
+            - |
+              - For "how many systems exist in the galaxy" style questions, explain the 7-day window limitation rather than reporting a count.
+            - |
+              - Powerplay history is a full accumulating history; use the "Current powerplay state" filter to get the present state of a system.
+            - |2+
+
+            - |
+              Powerplay:
+            - |
+              - A system can be occupied by multiple powers at once (for example, Exploited by several powers). When counting systems per power, count distinct systems.
+            - |
+              - "Controlled" or "occupied" means any non-Unoccupied powerplay state; use the "Occupied (controlled) systems" filter.
+            - |
+              - For power rankings and shares, prefer the gold power scoreboard tables. share_pct is a whole-number percentage (13.4 means 13.4%).
+            - |
+              - The scoreboard's bodies, landable, terraformable, and earth_like columns are sparsely populated and should not be treated as complete.
+            - |2+
+
+            - |
+              Coordinates and distance:
+            - |
+              - System coordinates are galactic x, y, and z positions in light-years, with Sol at the origin. Use the "Distance from Sol in light-years" derived column for distance-from-Sol questions; "within N light-years of Sol" means that value is at most N.
+            - |
+              - To measure the distance between two systems, use the straight-line distance between their coordinates, in light-years.
+            - |2+
+
+            - |
+              Body units:
+            - |
+              - distanceToArrival is in light-seconds from the system's arrival point; gravity in Earth gravities; radius in kilometers; surfaceTemperature in Kelvin; earthMasses in Earth masses.
+            - |
+              - Fuel-scoopable star flags are not available in these tables.
+            - |2+
+
+            - |
+              General:
+            - |
+              - Use the gold tables for powerplay aggregates and the silver tables for system and body detail.
+            - '- Match system names case-insensitively; if a system is missing from the coordinates table, fall back to the systems-without-coordinates table.'
+            id: 01f1dd6aeaa912af8716fff27dc57975
+        version: 2

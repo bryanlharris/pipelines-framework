@@ -12,7 +12,8 @@ then bind it.
 ## Steps
 
 1. Copy the free targets template into **targets/**, unless you have it.
-2. Uncomment **free**.
+2. Uncomment **free**. If a dataset has a **genie.yml**, change its
+   **CHANGE_ME** line to the SQL warehouse's id.
 3. List the catalogs the bundle needs. It prints one name per dataset.
 4. Create each catalog in the SQL editor. They can take a minute to show.
 5. Bind each one, so the bundle takes it over.
