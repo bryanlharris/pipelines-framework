@@ -8,7 +8,7 @@ where to, and what to fill in.
 
 ```
 YOUR_DATASET   the dataset's name, e.g. treasury.
-YOUR_CATALOG   the dataset's catalog, e.g. treasury on free and prod, dev_jim_treasury on team dev.
+YOUR_CATALOG   the dataset's catalog, e.g. treasury on free and prod, dev_jim_treasury on dev.
 YOUR_OWNER     who to ask about a dataset, e.g. Bryan Harris.
 YOUR_TABLE     the table's name, e.g. yieldCurve. Also its file in the inbox.
 YOUR_TARGET    the target: free, dev, staging or prod.

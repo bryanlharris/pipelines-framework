@@ -42,6 +42,17 @@ resources:
       # The workspace sets this itself; listing it keeps the plan clean.
       properties:
         collation: UTF8_BINARY
+      # Deploys reset these. The steward grants on schemas and tables
+      # instead, in the GUI or Ontos.
+      grants:
+        - principal: ${var.run_as}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${workspace.current_user.userName}
+          privileges: [MANAGE, USE_SCHEMA, SELECT, READ_VOLUME]
+        - principal: ${var.team_group}
+          privileges: [USE_SCHEMA, SELECT, READ_VOLUME]
+        - principal: account users
+          privileges: [USE_CATALOG]
 
   schemas:
     fdic_raw:
@@ -151,11 +162,25 @@ resources:
               uc_catalog: ${resources.catalogs.fdic.name}
               uc_schema: ${resources.schemas.fdic_sdp_meta.name}
               conf_volume: ${resources.volumes.fdic_sdp_meta_conf.name}
-        - task_key: apply
+        # Points the source paths at the files catalog: staging reads prod's.
+        - task_key: point_files
           # Fail once, no retries.
           disable_auto_optimization: true
           depends_on:
             - task_key: stage_conf
+          environment_key: sdp_meta
+          spark_python_task:
+            python_file: ../../shared/point_files.py
+            parameters:
+              - --onboarding_file
+              - /Volumes/${resources.catalogs.fdic.name}/sdp_meta/conf/conf/onboarding.yml
+              - --files_catalog
+              - ${var.files_prefix}fdic
+        - task_key: apply
+          # Fail once, no retries.
+          disable_auto_optimization: true
+          depends_on:
+            - task_key: point_files
           environment_key: sdp_meta
           python_wheel_task:
             package_name: databricks_labs_sdp_meta

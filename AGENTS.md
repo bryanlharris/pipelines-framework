@@ -29,7 +29,7 @@ How data flows, in each dataset:
 3. The pipeline, run by sdp-meta, reads raw.files into **bronze.YOUR_TABLE**,
    all strings, then **silver.YOUR_TABLE_history**, typed, with SCD2 history.
    Its settings come from **conf/**, loaded into tables by the apply
-   settings job.
+   settings job. On staging, it reads prod's raw.files instead.
 4. The pipeline also runs the SQL files under **tables/**. Each
    **tables/silver.YOUR_TABLE.sql** makes the view **silver.YOUR_TABLE**, the
    current records. Other files build more tables, usually in **gold**,
@@ -91,13 +91,13 @@ tools/                                         bundle_plan.py, govern_catalogs.p
 ## Names
 
 - Catalog: `${var.catalog_prefix}YOUR_DATASET`. On free and prod, no prefix:
-  treasury. Team dev adds a first name: dev_jim_treasury.
+  treasury. Dev adds a first name: dev_jim_treasury.
   Staging: staging_treasury.
 - Schemas: raw, bronze, silver, sdp_meta, and gold when there are SQL tables.
   Volumes: raw.inbox, raw.files, sdp_meta.conf.
 - Jobs: "${var.catalog_prefix}YOUR_DATASET - ingest", "- apply settings", "- fetch".
   Pipeline: "${var.catalog_prefix}YOUR_DATASET - pipeline". On free and prod the prefix is
-  empty, e.g. "treasury - ingest"; on team dev, "dev_jim_treasury - ingest".
+  empty, e.g. "treasury - ingest"; on dev, "dev_jim_treasury - ingest".
 - Tables: bronze.YOUR_TABLE, silver.YOUR_TABLE_history, view silver.YOUR_TABLE.
 - Blanks in templates: YOUR_TEAM (the bundle name), YOUR_DATASET, YOUR_OWNER, YOUR_CATALOG, YOUR_TABLE,
   YOUR_FILE, YOUR_TARGET. CHANGE_ME marks a line to write yourself.
@@ -124,7 +124,7 @@ Safety:
   file: copy **doc/templates/target/targets.free.local.yml** or
   **targets.team.local.yml**, and fill it in.
 - Deploy to free or your own dev. Staging and prod get releases, by tag, from
-  the lead and an admin; see doc/procedures/targets/.
+  the team lead; see doc/procedures/targets/.
 - Never delete a file from raw.files. To skip a bad file, list it in the
   dataset's **not_a_bad_file** rule, then full refresh.
 - Free Edition has a daily serverless limit. RESOURCE_EXHAUSTED means wait.
@@ -153,10 +153,20 @@ Targets:
   the upload script.
 - Enterprise: the bundle makes the catalog in the target's bucket. Files
   come from the fetch job.
+- Staging: its pipelines read prod's raw.files, e.g. treasury.raw.files.
+  Staging sets **files_prefix** to "", and the apply settings job's
+  point_files task writes prod's path into the settings. Staging's own
+  inbox and raw.files stay empty, so the lead runs its pipelines by hand.
 - Every target: after the first deploy, and after each new dataset, run
   `./tools/govern_catalogs.ps1 -Target <t>`. It binds each catalog to the
   workspace, isolates it, turns on data classification (not on free), and
-  turns on data quality monitoring for silver and gold.
+  turns on data quality monitoring for silver and gold. On prod, add
+  `-StagingWorkspace`, so staging can read each catalog's raw.files.
+- Grants: each catalog's **grants** in resources.yml give run_as
+  ALL_PRIVILEGES, the deployer MANAGE and read, **team_group** read, and
+  account users USE_CATALOG. On prod, run_as is the sp, so only it writes.
+  Deploys reset catalog grants. The data steward grants on schemas and
+  tables, in the GUI or Ontos.
 
 ## Commands
 

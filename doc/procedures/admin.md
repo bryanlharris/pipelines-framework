@@ -14,7 +14,7 @@ shows.
 ```
 
 The GUI name starts with the target's prefix, e.g. **edsm - pipeline** on
-free, **dev_jim_edsm - pipeline** on team dev. The key never changes.
+free, **dev_jim_edsm - pipeline** on dev. The key never changes.
 Jobs work the same way, e.g. **edsm_apply_settings** and **edsm_ingest**.
 
 ## Apply Settings

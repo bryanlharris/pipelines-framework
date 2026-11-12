@@ -25,8 +25,7 @@ The bundle creates the catalog, in the bucket the targets file names.
 8. Deploy. If the ingest job fails with **No volume is defined**, the new
    inbox isn't visible yet. Wait a few minutes, and deploy again.
 9. Check the plan again. All show unchanged.
-10. Bind the catalog, and turn on data classification:
-   [bind_catalogs.md](../targets/dev/bind_catalogs.md).
+10. Bind the catalog, and turn on classification and monitoring.
 11. End.
 
 ```
@@ -42,6 +41,7 @@ edit datasets/$d/conf/bronze_expectations.yml
 py tools/bundle_plan.py dev
 databricks bundle deploy -t dev
 py tools/bundle_plan.py dev
+./tools/govern_catalogs.ps1 -Target dev
 ```
 
 ## Free Edition

@@ -6,7 +6,7 @@
 #
 # - dev       dev_jim_treasury        Jim's own copy, from his branch
 # - staging   staging_treasury        one copy, from a tag, by the lead
-# - prod      treasury                one copy, from a tag, by an admin
+# - prod      treasury                one copy, from a tag, by the lead
 #
 # Each catalog keeps its data in s3://<bucket>/catalogs/<catalog>/.
 targets:
@@ -20,6 +20,7 @@ targets:
 #       # Your first name keeps your copy apart from everyone else's.
 #       catalog_prefix: dev_CHANGE_ME_   # → your first name, e.g. dev_jim_
 #       catalog_bucket: CHANGE_ME → the bucket name only, e.g. foobar
+#       team_group: CHANGE_ME → the team's group
 #
 #   staging:
 #     presets:
@@ -31,11 +32,14 @@ targets:
 #     permissions:
 #       - user_name: CHANGE_ME → the team lead's email
 #         level: CAN_MANAGE
-#       - group_name: CHANGE_ME → the team's group
+#       - group_name: ${var.team_group}
 #         level: CAN_VIEW
 #     variables:
 #       catalog_prefix: staging_
+#       # Read prod's raw.files; staging's own stay empty.
+#       files_prefix: ""
 #       catalog_bucket: CHANGE_ME → the bucket name only
+#       team_group: CHANGE_ME → the team's group
 #
 #   prod:
 #     workspace:
@@ -43,12 +47,17 @@ targets:
 #       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
 #     # Jobs and pipelines run as the service principal, not as whoever deployed.
 #     run_as:
-#       service_principal_name: CHANGE_ME → the sp's application id
+#       service_principal_name: ${var.run_as}
 #     permissions:
-#       - group_name: CHANGE_ME → the admins' group
+#       - user_name: CHANGE_ME → the team lead's email
 #         level: CAN_MANAGE
-#       - group_name: CHANGE_ME → the team's group
+#       # The sp's ingest job starts the pipeline.
+#       - service_principal_name: ${var.run_as}
+#         level: CAN_RUN
+#       - group_name: ${var.team_group}
 #         level: CAN_VIEW
 #     variables:
 #       catalog_prefix: ""
+#       run_as: CHANGE_ME → the sp's application id
 #       catalog_bucket: CHANGE_ME → the bucket name only
+#       team_group: CHANGE_ME → the team's group

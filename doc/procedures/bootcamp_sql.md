@@ -1,7 +1,7 @@
 # SQL Bootcamp
 
-Bootcamp with a SQL focus. Build on top of silver with **.sql** files. The
-pipeline runs them in the right order.
+Build on top of silver with **.sql** files. The pipeline runs them in the
+right order.
 
 ## How It Works
 

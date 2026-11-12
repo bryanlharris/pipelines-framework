@@ -26,6 +26,15 @@ variables:
   catalog_prefix:
     description: Put before every catalog name, e.g. dev_. Set by each target; empty on free and prod.
     default: ""
+  files_prefix:
+    description: The prefix of the catalog whose raw.files the pipelines read. Same as catalog_prefix, except on staging, which sets "" to read prod's files.
+    default: ${var.catalog_prefix}
+  run_as:
+    description: Who runs the jobs and pipelines, and gets ALL_PRIVILEGES on each catalog. The deployer, except on prod, which sets the sp's application id.
+    default: ${workspace.current_user.userName}
+  team_group:
+    description: The team's group. Reads every table. Set by dev, staging and prod; free uses account users.
+    default: account users
   catalog_bucket:
     description: The S3 bucket that holds this target's catalogs, under catalogs/. Set by dev, staging and prod; free has none.
     default: ""

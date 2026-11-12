@@ -24,13 +24,10 @@ pipelines-framework
 | free    | none              | any branch    | you, at home     | [free.md](free.md)                   |
 | dev     | `dev_jim_`        | a branch      | each person      | [dev_team.md](dev_team.md)           |
 | staging | `staging_`        | a tag         | the team lead    | [staging_team.md](staging_team.md)   |
-| prod    | none              | a tag         | an admin, as sp  | [prod_team.md](prod_team.md)         |
+| prod    | none              | a tag         | the lead, as sp  | [prod_team.md](prod_team.md)         |
 
 Free uses default storage and the upload scripts. Dev, staging and prod keep
-each catalog in **s3://bucket/catalogs/**, and get files from the fetch job.
+each catalog in **s3://bucket/catalogs/**.
 
-## Old Setup
-
-[dev.md](dev.md), [staging.md](staging.md) and [prod.md](prod.md) set up
-one shared dev, with the prefix **dev_**. They stay until the team setup
-replaces them.
+Dev and prod get files from the fetch job. Staging's pipelines read prod's
+raw.files, and staging's own stay empty.

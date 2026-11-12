@@ -22,7 +22,9 @@ nothing. The team repo pulls from it to get fixes.
    from the repo name. It names the bundle's state folder. Don't change
    it after the first deploy: a new name means a destroy and a redeploy.
 4. Copy the examples you want into **datasets/**, or add your own later
-   with [build_many_table_dataset.md](build_many_table_dataset.md).
+   with [build_many_table_dataset.md](build_many_table_dataset.md). To
+   copy them all, skip **examples/README.md**, so it doesn't overwrite
+   **datasets/README.md**.
 5. Commit, and push to origin.
 6. Later, to get upstream's fixes, pull from upstream, then push to origin.
    Everyone else gets them with a plain pull.
@@ -35,6 +37,7 @@ git remote rename origin upstream
 git remote add origin YOUR_TEAM_REPO_URL
 edit databricks.yml
 cp -r examples/YOUR_DATASET datasets/
+cp examples/* datasets/ -Recurse -Exclude README.md
 git add -A
 git commit -m "Start the YOUR_TEAM repo"
 git push -u origin master

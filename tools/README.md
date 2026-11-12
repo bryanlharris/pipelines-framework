@@ -6,3 +6,5 @@ Scripts you run from the repo's root folder.
   `py tools/bundle_plan.py dev`
 - [govern_catalogs.ps1](govern_catalogs.ps1): binds each catalog to the workspace, isolates it, turns on data classification, and turns on data quality monitoring for silver and gold. Skips what's already done.
   `./tools/govern_catalogs.ps1 -Target dev`
+  On prod, one more flag lets staging read each catalog's raw.files.
+  `./tools/govern_catalogs.ps1 -Target prod -StagingWorkspace YOUR_WORKSPACE_ID`

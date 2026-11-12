@@ -4,9 +4,14 @@
 # and gold. The bundle can't do these yet.
 # Safe to run again; it skips each step that is already done.
 #
+# On prod, -StagingWorkspace also binds each catalog read-only to staging, so
+# staging's pipelines can read its raw.files. The lead's read grant comes
+# from the catalog's grants in resources.yml.
+#
 #   ./tools/govern_catalogs.ps1 -Target dev
+#   ./tools/govern_catalogs.ps1 -Target prod -StagingWorkspace YOUR_WORKSPACE_ID
 
-param([Parameter(Mandatory)][string]$Target)
+param([Parameter(Mandatory)][string]$Target, [string]$StagingWorkspace)
 
 $ws = (databricks metastores current -p $Target -o json | ConvertFrom-Json).workspace_id
 $wsHost = (databricks auth describe -p $Target -o json | ConvertFrom-Json).details.host -replace "^https://", ""
@@ -23,6 +28,16 @@ foreach ($c in $catalogs) {
     } else {
         databricks workspace-bindings update-bindings catalog $c --json $bind -p $Target | Out-Null
         Write-Host "   bound to workspace $ws ($wsHost)"
+    }
+    if ($StagingWorkspace) {
+        if ($bound -contains $StagingWorkspace) {
+            Write-Host "   already readable from staging workspace $StagingWorkspace"
+        } else {
+            $ro = @{ add = @(@{ workspace_id = [long]$StagingWorkspace; binding_type = "BINDING_TYPE_READ_ONLY" }) } | ConvertTo-Json -Depth 3 -Compress
+            databricks workspace-bindings update-bindings catalog $c --json $ro -p $Target | Out-Null
+            Write-Host "   readable from staging workspace $StagingWorkspace"
+        }
+        $bound += [long]$StagingWorkspace
     }
     $others = $bound | ? { $_ -ne $ws }
     if ($others) { Write-Host "   also bound to $($others -join ', ')" }
