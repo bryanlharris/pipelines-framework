@@ -14,6 +14,8 @@ To write a new procedure, copy one like it.
 - [remove_bad_file.md](remove_bad_file.md): skip a bad file, and load a fixed copy
 - [admin.md](admin.md): small tasks, e.g. apply settings, refresh, full refresh
 - [add_custom_code.md](add_custom_code.md): give one dataset its own Python, beyond what the YAML can do
+- [add_genie.md](add_genie.md): give a dataset a Genie agent, after its first load
+- [fake_data.md](fake_data.md): dev only: make fake files, send them, and wipe dev to start over
 
 ## Details
 
@@ -30,5 +32,9 @@ To write a new procedure, copy one like it.
 [admin.md](admin.md): Small tasks you run now and then, one section each: apply settings after a conf/ change, refresh, full refresh, unknown files, rule counts, errors, and the fetch schedule.
 
 [add_custom_code.md](add_custom_code.md): Most datasets need only YAML. When one needs Python, it gets its own copy of the pipeline runner, and the rest stay on the shared one.
+
+[add_genie.md](add_genie.md): A Genie agent answers questions about one dataset in plain English. It goes in after the pipeline's first run, because Genie needs the tables to exist.
+
+[fake_data.md](fake_data.md): Dev never gets real data. Each dataset keeps a few made-up records per table in fake/, shaped like the real files, and its upload script sends them with -Fake.
 
 [add_rules.md](add_rules.md): Rules check every record. A warn rule counts odd records, a drop rule removes records you can't use, and a fail rule stops the pipeline on a broken file.

@@ -31,7 +31,9 @@ To copy a block, and uncomment the copy:
    Uncomment the copies.
 6. Copy the view template into **tables/**. Change its **CHANGE_ME** line.
 7. Copy the silver rules template into **conf/silver_expectations/**.
-   Change its **CHANGE_ME** line: the key every record needs.
+   Change its **CHANGE_ME** line: the key every record needs. The rules
+   in **conf/bronze_expectations.yml** check every table, so each must
+   name only columns the new table has.
 8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
 9. Search for leftovers outside comments. Nothing shows.
 10. Check the plan. The ingest job and the pipeline show change. Nothing
@@ -85,7 +87,9 @@ databricks bundle run ${d}_ingest -t dev
    Uncomment the copies.
 6. Copy the view template into **tables/**. Change its **CHANGE_ME** line.
 7. Copy the silver rules template into **conf/silver_expectations/**.
-   Change its **CHANGE_ME** line: the key every record needs.
+   Change its **CHANGE_ME** line: the key every record needs. The rules
+   in **conf/bronze_expectations.yml** check every table, so each must
+   name only columns the new table has.
 8. Replace **YOUR_TABLE** and **YOUR_FILE** in the uncommented lines.
 9. Search for leftovers outside comments. Nothing shows.
 10. Check the plan. The ingest job and the pipeline show change. Nothing

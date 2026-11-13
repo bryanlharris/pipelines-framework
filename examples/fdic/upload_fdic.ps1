@@ -4,10 +4,12 @@
 # The ingest job moves each file to raw files.
 #
 #   ./datasets/fdic/upload_fdic.ps1
+#   ./datasets/fdic/upload_fdic.ps1 -Fake    # dev: the made-up files in fake/
 
 param(
     [string]$Catalog = "fdic",
-    [string]$DatabricksProfile = "free"
+    [string]$DatabricksProfile = "free",
+    [switch]$Fake
 )
 
 # One line per file, like fetch.yml. Name each file after its table.
@@ -20,6 +22,7 @@ $files = @(
     @{ name = "financials_q2.csv"; url = "https://api.fdic.gov/banks/financials?filters=REPDTE:${year}0630&fields=CERT,REPDTE,ASSET,DEP,NETINC,EQ,ROA,ROE&limit=10000&format=csv" }
     @{ name = "financials_q3.csv"; url = "https://api.fdic.gov/banks/financials?filters=REPDTE:${year}0930&fields=CERT,REPDTE,ASSET,DEP,NETINC,EQ,ROA,ROE&limit=10000&format=csv" }
     @{ name = "financials_q4.csv"; url = "https://api.fdic.gov/banks/financials?filters=REPDTE:${year}1231&fields=CERT,REPDTE,ASSET,DEP,NETINC,EQ,ROA,ROE&limit=10000&format=csv" }
+    @{ name = "institutions.csv"; url = "https://api.fdic.gov/banks/institutions?filters=ACTIVE:1&fields=CERT,NAME,CITY,STALP&limit=10000&format=csv" }
 )
 
 $inbox = "dbfs:/Volumes/$Catalog/raw/inbox"
@@ -27,6 +30,20 @@ $inbox = "dbfs:/Volumes/$Catalog/raw/inbox"
 # Fail before downloading if the inbox can't be reached, e.g. a wrong profile.
 $check = databricks fs ls $inbox --profile $DatabricksProfile 2>&1
 if ($LASTEXITCODE -ne 0) { throw "Cannot reach $inbox (profile $DatabricksProfile): $check" }
+
+# -Fake sends the made-up files in fake/ instead, for dev. Each run gets a
+# new inbox name, so the ingest job's file trigger sees a new file.
+if ($Fake) {
+    $run = Get-Date -Format HHmmss
+    foreach ($f in Get-ChildItem "$PSScriptRoot/fake") {
+        $name = "$($f.BaseName)_fake_$run$($f.Extension)"
+        Write-Host "Uploading to $inbox/$name"
+        databricks fs cp $f.FullName "$inbox/$name" --overwrite --profile $DatabricksProfile
+        if ($LASTEXITCODE -ne 0) { throw "Upload failed: $name" }
+    }
+    Write-Host "Done."
+    exit
+}
 
 foreach ($f in $files) {
     $temp = Join-Path ([System.IO.Path]::GetTempPath()) $f.name

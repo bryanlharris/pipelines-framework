@@ -19,3 +19,5 @@
   inbox_file: financials_q3.csv
 - url: "https://api.fdic.gov/banks/financials?filters=REPDTE:{year}1231&fields=CERT,REPDTE,ASSET,DEP,NETINC,EQ,ROA,ROE&limit=10000&format=csv"
   inbox_file: financials_q4.csv
+- url: "https://api.fdic.gov/banks/institutions?filters=ACTIVE:1&fields=CERT,NAME,CITY,STALP&limit=10000&format=csv"
+  inbox_file: institutions.csv

@@ -1,0 +1,38 @@
+# fdic's Genie agent: questions in plain English about bank financials.
+# Written by hand. Ids are 32 hex characters, and each list is sorted by id.
+# See examples/edsm/genie.yml for one built in the GUI and copied.
+resources:
+  genie_spaces:
+    fdic_genie:
+      title: ${var.catalog_prefix}fdic - genie
+      description: Answers questions about FDIC-insured banks, their names and their quarterly financials.
+      warehouse_id: ${var.warehouse_id}
+      parent_path: /Workspace/Users/${workspace.current_user.userName}
+      serialized_space:
+        version: 2
+        config:
+          sample_questions:
+          - id: a0000000000000000000000000000001
+            question:
+            - Which 10 banks had the most assets last quarter?
+          - id: a0000000000000000000000000000002
+            question:
+            - What was the total net income of all banks each quarter?
+          - id: a0000000000000000000000000000003
+            question:
+            - Which large banks had the highest return on equity?
+        data_sources:
+          tables:
+          - identifier: ${resources.catalogs.fdic.name}.silver.financials
+          - identifier: ${resources.catalogs.fdic.name}.silver.institutions
+        instructions:
+          text_instructions:
+          - id: b0000000000000000000000000000001
+            content:
+            - |
+              One record per bank and quarter. CERT is the bank's FDIC certificate number. REPDTE is the quarter's end date.
+              ASSET, DEP (deposits), EQ (equity) and NETINC (net income) are in thousands of dollars.
+              Always multiply them by 1000 before showing dollars: ASSET 4091315000 is $4.09 trillion.
+              For bank names, join institutions on CERT. It holds each active bank's NAME, CITY and STALP (state).
+              ROA and ROE are percents.
+              Ignore ID, ingest_time and source_file.

@@ -1,0 +1,12 @@
+[
+    {"power":"FAKE_POWER_1","powerState":"Fortified","id":1,"id64":1,"name":"FAKE_SYSTEM_1","coords":{"x":1,"y":1,"z":1},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:01"},
+    {"power":"FAKE_POWER_2","powerState":"Stronghold","id":2,"id64":2,"name":"FAKE_SYSTEM_2","coords":{"x":2,"y":2,"z":2},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:02"},
+    {"power":"FAKE_POWER_3","powerState":"Unoccupied","id":3,"id64":3,"name":"FAKE_SYSTEM_3","coords":{"x":3,"y":3,"z":3},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:03"},
+    {"power":"FAKE_POWER_1","powerState":"Exploited","id":4,"id64":4,"name":"FAKE_SYSTEM_4","coords":{"x":4,"y":4,"z":4},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:04"},
+    {"power":"FAKE_POWER_2","powerState":"Fortified","id":5,"id64":5,"name":"FAKE_SYSTEM_5","coords":{"x":5,"y":5,"z":5},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:05"},
+    {"power":"FAKE_POWER_3","powerState":"Stronghold","id":6,"id64":6,"name":"FAKE_SYSTEM_6","coords":{"x":6,"y":6,"z":6},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:06"},
+    {"power":"FAKE_POWER_1","powerState":"Unoccupied","id":7,"id64":7,"name":"FAKE_SYSTEM_7","coords":{"x":7,"y":7,"z":7},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:07"},
+    {"power":"FAKE_POWER_2","powerState":"Exploited","id":8,"id64":8,"name":"FAKE_SYSTEM_8","coords":{"x":8,"y":8,"z":8},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:08"},
+    {"power":"FAKE_POWER_3","powerState":"Fortified","id":9,"id64":9,"name":"FAKE_SYSTEM_9","coords":{"x":9,"y":9,"z":9},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:09"},
+    {"power":"FAKE_POWER_1","powerState":"Stronghold","id":10,"id64":10,"name":"FAKE_SYSTEM_10","coords":{"x":10,"y":10,"z":10},"allegiance":"FAKE_ALLEGIANCE","government":"FAKE_GOVERNMENT","state":"FAKE_STATE","date":"1970-01-01 00:00:10"}
+]

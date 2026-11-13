@@ -11,9 +11,7 @@ expect_or_drop:
       '%/none'
     )
 
+# These check every table, so they name only columns every table has.
+# Rules for one table's columns go in its silver rules.
 expect_or_fail:
   cert_is_number: "try_cast(CERT AS INT) IS NOT NULL"
-  quarter_is_date: "try_to_timestamp(REPDTE, 'yyyyMMdd') IS NOT NULL"
-
-expect:
-  assets_not_negative: "try_cast(ASSET AS BIGINT) >= 0"

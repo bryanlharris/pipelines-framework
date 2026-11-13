@@ -1,0 +1,34 @@
+# treasury's Genie agent: questions in plain English about the yield curve.
+# Written by hand. Ids are 32 hex characters, and each list is sorted by id.
+# See examples/edsm/genie.yml for one built in the GUI and copied.
+resources:
+  genie_spaces:
+    treasury_genie:
+      title: ${var.catalog_prefix}treasury - genie
+      description: Answers questions about US Treasury par yield curve rates, by day and maturity.
+      warehouse_id: ${var.warehouse_id}
+      parent_path: /Workspace/Users/${workspace.current_user.userName}
+      serialized_space:
+        version: 2
+        config:
+          sample_questions:
+          - id: a0000000000000000000000000000001
+            question:
+            - What was the 10-year yield on the latest date?
+          - id: a0000000000000000000000000000002
+            question:
+            - How did the 2-year and 10-year yields change this month?
+          - id: a0000000000000000000000000000003
+            question:
+            - On which days was the yield curve inverted (2-year above 10-year)?
+        data_sources:
+          tables:
+          - identifier: ${resources.catalogs.treasury.name}.silver.yieldcurve
+        instructions:
+          text_instructions:
+          - id: b0000000000000000000000000000001
+            content:
+            - |
+              One record per business day. NEW_DATE is the date.
+              Each BC_ column is the par yield, in percent, for one maturity: BC_1MONTH up to BC_30YEAR.
+              Ignore BC_30YEARDISPLAY, Id, ingest_time and source_file.

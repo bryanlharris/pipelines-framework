@@ -5,8 +5,9 @@ bundle plan lists resource keys (schemas.edsm_bronze); this prints the name
 each lands on (edsm.bronze), grouped by type, with the fields a change
 would touch. Catalogs, pipelines, jobs and Genie agents hang from their workspace, schemas
 from their catalog and volumes from their schema.
--v adds the bundle keys. Read only: it runs bundle validate and plan, never
-deploy.
+-v adds the bundle keys. A Genie agent to create or change gets a warning
+for each table it names that doesn't exist yet.
+Read only: it runs bundle validate and plan, never deploy.
 
 Usage: py tools/bundle_plan.py <target> [-v]      e.g. py tools/bundle_plan.py free
 """
@@ -117,6 +118,20 @@ def changes(entry, skip=()):
     return out
 
 
+def missing_tables(config, space):
+    """Tables a Genie agent names that don't exist yet. Genie refuses those,
+    so the deploy would fail."""
+    profile = config.get('workspace', {}).get('profile', '')
+    tables = json.loads(space.get('serialized_space') or '{}').get('data_sources', {}).get('tables', [])
+    out = []
+    for t in tables:
+        run = subprocess.run([shutil.which('databricks'), 'tables', 'exists', t['identifier'],
+                              '-p', profile, '-o', 'json'], capture_output=True, text=True)
+        if run.returncode or not json.loads(run.stdout).get('table_exists'):
+            out.append(paint('delete', f"missing table: {t['identifier']}; run the pipeline first"))
+    return out
+
+
 def show(value):
     """A changed value, as JSON."""
     return json.dumps(value)
@@ -180,6 +195,8 @@ def main():
         if kind in workspace_rows:
             row = Row(s.get('name') or s.get('title') or key, action,
                       protected(config, kind, key), key, changes(entry))
+            if kind == 'genie_spaces' and action in ('create', 'change', 'recreate'):
+                row.fields += missing_tables(config, s)
             workspace_rows[kind].append(row)
         elif kind == 'schemas':
             row = Row(s.get('name') or key, action, protected(config, kind, key), key,

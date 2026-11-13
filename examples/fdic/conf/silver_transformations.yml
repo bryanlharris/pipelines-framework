@@ -29,3 +29,13 @@
     - "cast(ROE as double) as ROE"
     - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
     - "source_file"
+- target_table: institutions_history
+  select_exp:
+    # CERT names the bank, the same as in financials.
+    - "cast(CERT as int) as CERT"
+    - "NAME"
+    - "CITY"
+    # Two-letter state, e.g. OH.
+    - "STALP"
+    - "to_timestamp(regexp_extract(source_file, '_([0-9]{8}_[0-9]{6})\\.', 1), 'yyyyMMdd_HHmmss') as ingest_time"
+    - "source_file"

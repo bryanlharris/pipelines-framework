@@ -4,10 +4,12 @@
 # The ingest job moves each file to raw files.
 #
 #   ./datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1
+#   ./datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1 -Fake    # dev: the made-up files in fake/
 
 param(
     [string]$Catalog = "YOUR_DATASET",
-    [string]$DatabricksProfile = "free"
+    [string]$DatabricksProfile = "free",
+    [switch]$Fake
 )
 
 # One line per file, like fetch.yml. Name each file after its table.
@@ -23,6 +25,20 @@ $inbox = "dbfs:/Volumes/$Catalog/raw/inbox"
 # Fail before downloading if the inbox can't be reached, e.g. a wrong profile.
 $check = databricks fs ls $inbox --profile $DatabricksProfile 2>&1
 if ($LASTEXITCODE -ne 0) { throw "Cannot reach $inbox (profile $DatabricksProfile): $check" }
+
+# -Fake sends the made-up files in fake/ instead, for dev. Each run gets a
+# new inbox name, so the ingest job's file trigger sees a new file.
+if ($Fake) {
+    $run = Get-Date -Format HHmmss
+    foreach ($f in Get-ChildItem "$PSScriptRoot/fake") {
+        $name = "$($f.BaseName)_fake_$run$($f.Extension)"
+        Write-Host "Uploading to $inbox/$name"
+        databricks fs cp $f.FullName "$inbox/$name" --overwrite --profile $DatabricksProfile
+        if ($LASTEXITCODE -ne 0) { throw "Upload failed: $name" }
+    }
+    Write-Host "Done."
+    exit
+}
 
 foreach ($f in $files) {
     $temp = Join-Path ([System.IO.Path]::GetTempPath()) $f.name

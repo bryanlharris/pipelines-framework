@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<feed xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://www.w3.org/2005/Atom">
+<title type="text">FAKE</title>
+<id>FAKE</id>
+<updated>1970-01-01T00:00:00Z</updated>
+<entry>
+<id>FAKE_ID_1</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">1</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-01T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">1.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">1.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">1.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">1.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">1.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">1.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">1.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">1.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">1.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">1.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">1.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">1.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">1.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">1.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">1.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_2</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">2</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-02T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">2.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">2.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">2.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">2.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">2.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">2.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">2.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">2.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">2.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">2.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">2.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">2.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">2.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">2.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">2.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_3</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">3</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-03T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">3.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">3.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">3.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">3.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">3.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">3.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">3.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">3.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">3.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">3.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">3.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">3.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">3.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">3.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">3.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_4</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">4</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-04T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">4.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">4.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">4.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">4.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">4.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">4.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">4.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">4.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">4.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">4.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">4.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">4.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">4.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">4.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">4.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_5</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">5</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-05T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">5.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">5.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">5.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">5.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">5.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">5.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">5.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">5.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">5.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">5.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">5.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">5.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">5.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">5.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">5.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_6</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">6</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-06T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">6.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">6.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">6.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">6.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">6.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">6.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">6.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">6.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">6.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">6.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">6.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">6.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">6.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">6.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">6.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_7</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">7</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-07T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">7.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">7.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">7.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">7.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">7.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">7.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">7.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">7.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">7.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">7.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">7.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">7.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">7.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">7.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">7.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_8</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">8</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-08T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">8.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">8.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">8.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">8.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">8.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">8.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">8.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">8.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">8.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">8.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">8.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">8.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">8.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">8.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">8.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_9</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">9</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-09T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">9.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">9.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">9.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">9.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">9.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">9.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">9.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">9.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">9.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">9.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">9.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">9.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">9.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">9.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">9.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+<entry>
+<id>FAKE_ID_10</id>
+<title type="text"></title>
+<updated>1970-01-01T00:00:00Z</updated>
+<author><name /></author>
+<content type="application/xml">
+<m:properties>
+<d:Id m:type="Edm.Int32">10</d:Id>
+<d:NEW_DATE m:type="Edm.DateTime">1970-01-10T00:00:00</d:NEW_DATE>
+<d:BC_1MONTH m:type="Edm.Double">10.0</d:BC_1MONTH>
+<d:BC_1_5MONTH m:type="Edm.Double">10.0</d:BC_1_5MONTH>
+<d:BC_2MONTH m:type="Edm.Double">10.0</d:BC_2MONTH>
+<d:BC_3MONTH m:type="Edm.Double">10.0</d:BC_3MONTH>
+<d:BC_4MONTH m:type="Edm.Double">10.0</d:BC_4MONTH>
+<d:BC_6MONTH m:type="Edm.Double">10.0</d:BC_6MONTH>
+<d:BC_1YEAR m:type="Edm.Double">10.0</d:BC_1YEAR>
+<d:BC_2YEAR m:type="Edm.Double">10.0</d:BC_2YEAR>
+<d:BC_3YEAR m:type="Edm.Double">10.0</d:BC_3YEAR>
+<d:BC_5YEAR m:type="Edm.Double">10.0</d:BC_5YEAR>
+<d:BC_7YEAR m:type="Edm.Double">10.0</d:BC_7YEAR>
+<d:BC_10YEAR m:type="Edm.Double">10.0</d:BC_10YEAR>
+<d:BC_20YEAR m:type="Edm.Double">10.0</d:BC_20YEAR>
+<d:BC_30YEAR m:type="Edm.Double">10.0</d:BC_30YEAR>
+<d:BC_30YEARDISPLAY m:type="Edm.Double">10.0</d:BC_30YEARDISPLAY>
+</m:properties>
+</content>
+</entry>
+</feed>

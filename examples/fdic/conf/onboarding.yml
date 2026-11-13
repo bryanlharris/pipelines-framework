@@ -103,3 +103,36 @@
     # Or name only the columns to track, when that list is shorter.
     # Use one key or the other, not both.
     # track_history_column_list: ["CHANGE_ME"]
+- data_flow_id: "2"
+  data_flow_group: fdic
+  source_system: fdic
+  source_format: cloudFiles
+  source_details:
+    source_path_all: "${workspace.file_path}/conf/../../../raw/files/institutions/"
+    source_metadata:
+      include_autoloader_metadata_column: "True"
+      autoloader_metadata_col_name: source_metadata
+      select_metadata_cols:
+        source_file: "_metadata.file_path"
+  bronze_database_all: bronze
+  bronze_table: institutions
+  bronze_table_comment: "Every record from every institutions file, as strings. One active bank: its certificate number, name and home city."
+  bronze_data_quality_expectations_json_all: "${workspace.file_path}/conf/bronze_expectations.yml"
+  bronze_quarantine_table: ""
+  bronze_reader_options:
+    cloudFiles.format: "csv"
+    cloudFiles.inferColumnTypes: "false"
+    cloudFiles.rescuedDataColumn: "_rescued_data"
+    header: "true"
+  silver_database_all: silver
+  silver_table: institutions_history
+  silver_table_comment: "Full history of active banks (SCD2), one version per change to a bank's name, city or state."
+  silver_data_quality_expectations_json_all: "${workspace.file_path}/conf/silver_expectations/institutions.yml"
+  silver_reader_options:
+    skipChangeCommits: "true"
+  silver_transformation_json_all: "${workspace.file_path}/conf/silver_transformations.yml"
+  silver_cdc_apply_changes:
+    keys: ["CERT"]
+    sequence_by: "ingest_time"
+    scd_type: "2"
+    track_history_except_column_list: ["ingest_time", "source_file"]

@@ -122,6 +122,7 @@ resources:
               # table its name starts with. Copy for each table.
               # - YOUR_TABLE
               - financials
+              - institutions
         # Skip the pipeline when the router moved nothing (e.g. only an unknown file).
         - task_key: any_moved
           depends_on:
@@ -274,6 +275,8 @@ resources:
         # Current views, one per table: the latest version of each record.
         - file:
             path: tables/silver.financials.sql
+        - file:
+            path: tables/silver.institutions.sql
       configuration:
         layer: bronze_silver
         bronze.dataflowspecTable: ${resources.catalogs.fdic.name}.sdp_meta.bronze_dataflowspec

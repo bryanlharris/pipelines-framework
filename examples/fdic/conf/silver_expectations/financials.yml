@@ -1,6 +1,9 @@
 # Silver rules for financials, checked after the casts.
 # expect_or_drop removes the record; expect keeps it and counts it in the event log.
 
+expect_or_fail:
+  quarter_is_date: "REPDTE IS NOT NULL"
+
 expect_or_drop:
   has_key: "CERT IS NOT NULL AND REPDTE IS NOT NULL"
 

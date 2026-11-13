@@ -1,0 +1,37 @@
+# documents' Genie agent: questions in plain English about which PDFs hold PII.
+# Written by hand. Ids are 32 hex characters, and each list is sorted by id.
+# See examples/edsm/genie.yml for one built in the GUI and copied.
+#
+# It reads only silver.pii_inventory, which holds no PII values.
+# silver.documents is left out: its rationales quote what was found.
+resources:
+  genie_spaces:
+    documents_genie:
+      title: ${var.catalog_prefix}documents - genie
+      description: Answers questions about which scanned PDFs hold personal information (PII), and what kinds. Shows no PII values.
+      warehouse_id: ${var.warehouse_id}
+      parent_path: /Workspace/Users/${workspace.current_user.userName}
+      serialized_space:
+        version: 2
+        config:
+          sample_questions:
+          - id: a0000000000000000000000000000001
+            question:
+            - How many PDFs hold PII?
+          - id: a0000000000000000000000000000002
+            question:
+            - Which kinds of PII are found most often?
+          - id: a0000000000000000000000000000003
+            question:
+            - Which PDFs hold a social security number?
+        data_sources:
+          tables:
+          - identifier: ${resources.catalogs.documents.name}.silver.pii_inventory
+        instructions:
+          text_instructions:
+          - id: b0000000000000000000000000000001
+            content:
+            - |
+              One record per PDF. source_file is the file. scanned_at is when it was scanned.
+              has_pii is true when any PII was found with confidence 0.8 or more.
+              pii_types lists the kinds found, e.g. ssn, person_name, email_address. Use array_contains to filter on one.

@@ -43,8 +43,9 @@ datasets/YOUR_DATASET/conf/                    onboarding.yml, silver_transforma
 datasets/YOUR_DATASET/fetch.yml                what the fetch job downloads
 datasets/YOUR_DATASET/tables/                  SQL the pipeline runs: one silver.YOUR_TABLE.sql view per table,
                                                plus extra tables, e.g. edsm's gold layer
-datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1  free only: downloads the files and puts them in the inbox
-datasets/YOUR_DATASET/genie.yml                optional Genie agent over silver and gold, e.g. edsm's
+datasets/YOUR_DATASET/upload_YOUR_DATASET.ps1  free: downloads the files to the inbox; dev: -Fake sends fake/
+datasets/YOUR_DATASET/fake/                    dev only: about 10 made-up records per table, shaped like the real files
+datasets/YOUR_DATASET/genie.yml                optional Genie agent over silver and gold; added after the first load
 examples/                                      finished datasets to copy into datasets/; never deployed
 shared/                                        python the jobs run: router, fetch, the pipeline runner
 targets/*.local.yml                            targets, git-ignored, with the bucket names
@@ -63,6 +64,8 @@ tools/                                         bundle_plan.py, govern_catalogs.p
 | Add a table to an existing dataset      | doc/procedures/build_many_table_dataset/add_table.md   |
 | Add a data quality rule                 | doc/procedures/add_rules.md                            |
 | Skip a bad file                         | doc/procedures/remove_bad_file.md                      |
+| Add a Genie agent to a dataset          | doc/procedures/add_genie.md                            |
+| Fake data for dev                       | doc/procedures/fake_data.md                            |
 | Custom Python for one dataset           | doc/procedures/add_custom_code.md                      |
 | Set up a target: free, dev, staging, prod | doc/procedures/targets/README.md                     |
 | Apply settings, refresh, errors         | doc/procedures/admin.md                                |
@@ -143,7 +146,8 @@ Jobs and pipelines:
 Data quality rules:
 
 - Bronze rules: one file per dataset, on string columns, so cast with
-  try_cast. Silver rules: one file per table, on typed columns.
+  try_cast. They check every table, so name only columns every table has.
+  Silver rules: one file per table, on typed columns.
 - `expect` counts a bad record, `expect_or_drop` removes it,
   `expect_or_fail` stops the pipeline. Fail only when the whole file is
   broken.
@@ -152,8 +156,9 @@ Targets:
 
 - Free: no bucket. The catalog is made with SQL, then bound. Files come from
   the upload script.
-- Enterprise: the bundle makes the catalog in the target's bucket. Files
-  come from the fetch job.
+- Enterprise: the bundle makes the catalog in the target's bucket. Prod's
+  files come from the fetch job. Dev gets only fake files, from the upload
+  script with -Fake; never run fetch on dev.
 - Staging: its pipelines read prod's raw.files, e.g. treasury.raw.files.
   Staging sets **files_prefix** to "", and the apply settings job's
   point_files task writes prod's path into the settings. Staging's own

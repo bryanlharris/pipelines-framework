@@ -1,0 +1,38 @@
+# The dataset's Genie agent: questions in plain English about its silver
+# and gold tables. See doc/procedures/add_genie.md.
+#
+# Everything is commented, because Genie refuses an agent whose tables
+# don't exist yet. After the pipeline's first run, uncomment every line
+# below, from resources: down.
+#
+# Ids are 32 hex characters, unique in the file. Each list is sorted by id,
+# and the tables by name. Name tables in lower case.
+
+# resources:
+#   genie_spaces:
+#     YOUR_DATASET_genie:
+#       title: ${var.catalog_prefix}YOUR_DATASET - genie
+#       description: CHANGE_ME → what it answers questions about, in one sentence
+#       warehouse_id: ${var.warehouse_id}
+#       parent_path: /Workspace/Users/${workspace.current_user.userName}
+#       serialized_space:
+#         version: 2
+#         config:
+#           sample_questions:
+#           # ---- One question. Copy from here, once per question, with the next id. ----
+#           - id: a0000000000000000000000000000001
+#             question:
+#             - CHANGE_ME → a question the agent should answer
+#           # ---- To here. ----
+#         data_sources:
+#           tables:
+#           # ---- One table. Copy from here, once per view, e.g. silver.yourtable. ----
+#           - identifier: ${resources.catalogs.YOUR_DATASET.name}.silver.CHANGE_ME
+#           # ---- To here. ----
+#         instructions:
+#           text_instructions:
+#           - id: b0000000000000000000000000000001
+#             content:
+#             - |
+#               CHANGE_ME → one line per fact: what a record is, what each
+#               column means and its units, which columns to ignore.

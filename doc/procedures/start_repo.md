@@ -24,7 +24,8 @@ nothing. The team repo pulls from it to get fixes.
 4. Copy the examples you want into **datasets/**, or add your own later
    with [build_many_table_dataset.md](build_many_table_dataset.md). To
    copy them all, skip **examples/README.md**, so it doesn't overwrite
-   **datasets/README.md**.
+   **datasets/README.md**. Remove each **genie.yml**: add those after the
+   first load, with [add_genie.md](add_genie.md).
 5. Commit, and push to origin.
 6. Later, to get upstream's fixes, pull from upstream.
 7. Check the bundle's name in **databricks.yml**. A pull can set it back
@@ -43,6 +44,7 @@ git remote add origin YOUR_TEAM_REPO_URL
 edit databricks.yml
 cp -r examples/YOUR_DATASET datasets/
 cp examples/* datasets/ -Recurse -Exclude README.md
+rm datasets/*/genie.yml
 git add -A
 git commit -m "Start the YOUR_TEAM repo"
 git push -u origin master
